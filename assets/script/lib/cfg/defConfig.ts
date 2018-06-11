@@ -61,7 +61,9 @@ export const character = cc.Enum({
     blink: -1,
 });
 /** 形状特性枚举 */
-export const dissipate = cc.Enum({
+export const dissipate = cc.Enum({    
+    // 无
+    none: -1,
     // 碎裂
     fragmentation: -1,
     // 融入

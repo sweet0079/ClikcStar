@@ -1,6 +1,7 @@
 /** 用于控制形状的特性 */
 import * as lib from '../lib/lib'
 import FlyingShape from './FlyingShape'
+import Dissipation from './Disspation'
 
 const {ccclass, property} = cc._decorator;
 
@@ -65,18 +66,26 @@ export default class Characteristic extends cc.Component {
                 break;
         }
     }
-
+    
     update (dt) {
-        if(this.type == lib.defConfig.character.speed)
+        //如果已经触发离开屏幕方法，停止所有特性
+        if(!this.node.getComponent(Dissipation).getLeave())
         {
-            this.speedchange(dt);
-        }
-        else if(this.type == lib.defConfig.character.division)
-        {
-            if(this.flyControl.getsubMoveDis() > this.divisionDistance)
+            if(this.type == lib.defConfig.character.speed)
             {
-                this.divisionchange();
+                this.speedchange(dt);
             }
+            else if(this.type == lib.defConfig.character.division)
+            {
+                if(this.flyControl.getsubMoveDis() > this.divisionDistance)
+                {
+                    this.divisionchange();
+                }
+            }
+        }
+        else
+        {
+            this.node.stopAllActions();
         }
     }
     

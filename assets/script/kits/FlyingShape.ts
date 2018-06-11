@@ -1,5 +1,6 @@
 /** 用于控制形状的飞行轨迹 */
 import * as lib from '../lib/lib'
+import Dissipation from './Disspation'
 
 const {ccclass, property} = cc._decorator;
 
@@ -38,6 +39,9 @@ export default class FlyingShape extends cc.Component {
     private haveturn:boolean = false;
     //下落速度
     private dropSpeed:number = 0;
+    //停止标识
+    private stopFlag:boolean = false;
+    
     //----- 生命周期 -----//
     // onLoad () {}
 
@@ -61,33 +65,45 @@ export default class FlyingShape extends cc.Component {
     }
 
     update (dt) {
-        this.node.x += this.Speed * dt * Math.cos(this.Angle * lib.defConfig.coefficient);
-        this.node.y += this.Speed * dt * Math.sin(this.Angle * lib.defConfig.coefficient);
-        this.subMoveDistence += Math.abs(this.Speed) * dt;
-        switch(this.Flightpath)
+        //如果已经触发离开屏幕方法，除掉落、反弹其他都不动
+        if(this.node.getComponent(Dissipation).getLeave()
+        && !(this.node.getComponent(Dissipation).type == lib.defConfig.dissipate.none
+        || this.node.getComponent(Dissipation).type == lib.defConfig.dissipate.rebound))
         {
-            case lib.defConfig.Flightpath.straight:
-                this.flystraight(dt);
-                break;
-            case lib.defConfig.Flightpath.curve:
-                this.flycurve(dt);
-                break;
-            case lib.defConfig.Flightpath.screw:
-                this.flyscrew(dt);
-                break;
-            case lib.defConfig.Flightpath.turn:
-                this.flyturn(dt);
-                break;
-            case lib.defConfig.Flightpath.back:
-                this.flyback(dt);
-                break;
-            default:
-                break;
+            if(this.node.getComponent(Dissipation).type == lib.defConfig.dissipate.drop)
+            {
+                this._drop(dt);
+            }
+        }
+        else
+        {
+            this.node.x += this.Speed * dt * Math.cos(this.Angle * lib.defConfig.coefficient);
+            this.node.y += this.Speed * dt * Math.sin(this.Angle * lib.defConfig.coefficient);
+            this.subMoveDistence += Math.abs(this.Speed) * dt;
+            switch(this.Flightpath)
+            {
+                case lib.defConfig.Flightpath.straight:
+                    this.flystraight(dt);
+                    break;
+                case lib.defConfig.Flightpath.curve:
+                    this.flycurve(dt);
+                    break;
+                case lib.defConfig.Flightpath.screw:
+                    this.flyscrew(dt);
+                    break;
+                case lib.defConfig.Flightpath.turn:
+                    this.flyturn(dt);
+                    break;
+                case lib.defConfig.Flightpath.back:
+                    this.flyback(dt);
+                    break;
+                default:
+                    break;
+            }
         }
     }
     //----- 公有方法 -----//
-    stop(){
-        this.update = null;
+    drop(){
     }
 
     getsubMoveDis(){
@@ -186,7 +202,7 @@ export default class FlyingShape extends cc.Component {
         }
     }
 
-    //下落方法
+    //消散下落方法
     private _drop(dt){
         this.dropSpeed += 9.8 * dt;
         this.node.y -= this.dropSpeed;
