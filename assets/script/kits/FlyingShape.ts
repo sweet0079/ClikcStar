@@ -1,0 +1,173 @@
+/** 用于控制形状的飞行轨迹 */
+import * as lib from '../lib/lib'
+
+const {ccclass, property} = cc._decorator;
+
+@ccclass
+export default class FlyingShape extends cc.Component {
+    //----- 编辑器属性 -----//
+    /** 默认飞行轨迹 */
+    @property({tooltip:"飞行轨迹",  type: lib.defConfig.Flightpath }) Flightpath = lib.defConfig.Flightpath.straight;
+    /** 默认出生位置 */
+    @property({tooltip:"出生位置",  type: lib.defConfig.shapebirthpos }) birthpos = lib.defConfig.shapebirthpos.left;
+    /** 飞行速度 */
+    @property({tooltip:"飞行速度",type: cc.Float }) Speed:number = 100;
+    /** 默认入射角 */
+    @property({tooltip:"入射角", type: cc.Integer }) Angle:number = 0;
+    /** 默认长曲线模式加速度 */
+    @property({tooltip:"长曲线模式角变化速度，单位度每秒,适用于长曲线", type: cc.Integer }) deltangle:number = 10;
+    /** 默认螺旋线速度 */
+    @property({tooltip:"螺旋线速度，用于螺旋模式",  type: cc.Integer }) screwspeed:number = 200;
+    /** 默认螺旋角速度 */
+    @property({tooltip:"螺旋角速度，用于螺旋模式",  type: cc.Integer }) screwAngleSpeed:number = 180;
+    /** 默认转向模式转向距离 */
+    @property({tooltip:"转向模式开始转向的距离",  type: cc.Integer }) TurnThreshold:number = 500;
+    /** 默认转向角 */
+    @property({tooltip:"转向模式下转向的角度", type: cc.Integer }) TurnAngle:number = 0;
+    //----- 静态属性 -----//
+    /** 飞行轨迹枚举 */
+    static readonly Flightpath = lib.defConfig.Flightpath;
+    //----- 属性声明 -----//
+    //螺旋模式初始螺旋角度
+    private screwAngle:number = 90;
+    //长曲线模式以改变角度
+    private subChangeAngle:number = 0;
+    //累计移动距离
+    private subMoveDistence:number = 0;
+    //是否已经转向
+    private haveturn:boolean = false;
+    //----- 生命周期 -----//
+    // onLoad () {}
+
+    start () {
+        switch(this.birthpos)
+        {
+            case lib.defConfig.shapebirthpos.right:
+                this.Speed = -this.Speed;
+                this.Angle = -this.Angle;
+                break;
+            case lib.defConfig.shapebirthpos.top:
+                this.Angle -= 90;
+                break;
+            case lib.defConfig.shapebirthpos.bottom:
+                this.Angle += 90;
+                break;
+            default:
+                break;
+        }
+        this.node.rotation = -this.Angle;
+    }
+
+    update (dt) {
+        this.node.x += this.Speed * dt * Math.cos(this.Angle * lib.defConfig.coefficient);
+        this.node.y += this.Speed * dt * Math.sin(this.Angle * lib.defConfig.coefficient);
+        switch(this.Flightpath)
+        {
+            case lib.defConfig.Flightpath.straight:
+                this.flystraight(dt);
+                break;
+            case lib.defConfig.Flightpath.curve:
+                this.flycurve(dt);
+                break;
+            case lib.defConfig.Flightpath.screw:
+                this.flyscrew(dt);
+                break;
+            case lib.defConfig.Flightpath.turn:
+                this.flyturn(dt);
+                break;
+            case lib.defConfig.Flightpath.back:
+                this.flyback(dt);
+                break;
+            default:
+                break;
+        }
+    }
+    //----- 公有方法 -----//
+    getsubMoveDis(){
+        return this.subMoveDistence;
+    }
+    
+    getparameter(){
+        let flypathparameter: _kits.FlyingShape.parameters = {
+            Flightpath:this.Flightpath,
+            birthpos:this.birthpos,
+            Speed:this.Speed,
+            Angle:this.Angle,
+            deltangle:this.deltangle,
+            screwspeed:this.screwspeed,
+            screwAngleSpeed:this.screwAngleSpeed,
+            TurnThreshold:this.TurnThreshold,
+            TurnAngle:this.TurnAngle,
+        }
+        return flypathparameter;
+    }
+
+    setparameter(parameter: _kits.FlyingShape.parameters){
+        this.Flightpath = parameter.Flightpath;
+        this.birthpos = parameter.birthpos;
+        this.Speed = parameter.Speed;
+        this.Angle = parameter.Angle;
+        this.deltangle = parameter.deltangle;
+        this.screwspeed = parameter.screwspeed;
+        this.screwAngleSpeed = parameter.screwAngleSpeed;
+        this.TurnThreshold = parameter.TurnThreshold;
+        this.TurnAngle = parameter.TurnAngle;
+    }
+    //----- 私有方法 -----//
+    //直线飞行方法
+    private flystraight(dt){
+
+    }
+
+    //曲线飞行方法
+    private flycurve(dt){
+        if(this.subChangeAngle >= 90
+        || this.subChangeAngle <= -90)
+        {
+            return;
+        }
+        this.Angle -= this.deltangle * dt;
+        this.node.rotation = -this.Angle;
+        this.subChangeAngle += this.deltangle * dt;
+    }
+
+    //螺旋飞行方法
+    private flyscrew(dt){
+        this.node.x -= this.screwspeed * Math.sin(this.screwAngle * lib.defConfig.coefficient) * dt * Math.sin(this.Angle * lib.defConfig.coefficient);
+        this.node.y += this.screwspeed * Math.sin(this.screwAngle * lib.defConfig.coefficient) * dt * Math.cos(this.Angle * lib.defConfig.coefficient);
+        this.screwAngle += this.screwAngleSpeed * dt;
+        this.node.scale = (0.9 + 0.1 * Math.sin(this.screwAngle * lib.defConfig.coefficient));
+    }
+    
+    //转向飞行方法
+    private flyturn(dt){
+        if(this.haveturn)
+        {
+            return;
+        }
+        this.subMoveDistence += Math.abs(this.Speed) * dt;
+        if(this.subMoveDistence > this.TurnThreshold)
+        {
+            this.haveturn = true;
+            this.Angle += this.TurnAngle;
+            let action = cc.rotateBy(0.1,-this.TurnAngle);
+            this.node.runAction(action);
+        }
+    }
+    
+    //回退飞行方法
+    private flyback(dt){
+        if(this.haveturn)
+        {
+            return;
+        }
+        this.subMoveDistence += Math.abs(this.Speed) * dt;
+        if(this.subMoveDistence > this.TurnThreshold)
+        {
+            this.haveturn = true;
+            this.Angle += 180;
+            let action = cc.rotateBy(0.1,-180);
+            this.node.runAction(action);
+        }
+    }
+}
