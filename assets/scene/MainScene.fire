@@ -2404,7 +2404,7 @@
       "__id__": 64
     },
     "_enabled": true,
-    "type": 4
+    "type": 6
   },
   {
     "__type__": "27422WfFDtKYZyD8QxvIlbR",
@@ -2552,7 +2552,7 @@
       "__id__": 70
     },
     "_enabled": true,
-    "type": 4
+    "type": 6
   },
   {
     "__type__": "27422WfFDtKYZyD8QxvIlbR",
@@ -2700,7 +2700,7 @@
       "__id__": 76
     },
     "_enabled": true,
-    "type": 4
+    "type": 6
   },
   {
     "__type__": "27422WfFDtKYZyD8QxvIlbR",
@@ -2728,7 +2728,7 @@
       "__id__": 76
     },
     "_enabled": true,
-    "type": 1,
+    "type": 3,
     "ScaleMultiple": 0.5,
     "SpeedMultiple": 0.5,
     "rotateSpeed": 180,

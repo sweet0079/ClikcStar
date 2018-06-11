@@ -61,6 +61,7 @@ export default class Dissipation extends cc.Component {
                 this._destfun();
             }
         }
+        //判断反弹后是否离开边界
         if(this.reboundFlag)
         {
             if(this.node.position.x <= cc.view.getDesignResolutionSize().width/2 - this.node.width/2 * this.node.scaleX
@@ -73,14 +74,29 @@ export default class Dissipation extends cc.Component {
         }
     }
     //----- 公有方法 -----//
+    //获取是否进入屏幕
     getAdmission(){
         return this.haveAdmission;
     }
+    //执行消散方法
     destroyAni(){
-        this._destfun;
+        this._destfun();
     }
+    //获取是否已经消散
     getLeave(){
         return this.haveLeave;
+    }
+    //取得所有消散参数
+    getparameter(){
+        let disspationparameter: _kits.Disspation.parameters = {
+            type: this.type,
+        }
+        return disspationparameter;
+    }
+
+    //设置所有消散参数
+    setparameter(parameter: _kits.Disspation.parameters){
+        this.type = parameter.type;
     }
     //----- 私有方法 -----//
     private _destfun(){
@@ -117,33 +133,86 @@ export default class Dissipation extends cc.Component {
     }
 
     private rebounds(){
-        console.log("this.reboundFlag = " + this.reboundFlag);
         if(this.reboundFlag)
         {
+            //设置为false。可以连续反弹（暂时）。
             this.haveLeave = false;
             return;
         }
-        // if(this.node.position.x >= cc.view.getDesignResolutionSize().width/2 - this.node.width/2 * this.node.scaleX
-        // || this.node.position.x <= -cc.view.getDesignResolutionSize().width/2 + this.node.width/2 * this.node.scaleX
-        // || this.node.position.y >= cc.view.getDesignResolutionSize().height/2 - this.node.height/2 * this.node.scaleY
-        // || this.node.position.y <= -cc.view.getDesignResolutionSize().height/2 + this.node.height/2 * this.node.scaleY)
+        //右边反弹
         if(this.node.position.x >= cc.view.getDesignResolutionSize().width/2 - this.node.width/2 * this.node.scaleX)
         {
-            this.flyControl.Angle = 180 - this.flyControl.Angle;
+            //右下角反弹
+            if(this.node.position.y <= -cc.view.getDesignResolutionSize().height/2 + this.node.height/2 * this.node.scaleY)
+            {
+                this.flyControl.Angle = 180 + this.flyControl.Angle;
+            }
+            //右上角反弹
+            else if(this.node.position.y >= cc.view.getDesignResolutionSize().height/2 - this.node.height/2 * this.node.scaleY)
+            {
+                this.flyControl.Angle = 180 + this.flyControl.Angle;
+            }
+            else
+            {
+                this.flyControl.Angle = 180 - this.flyControl.Angle;
+            }
         }
+        //左边反弹
         else if(this.node.position.x <= -cc.view.getDesignResolutionSize().width/2 + this.node.width/2 * this.node.scaleX)
         {
-            this.flyControl.Angle = 180 - this.flyControl.Angle;
+            //左下角反弹
+            if(this.node.position.y <= -cc.view.getDesignResolutionSize().height/2 + this.node.height/2 * this.node.scaleY)
+            {
+                this.flyControl.Angle = 180 + this.flyControl.Angle;
+            }
+            //左上角反弹
+            else if(this.node.position.y >= cc.view.getDesignResolutionSize().height/2 - this.node.height/2 * this.node.scaleY)
+            {
+                this.flyControl.Angle = 180 + this.flyControl.Angle;
+            }
+            else
+            {
+                this.flyControl.Angle = 180 - this.flyControl.Angle;
+            }
         }
+        //上边反弹
         else if(this.node.position.y >= cc.view.getDesignResolutionSize().height/2 - this.node.height/2 * this.node.scaleY)
         {
-            this.flyControl.Angle = -this.flyControl.Angle;
+            //右上角反弹
+            if(this.node.position.x >= cc.view.getDesignResolutionSize().width/2 - this.node.width/2 * this.node.scaleX)
+            {
+                this.flyControl.Angle = 180 + this.flyControl.Angle;
+            }
+            //左上角反弹
+            else if(this.node.position.x <= -cc.view.getDesignResolutionSize().width/2 + this.node.width/2 * this.node.scaleX)
+            {
+                this.flyControl.Angle = 180 + this.flyControl.Angle;
+            }
+            else
+            {
+                this.flyControl.Angle = -this.flyControl.Angle;
+            }
         }
+        //下边反弹
         else if(this.node.position.y <= -cc.view.getDesignResolutionSize().height/2 + this.node.height/2 * this.node.scaleY)
         {
-            this.flyControl.Angle = -this.flyControl.Angle;
+            //右下角反弹
+            if(this.node.position.x >= cc.view.getDesignResolutionSize().width/2 - this.node.width/2 * this.node.scaleX)
+            {
+                this.flyControl.Angle = 180 + this.flyControl.Angle;
+            }
+            //左下角反弹
+            else if(this.node.position.x <= -cc.view.getDesignResolutionSize().width/2 + this.node.width/2 * this.node.scaleX)
+            {
+                this.flyControl.Angle = 180 + this.flyControl.Angle;
+            }
+            else
+            {
+                this.flyControl.Angle = -this.flyControl.Angle;
+            }
         }
         this.reboundFlag = true;
+        //设置为false。可以连续反弹（暂时）。
         this.haveLeave = false;
     }
 }

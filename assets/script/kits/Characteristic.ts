@@ -30,6 +30,8 @@ export default class Characteristic extends cc.Component {
     //----- 属性声明 -----//
     //飞行轨迹控制器
     private flyControl: FlyingShape = null;
+    //消散控制器
+    private dissControl: Dissipation = null;
     //目标速度
     private targetSpeed: number = 0;
     //加速度
@@ -41,6 +43,7 @@ export default class Characteristic extends cc.Component {
 
     start () {
         this.flyControl = this.node.getComponent(FlyingShape);
+        this.dissControl = this.node.getComponent(Dissipation);
         switch(this.type)
         {
             case lib.defConfig.character.scale:
@@ -124,6 +127,7 @@ export default class Characteristic extends cc.Component {
         let shape1 = cc.instantiate(this.shapeprefeb);
         shape1.getComponent(FlyingShape).setparameter(this.flyControl.getparameter());
         shape1.getComponent(FlyingShape).Angle += 45;
+        shape1.getComponent(Dissipation).setparameter(this.dissControl.getparameter());
         shape1.position = this.node.position;
         shape1.rotation = this.node.rotation;
         shape1.scale = this.node.scale;
@@ -131,6 +135,7 @@ export default class Characteristic extends cc.Component {
         let shape2 = cc.instantiate(this.shapeprefeb);
         shape2.getComponent(FlyingShape).setparameter(this.flyControl.getparameter());
         shape2.getComponent(FlyingShape).Angle -= 45;
+        shape2.getComponent(Dissipation).setparameter(this.dissControl.getparameter());
         shape2.position = this.node.position;
         shape2.rotation = this.node.rotation;
         shape2.scale = this.node.scale;

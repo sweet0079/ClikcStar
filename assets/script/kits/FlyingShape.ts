@@ -103,13 +103,12 @@ export default class FlyingShape extends cc.Component {
         }
     }
     //----- 公有方法 -----//
-    drop(){
-    }
-
+    //取得目前移动的总路程
     getsubMoveDis(){
         return this.subMoveDistence;
     }
     
+    //取得所有飞行轨迹参数
     getparameter(){
         let flypathparameter: _kits.FlyingShape.parameters = {
             Flightpath:this.Flightpath,
@@ -125,6 +124,7 @@ export default class FlyingShape extends cc.Component {
         return flypathparameter;
     }
 
+    //设置所有飞行轨迹参数
     setparameter(parameter: _kits.FlyingShape.parameters){
         this.Flightpath = parameter.Flightpath;
         this.birthpos = parameter.birthpos;

@@ -14,3 +14,9 @@ declare namespace _kits.FlyingShape {
         TurnAngle: number,
     }
 }
+declare namespace _kits.Disspation {
+    //----- msgEvent -----//
+    interface parameters {
+        type: number,
+    }
+}

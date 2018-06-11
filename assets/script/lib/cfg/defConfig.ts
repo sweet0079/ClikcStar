@@ -79,4 +79,5 @@ export const dissipate = cc.Enum({
     // 分解
     decompose: -1,
 });
+//角度和弧度的转化系数
 export const coefficient = 2 * Math.PI / 360;
