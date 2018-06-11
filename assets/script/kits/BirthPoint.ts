@@ -14,9 +14,9 @@ export default class BirthPoint extends cc.Component {
     /** 默认随机形状的速度上限 */
     @property({tooltip:"随机生成形状的速度上限", type: cc.Float }) SpeedUpperLimit:number = 200;
     /** 默认随机形状的入射角下限 */
-    @property({tooltip:"随机形状的入射角下限", type: cc.Integer }) AngleLowerLimit:number = 0;
+    @property({tooltip:"随机形状的入射角下限", type: cc.Integer }) AngleLowerLimit:number = -80;
     /** 默认随机形状的入射角上限 */
-    @property({tooltip:"随机形状的入射角上限", type: cc.Integer }) AngleUpperLimit:number = 180;
+    @property({tooltip:"随机形状的入射角上限", type: cc.Integer }) AngleUpperLimit:number = 80;
     /** 默认长曲线模式加速度下限 */
     @property({tooltip:"随机形状的长曲线模式角变化速度下限", type: cc.Integer }) deltangleLowerLimit:number = 3;
     /** 默认长曲线模式加速度上限 */
@@ -49,7 +49,11 @@ export default class BirthPoint extends cc.Component {
                 {
                     this.createRandomShape();
                 }
-            },5);
+                // if(this.birthpos == lib.defConfig.birthpoint.lefttop)
+                // {
+                //     this.createRandomShape();
+                // }
+            },2);
     }
 
     // update (dt) {}

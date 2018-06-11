@@ -7,7 +7,9 @@ const {ccclass, property} = cc._decorator;
 export default class Dissipation extends cc.Component {
     //----- 编辑器属性 -----//
     /** 默认消散类型 */
-    @property({tooltip:"消散类型",  type: lib.defConfig.dissipate }) type = lib.defConfig.dissipate.decompose;
+    @property({tooltip:"消散类型",  type: lib.defConfig.dissipate }) type = lib.defConfig.dissipate.drop;
+    //----- 属性声明 -----//
+    private haveAdmission: boolean = false;
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -16,8 +18,26 @@ export default class Dissipation extends cc.Component {
 
     }
 
-    // update (dt) {}
+    update (dt) {
+        if(!this.haveAdmission)
+        {
+            if(this.node.position.x <= cc.view.getVisibleSize().width/2
+            && this.node.position.x >= -cc.view.getVisibleSize().width/2
+            && this.node.position.y <= cc.view.getVisibleSize().height/2
+            && this.node.position.y >= -cc.view.getVisibleSize().height/2)
+            {
+                this.haveAdmission = true;
+            }
+        }
+        else
+        {
+
+        }
+    }
     //----- 公有方法 -----//
+    getAdmission(){
+        return this.haveAdmission;
+    }
     destroyAni(){
         this._destroy;
     }
@@ -31,5 +51,6 @@ export default class Dissipation extends cc.Component {
     }
 
     private dropdes(){
+        
     }
 }

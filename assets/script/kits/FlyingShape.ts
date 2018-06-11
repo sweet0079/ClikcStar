@@ -36,6 +36,8 @@ export default class FlyingShape extends cc.Component {
     private subMoveDistence:number = 0;
     //是否已经转向
     private haveturn:boolean = false;
+    //下落速度
+    private dropSpeed:number = 0;
     //----- 生命周期 -----//
     // onLoad () {}
 
@@ -61,6 +63,7 @@ export default class FlyingShape extends cc.Component {
     update (dt) {
         this.node.x += this.Speed * dt * Math.cos(this.Angle * lib.defConfig.coefficient);
         this.node.y += this.Speed * dt * Math.sin(this.Angle * lib.defConfig.coefficient);
+        this.subMoveDistence += Math.abs(this.Speed) * dt;
         switch(this.Flightpath)
         {
             case lib.defConfig.Flightpath.straight:
@@ -83,6 +86,10 @@ export default class FlyingShape extends cc.Component {
         }
     }
     //----- 公有方法 -----//
+    stop(){
+        this.update = null;
+    }
+
     getsubMoveDis(){
         return this.subMoveDistence;
     }
@@ -135,8 +142,18 @@ export default class FlyingShape extends cc.Component {
     private flyscrew(dt){
         this.node.x -= this.screwspeed * Math.sin(this.screwAngle * lib.defConfig.coefficient) * dt * Math.sin(this.Angle * lib.defConfig.coefficient);
         this.node.y += this.screwspeed * Math.sin(this.screwAngle * lib.defConfig.coefficient) * dt * Math.cos(this.Angle * lib.defConfig.coefficient);
+        // this.screwAngle += this.screwAngleSpeed * dt;
+        // this.node.scale = (0.9 + 0.1 * Math.sin(this.screwAngle * lib.defConfig.coefficient));
+        //原scale大小
+        let deforescale = (0.9 + 0.1 * Math.sin(this.screwAngle * lib.defConfig.coefficient));
         this.screwAngle += this.screwAngleSpeed * dt;
-        this.node.scale = (0.9 + 0.1 * Math.sin(this.screwAngle * lib.defConfig.coefficient));
+        //this.node.scale = (0.9 + 0.1 * Math.sin(this.screwAngle * lib.defConfig.coefficient));
+        //this.node.scale = (0.9 + 0.1 * Math.sin(this.screwAngle * lib.defConfig.coefficient));
+        //现在的scale大小
+        let afterscale = (0.9 + 0.1 * Math.sin(this.screwAngle * lib.defConfig.coefficient));
+        //scale大小差
+        let scaledelt = afterscale - deforescale;
+        this.node.scale *= (scaledelt + 1);
     }
     
     //转向飞行方法
@@ -145,7 +162,6 @@ export default class FlyingShape extends cc.Component {
         {
             return;
         }
-        this.subMoveDistence += Math.abs(this.Speed) * dt;
         if(this.subMoveDistence > this.TurnThreshold)
         {
             this.haveturn = true;
@@ -161,7 +177,6 @@ export default class FlyingShape extends cc.Component {
         {
             return;
         }
-        this.subMoveDistence += Math.abs(this.Speed) * dt;
         if(this.subMoveDistence > this.TurnThreshold)
         {
             this.haveturn = true;
@@ -169,5 +184,11 @@ export default class FlyingShape extends cc.Component {
             let action = cc.rotateBy(0.1,-180);
             this.node.runAction(action);
         }
+    }
+
+    //下落方法
+    private _drop(dt){
+        this.dropSpeed += 9.8 * dt;
+        this.node.y -= this.dropSpeed;
     }
 }
