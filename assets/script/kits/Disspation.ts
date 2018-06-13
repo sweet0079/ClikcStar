@@ -18,7 +18,10 @@ export default class Dissipation extends cc.Component {
     private haveLeave: boolean = false;
     //刚刚触发过反弹的标识符（防止物体在放大时，正好进入触发反弹判断，当物体放大速度大于物体远离边界速度，会再次触发反弹）
     private reboundFlag: boolean = false;
-    // LIFE-CYCLE CALLBACKS:
+    //上次反弹触碰的边界
+    private lastRebound: number = lib.defConfig.lastReboundPos.bottom;
+ 
+    //----- 生命周期 -----//
 
     // onLoad () {}
 
@@ -62,15 +65,47 @@ export default class Dissipation extends cc.Component {
             }
         }
         //判断反弹后是否离开边界
+        //根据上次碰撞位置做判断
         if(this.reboundFlag)
         {
-            if(this.node.position.x <= cc.view.getDesignResolutionSize().width/2 - this.node.width/2 * this.node.scaleX
-            && this.node.position.x >= -cc.view.getDesignResolutionSize().width/2 + this.node.width/2 * this.node.scaleX
-            && this.node.position.y <= cc.view.getDesignResolutionSize().height/2 - this.node.height/2 * this.node.scaleY
-            && this.node.position.y >= -cc.view.getDesignResolutionSize().height/2 + this.node.height/2 * this.node.scaleY)
+            switch(this.lastRebound)
             {
-                this.reboundFlag = false;
-            } 
+                case lib.defConfig.lastReboundPos.other:
+                    if(this.node.position.x <= cc.view.getDesignResolutionSize().width/2 - this.node.width/2 * this.node.scaleX
+                    && this.node.position.x >= -cc.view.getDesignResolutionSize().width/2 + this.node.width/2 * this.node.scaleX
+                    && this.node.position.y <= cc.view.getDesignResolutionSize().height/2 - this.node.height/2 * this.node.scaleY
+                    && this.node.position.y >= -cc.view.getDesignResolutionSize().height/2 + this.node.height/2 * this.node.scaleY)
+                    {
+                        this.reboundFlag = false;
+                    } 
+                    break;
+                case lib.defConfig.lastReboundPos.top:
+                    if(this.node.position.y <= cc.view.getDesignResolutionSize().height/2 - this.node.height/2 * this.node.scaleY)
+                    {
+                        this.reboundFlag = false;
+                    } 
+                    break;
+                case lib.defConfig.lastReboundPos.bottom:
+                    if(this.node.position.y >= -cc.view.getDesignResolutionSize().height/2 + this.node.height/2 * this.node.scaleY)
+                    {
+                        this.reboundFlag = false;
+                    } 
+                    break;
+                case lib.defConfig.lastReboundPos.left:
+                    if(this.node.position.x >= -cc.view.getDesignResolutionSize().width/2 + this.node.width/2 * this.node.scaleX)
+                    {
+                        this.reboundFlag = false;
+                    } 
+                    break;
+                case lib.defConfig.lastReboundPos.right:
+                    if(this.node.position.x <= cc.view.getDesignResolutionSize().width/2 - this.node.width/2 * this.node.scaleX)
+                    {
+                        this.reboundFlag = false;
+                    } 
+                    break;
+                default:
+                    break;
+            }
         }
     }
     //----- 公有方法 -----//
@@ -139,21 +174,29 @@ export default class Dissipation extends cc.Component {
             this.haveLeave = false;
             return;
         }
+        // console.log("右边边界 =" + (cc.view.getDesignResolutionSize().width/2 - this.node.width/2 * this.node.scaleX));
+        // console.log("左边边界 =" + (-cc.view.getDesignResolutionSize().width/2 + this.node.width/2 * this.node.scaleX));
+        // console.log("上边边界 =" + (cc.view.getDesignResolutionSize().height/2 - this.node.height/2 * this.node.scaleY));
+        // console.log("下边边界 =" + (-cc.view.getDesignResolutionSize().height/2 + this.node.height/2 * this.node.scaleY));
+        // console.log("自己坐标X = " + this.node.position.x + "  Y =" + this.node.position.y);
         //右边反弹
         if(this.node.position.x >= cc.view.getDesignResolutionSize().width/2 - this.node.width/2 * this.node.scaleX)
         {
             //右下角反弹
             if(this.node.position.y <= -cc.view.getDesignResolutionSize().height/2 + this.node.height/2 * this.node.scaleY)
             {
+                this.lastRebound = lib.defConfig.lastReboundPos.other;
                 this.flyControl.Angle = 180 + this.flyControl.Angle;
             }
             //右上角反弹
             else if(this.node.position.y >= cc.view.getDesignResolutionSize().height/2 - this.node.height/2 * this.node.scaleY)
             {
+                this.lastRebound = lib.defConfig.lastReboundPos.other;
                 this.flyControl.Angle = 180 + this.flyControl.Angle;
             }
             else
             {
+                this.lastRebound = lib.defConfig.lastReboundPos.right;
                 this.flyControl.Angle = 180 - this.flyControl.Angle;
             }
         }
@@ -163,15 +206,18 @@ export default class Dissipation extends cc.Component {
             //左下角反弹
             if(this.node.position.y <= -cc.view.getDesignResolutionSize().height/2 + this.node.height/2 * this.node.scaleY)
             {
+                this.lastRebound = lib.defConfig.lastReboundPos.other;
                 this.flyControl.Angle = 180 + this.flyControl.Angle;
             }
             //左上角反弹
             else if(this.node.position.y >= cc.view.getDesignResolutionSize().height/2 - this.node.height/2 * this.node.scaleY)
             {
+                this.lastRebound = lib.defConfig.lastReboundPos.other;
                 this.flyControl.Angle = 180 + this.flyControl.Angle;
             }
             else
             {
+                this.lastRebound = lib.defConfig.lastReboundPos.left;
                 this.flyControl.Angle = 180 - this.flyControl.Angle;
             }
         }
@@ -181,15 +227,18 @@ export default class Dissipation extends cc.Component {
             //右上角反弹
             if(this.node.position.x >= cc.view.getDesignResolutionSize().width/2 - this.node.width/2 * this.node.scaleX)
             {
+                this.lastRebound = lib.defConfig.lastReboundPos.other;
                 this.flyControl.Angle = 180 + this.flyControl.Angle;
             }
             //左上角反弹
             else if(this.node.position.x <= -cc.view.getDesignResolutionSize().width/2 + this.node.width/2 * this.node.scaleX)
             {
+                this.lastRebound = lib.defConfig.lastReboundPos.other;
                 this.flyControl.Angle = 180 + this.flyControl.Angle;
             }
             else
             {
+                this.lastRebound = lib.defConfig.lastReboundPos.top;
                 this.flyControl.Angle = -this.flyControl.Angle;
             }
         }
@@ -199,15 +248,18 @@ export default class Dissipation extends cc.Component {
             //右下角反弹
             if(this.node.position.x >= cc.view.getDesignResolutionSize().width/2 - this.node.width/2 * this.node.scaleX)
             {
+                this.lastRebound = lib.defConfig.lastReboundPos.other;
                 this.flyControl.Angle = 180 + this.flyControl.Angle;
             }
             //左下角反弹
             else if(this.node.position.x <= -cc.view.getDesignResolutionSize().width/2 + this.node.width/2 * this.node.scaleX)
             {
+                this.lastRebound = lib.defConfig.lastReboundPos.other;
                 this.flyControl.Angle = 180 + this.flyControl.Angle;
             }
             else
             {
+                this.lastRebound = lib.defConfig.lastReboundPos.bottom;
                 this.flyControl.Angle = -this.flyControl.Angle;
             }
         }

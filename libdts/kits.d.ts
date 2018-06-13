@@ -1,7 +1,6 @@
 /** kits的接口库 */
 declare namespace _kits {}
 declare namespace _kits.FlyingShape {
-    //----- msgEvent -----//
     interface parameters {
         Flightpath: number,
         birthpos: number,
@@ -15,8 +14,13 @@ declare namespace _kits.FlyingShape {
     }
 }
 declare namespace _kits.Disspation {
-    //----- msgEvent -----//
     interface parameters {
         type: number,
+    }
+}
+declare namespace _kits.CliclControl {
+    interface clickScore {
+        time: number,
+        score: number,
     }
 }

@@ -30,6 +30,19 @@ export const birthpoint = cc.Enum({
     // 左下角
     leftbottom: -1,
 });
+/** 碰撞边界枚举 */
+export const lastReboundPos = cc.Enum({    
+    // 其他（无或者4个角）
+    other: -1,
+    // 左
+    left: -1,
+    // 上
+    top: -1,
+    // 右
+    right: -1,
+    // 下
+    bottom: -1,
+});
 /** 形状出生位置枚举 */
 export const shapebirthpos = cc.Enum({
     // 左
