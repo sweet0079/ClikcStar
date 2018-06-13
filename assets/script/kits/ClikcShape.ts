@@ -6,12 +6,10 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class ClickShape extends cc.Component {
-  
-    /** 默认高分区域变长 */
-    @property({tooltip:"高分区域变长",  type: cc.Integer }) highScoreWidth:number = 10;
+    //----- 编辑器属性 -----//
+    /** 默认高分区域边长 */
+    @property({tooltip:"高分区域边长",  type: cc.Integer }) highScoreWidth:number = 10;
     //----- 生命周期 -----//
-
-    //  start() {}
 
     onLoad () {
         this.node.on(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
@@ -26,6 +24,8 @@ export default class ClickShape extends cc.Component {
 
         },this);
     }
+
+    //  start() {}
 
     // update (dt) {}
 
@@ -45,6 +45,7 @@ export default class ClickShape extends cc.Component {
     
     //----- 私有方法 -----//
     private ClickSatr(event:cc.Event.EventTouch){
+        //event.stopPropagation();
         //将触摸坐标转化为以node中心为原点的坐标
         let touchx = event.getLocation().x - this.node.convertToWorldSpaceAR(cc.Vec2.ZERO).x;
         let touchy = event.getLocation().y - this.node.convertToWorldSpaceAR(cc.Vec2.ZERO).y;
@@ -54,20 +55,14 @@ export default class ClickShape extends cc.Component {
         if(Math.abs(touchx) < this.highScoreWidth 
         && Math.abs(touchy) < this.highScoreWidth)
         {
-            //console.log("high score");
-            let score: _kits.CliclControl.clickScore ={
-                time: this.node.parent.getComponent(ClickEndControl).time,
-                score: 100,
-            }
+            console.log("high score");
+            let score: number = 100;
             lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
         }
         else
         {
-            //console.log("low score");
-            let score: _kits.CliclControl.clickScore ={
-                time: this.node.parent.getComponent(ClickEndControl).time,
-                score: 50,
-            }
+            console.log("low score");
+            let score: number = 50;
             lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
         }
         this.node.destroy();

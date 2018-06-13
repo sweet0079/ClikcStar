@@ -18,9 +18,3 @@ declare namespace _kits.Disspation {
         type: number,
     }
 }
-declare namespace _kits.CliclControl {
-    interface clickScore {
-        time: number,
-        score: number,
-    }
-}

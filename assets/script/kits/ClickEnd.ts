@@ -1,4 +1,4 @@
-/** 挂在形状的父节点，用于监听触摸结束 */
+/** 挂在形状的背景节点，用于监听触摸结束 */
 import * as lib from '../lib/lib'
 
 const {ccclass, property} = cc._decorator;
@@ -32,10 +32,9 @@ export default class ClickEnd extends cc.Component {
     
     //----- 私有方法 -----//
     private _clickEnd(){
-        lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement);
     }
     private _clickStart(){
-        this.time = new Date().getTime();
+        lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement);
     }
 
     
