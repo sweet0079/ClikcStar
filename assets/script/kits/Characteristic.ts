@@ -38,6 +38,8 @@ export default class Characteristic extends cc.Component {
     private acceleration: number = 0;
     //移动距离总和
     private subMoveDis: number = 0;
+    //已经结束所有动作
+    private havestop: boolean = false;
     //----- 生命周期 -----//
     // onLoad () {}
 
@@ -50,7 +52,8 @@ export default class Characteristic extends cc.Component {
                 this.scalechange();
                 break;
             case lib.defConfig.character.speed:
-                this.targetSpeed = this.node.getComponent(FlyingShape).Speed * this.SpeedMultiple;
+                //记录目标速度，并计算出加速度，因为速度有正负，这里取速度的绝对值
+                this.targetSpeed = Math.abs(this.node.getComponent(FlyingShape).Speed) * this.SpeedMultiple;
                 this.acceleration = Math.abs(this.node.getComponent(FlyingShape).Speed - this.targetSpeed) / 1;
                 break;
             case lib.defConfig.character.division:
@@ -71,7 +74,6 @@ export default class Characteristic extends cc.Component {
     }
     
     update (dt) {
-        //如果已经触发离开屏幕方法，停止所有特性
         if(!this.node.getComponent(Dissipation).getLeave())
         {
             if(this.type == lib.defConfig.character.speed)
@@ -88,7 +90,12 @@ export default class Characteristic extends cc.Component {
         }
         else
         {
-            this.node.stopAllActions();
+            //如果消散方式是坠落，当触发离开屏幕方法时，结束所有动作
+            if(!this.havestop
+                && this.node.getComponent(Dissipation).type == lib.defConfig.dissipate.drop)
+            {
+                this.node.stopAllActions();
+            }
         }
     }
     
@@ -104,18 +111,33 @@ export default class Characteristic extends cc.Component {
 
     //速度变化
     speedchange(dt) {
-        if(this.flyControl.Speed > this.targetSpeed)
+        //根据当前速度与目标速度的大小，改变速度
+        if(Math.abs(this.flyControl.Speed) > this.targetSpeed)
         {
-            this.flyControl.Speed -= this.acceleration * dt;
-            if(this.flyControl.Speed <= this.targetSpeed)
+            if(this.flyControl.Speed > 0)
+            {
+                this.flyControl.Speed -= this.acceleration * dt;
+            }
+            else
+            {
+                this.flyControl.Speed += this.acceleration * dt;
+            }
+            if(Math.abs(this.flyControl.Speed) <= this.targetSpeed)
             {
                 this.targetSpeed /= this.SpeedMultiple;
             }
         }
         else
         {
-            this.flyControl.Speed += this.acceleration * dt;
-            if(this.flyControl.Speed >= this.targetSpeed)
+            if(this.flyControl.Speed > 0)
+            {
+                this.flyControl.Speed += this.acceleration * dt;
+            }
+            else
+            {
+                this.flyControl.Speed -= this.acceleration * dt;
+            }
+            if(Math.abs(this.flyControl.Speed) >= this.targetSpeed)
             {
                 this.targetSpeed *= this.SpeedMultiple;
             }
@@ -171,7 +193,7 @@ export default class Characteristic extends cc.Component {
     fadeout(){
         let fout = cc.fadeOut(this.fadeFrequency);
         let fin = cc.fadeIn(this.fadeFrequency);
-        let seq = cc.sequence(fout,cc.delayTime(this.fadeFrequency),fin,cc.delayTime(this.fadeFrequency));
+        let seq = cc.sequence(fout,cc.delayTime(0.25),fin,cc.delayTime(0.25));
         let rep = cc.repeatForever(seq);
         this.node.runAction(rep);
     }

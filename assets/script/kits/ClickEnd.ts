@@ -15,13 +15,13 @@ export default class ClickEnd extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
             this._clickStart();
         },this);
-        this.node.on(cc.Node.EventType.TOUCH_END,(event:cc.Event.EventTouch)=>{
-            this._clickEnd();
-        },this);
+        // this.node.on(cc.Node.EventType.TOUCH_END,(event:cc.Event.EventTouch)=>{
+        //     this._clickEnd();
+        // },this);
 
-        this.node.on(cc.Node.EventType.TOUCH_CANCEL,(event:cc.Event.EventTouch)=>{
-            this._clickEnd();
-        },this);
+        // this.node.on(cc.Node.EventType.TOUCH_CANCEL,(event:cc.Event.EventTouch)=>{
+        //     this._clickEnd();
+        // },this);
     }
 
     // start () {
@@ -31,8 +31,8 @@ export default class ClickEnd extends cc.Component {
     // update (dt) {}
     
     //----- 私有方法 -----//
-    private _clickEnd(){
-    }
+    // private _clickEnd(){
+    // }
     private _clickStart(){
         lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement);
     }

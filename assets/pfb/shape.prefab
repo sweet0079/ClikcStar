@@ -109,7 +109,9 @@
       "__id__": 1
     },
     "_enabled": true,
-    "type": 0
+    "type": 0,
+    "ContinueRebound": true,
+    "MiniDissDistance": 500
   },
   {
     "__type__": "27422WfFDtKYZyD8QxvIlbR",
@@ -140,9 +142,9 @@
     "type": 0,
     "ScaleMultiple": 0.5,
     "SpeedMultiple": 0.5,
-    "rotateSpeed": 180,
+    "rotateSpeed": 360,
     "divisionDistance": 500,
-    "flipFrequency": 1,
+    "flipFrequency": 0,
     "fadeFrequency": 1,
     "blinkFrequency": 1,
     "shapeprefeb": {
@@ -157,7 +159,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "highScoreWidth": 10
+    "highScoreWidth": 30
   },
   {
     "__type__": "7c8a7LY8lNPB6SBwC7kMsHQ",

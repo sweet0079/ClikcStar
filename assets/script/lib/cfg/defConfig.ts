@@ -92,5 +92,9 @@ export const dissipate = cc.Enum({
     // 分解
     decompose: -1,
 });
+//设计时中间用于点击区域的宽
+export const DesignPlayWidth = 1080;
+//设计时中间用于点击区域的高
+export const DesignPlayHeight = 1720;
 //角度和弧度的转化系数
 export const coefficient = 2 * Math.PI / 360;

@@ -41,11 +41,14 @@ export default class FlyingShape extends cc.Component {
     private dropSpeed:number = 0;
     //停止标识
     private stopFlag:boolean = false;
+    //消散组件
+    private dissControl:Dissipation = null;
     
     //----- 生命周期 -----//
     // onLoad () {}
 
     start () {
+        //根据出生位置改变飞行轨迹部分参数
         switch(this.birthpos)
         {
             case lib.defConfig.shapebirthpos.right:
@@ -62,24 +65,59 @@ export default class FlyingShape extends cc.Component {
                 break;
         }
         this.node.rotation = -this.Angle;
+        this.dissControl = this.node.getComponent(Dissipation);
     }
 
     update (dt) {
-        //如果已经触发离开屏幕方法，除掉落、反弹其他都不动
-        if(this.node.getComponent(Dissipation).getLeave()
-        && !(this.node.getComponent(Dissipation).type == lib.defConfig.dissipate.none
-        || this.node.getComponent(Dissipation).type == lib.defConfig.dissipate.rebound))
+        //如果已经触发离开屏幕方法
+        if(this.dissControl.getLeave()
+        && !(this.dissControl.type == lib.defConfig.dissipate.none
+        || this.dissControl.type == lib.defConfig.dissipate.rebound))
         {
-            if(this.node.getComponent(Dissipation).type == lib.defConfig.dissipate.drop)
+            if(this.dissControl.type == lib.defConfig.dissipate.drop)
             {
                 this._drop(dt);
             }
+            //暂时这么写，让还没实现的消散特效直接飞出屏幕
+            else
+            {
+                this.node.x += this.Speed * dt * Math.cos(this.Angle * lib.defConfig.coefficient);
+                this.node.y += this.Speed * dt * Math.sin(this.Angle * lib.defConfig.coefficient);
+                if(this.dissControl.getAdmission())
+                {
+                    this.subMoveDistence += Math.abs(this.Speed) * dt;
+                }
+                switch(this.Flightpath)
+                {
+                    case lib.defConfig.Flightpath.straight:
+                        this.flystraight(dt);
+                        break;
+                    case lib.defConfig.Flightpath.curve:
+                        this.flycurve(dt);
+                        break;
+                    case lib.defConfig.Flightpath.screw:
+                        this.flyscrew(dt);
+                        break;
+                    case lib.defConfig.Flightpath.turn:
+                        this.flyturn(dt);
+                        break;
+                    case lib.defConfig.Flightpath.back:
+                        this.flyback(dt);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
+        //还未触发离开屏幕方法，走正常的飞行轨迹
         else
         {
             this.node.x += this.Speed * dt * Math.cos(this.Angle * lib.defConfig.coefficient);
             this.node.y += this.Speed * dt * Math.sin(this.Angle * lib.defConfig.coefficient);
-            this.subMoveDistence += Math.abs(this.Speed) * dt;
+            if(this.dissControl.getAdmission())
+            {
+                this.subMoveDistence += Math.abs(this.Speed) * dt;
+            }
             switch(this.Flightpath)
             {
                 case lib.defConfig.Flightpath.straight:
@@ -108,6 +146,11 @@ export default class FlyingShape extends cc.Component {
         return this.subMoveDistence;
     }
     
+    setAngle(angle: number){
+        this.Angle = angle;
+        this.node.rotation = -this.Angle;
+    }
+
     //取得所有飞行轨迹参数
     getparameter(){
         let flypathparameter: _kits.FlyingShape.parameters = {

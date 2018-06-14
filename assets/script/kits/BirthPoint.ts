@@ -1,6 +1,8 @@
 /** 控制单个出生点 */
 import * as lib from '../lib/lib'
 import FlyingShape from './FlyingShape'
+import characteristic from './Characteristic'
+import disspation from './Disspation'
 
 const {ccclass, property} = cc._decorator;
 
@@ -9,6 +11,7 @@ export default class BirthPoint extends cc.Component {
 
     /** 出生点所在位置 */
     @property({tooltip:"出生点所在位置", type: lib.defConfig.birthpoint }) birthpos = lib.defConfig.birthpoint.left;
+    //飞行轨迹参数
     /** 默认随机形状的速度下限 */
     @property({tooltip:"随机生成形状的速度下限", type: cc.Float }) SpeedLowerLimit:number = 50;
     /** 默认随机形状的速度上限 */
@@ -39,6 +42,8 @@ export default class BirthPoint extends cc.Component {
     @property({tooltip:"随机形状的转向模式转向角度上限", type: cc.Integer }) TurnAngleUpperLimit:number = 179;
     /** 形状的预制体 */
     @property(cc.Prefab) shapeprefeb: cc.Prefab = null;
+    /** 形状的父节点 */
+    @property(cc.Node) shapeParNode: cc.Node = null;
 
     // onLoad () {}
 
@@ -62,6 +67,7 @@ export default class BirthPoint extends cc.Component {
     createRandomShape(){
         let shape = cc.instantiate(this.shapeprefeb);
         shape.position = this.node.position;
+        //随机形状的飞行轨迹组件参数
         //取得一个随机速度
         let speed = cc.random0To1() * (this.SpeedUpperLimit - this.SpeedLowerLimit) + this.SpeedLowerLimit;
         //取得一个随机入射角度
@@ -153,7 +159,13 @@ export default class BirthPoint extends cc.Component {
         shapepath.screwAngleSpeed = screwAngleSpeed;
         shapepath.TurnThreshold = TurnThreshold;
         shapepath.TurnAngle = TurnAngle;
+        //随机形状的特性参数
+        let shapechara = shape.getComponent(characteristic);
+        shapechara.type = parseInt((cc.random0To1() * (lib.defConfig.character.blink + 1)).toString());
+        //随机形状的消散参数
+        let shapediss = shape.getComponent(disspation);
+        shapediss.type = parseInt((cc.random0To1() * (lib.defConfig.dissipate.decompose + 1)).toString());
         //赋值父节点
-        shape.parent = this.node.parent.parent;
+        shape.parent = this.shapeParNode;
     }
 }
