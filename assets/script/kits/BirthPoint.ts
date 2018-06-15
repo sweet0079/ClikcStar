@@ -49,11 +49,11 @@ export default class BirthPoint extends cc.Component {
 
     start () {
             this.schedule(()=>{
-                // let temp = cc.random0To1() * 100;
-                // if(temp < 20)
-                // {
-                //     this.createRandomShape();
-                // }
+                let temp = cc.random0To1() * 100;
+                if(temp < 20)
+                {
+                    this.createRandomShape();
+                }
                 // if(this.birthpos == lib.defConfig.birthpoint.lefttop)
                 // {
                 //     this.createRandomShape();

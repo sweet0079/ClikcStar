@@ -18,3 +18,9 @@ declare namespace _kits.Disspation {
         type: number,
     }
 }
+declare namespace _kits.ClickControl {
+    interface click {
+        score: number,
+        node: any,
+    }
+}

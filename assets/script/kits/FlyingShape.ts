@@ -25,6 +25,8 @@ export default class FlyingShape extends cc.Component {
     @property({tooltip:"转向模式开始转向的距离",  type: cc.Integer }) TurnThreshold:number = 500;
     /** 默认转向角 */
     @property({tooltip:"转向模式下转向的角度", type: cc.Integer }) TurnAngle:number = 0;
+    /** 默认显示节点 */
+    @property({tooltip:"显示节点", type: cc.Node }) ShowNode:cc.Node = null;
     //----- 静态属性 -----//
     /** 飞行轨迹枚举 */
     static readonly Flightpath = lib.defConfig.Flightpath;
@@ -64,7 +66,7 @@ export default class FlyingShape extends cc.Component {
             default:
                 break;
         }
-        this.node.rotation = -this.Angle;
+        this.ShowNode.rotation = -this.Angle;
         this.dissControl = this.node.getComponent(Dissipation);
     }
 
@@ -117,26 +119,26 @@ export default class FlyingShape extends cc.Component {
             if(this.dissControl.getAdmission())
             {
                 this.subMoveDistence += Math.abs(this.Speed) * dt;
-            }
-            switch(this.Flightpath)
-            {
-                case lib.defConfig.Flightpath.straight:
-                    this.flystraight(dt);
-                    break;
-                case lib.defConfig.Flightpath.curve:
-                    this.flycurve(dt);
-                    break;
-                case lib.defConfig.Flightpath.screw:
-                    this.flyscrew(dt);
-                    break;
-                case lib.defConfig.Flightpath.turn:
-                    this.flyturn(dt);
-                    break;
-                case lib.defConfig.Flightpath.back:
-                    this.flyback(dt);
-                    break;
-                default:
-                    break;
+                switch(this.Flightpath)
+                {
+                    case lib.defConfig.Flightpath.straight:
+                        this.flystraight(dt);
+                        break;
+                    case lib.defConfig.Flightpath.curve:
+                        this.flycurve(dt);
+                        break;
+                    case lib.defConfig.Flightpath.screw:
+                        this.flyscrew(dt);
+                        break;
+                    case lib.defConfig.Flightpath.turn:
+                        this.flyturn(dt);
+                        break;
+                    case lib.defConfig.Flightpath.back:
+                        this.flyback(dt);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
@@ -145,10 +147,19 @@ export default class FlyingShape extends cc.Component {
     getsubMoveDis(){
         return this.subMoveDistence;
     }
+
+    addAngle(angle: number){
+        this.Angle += angle;
+        this.ShowNode.rotation = -this.Angle;
+    }
     
     setAngle(angle: number){
         this.Angle = angle;
-        this.node.rotation = -this.Angle;
+        this.ShowNode.rotation = -this.Angle;
+    }
+
+    getRotation(){
+        return this.ShowNode.rotation;
     }
 
     //取得所有飞行轨迹参数
@@ -192,8 +203,10 @@ export default class FlyingShape extends cc.Component {
         {
             return;
         }
-        this.Angle -= this.deltangle * dt;
-        this.node.rotation = -this.Angle;
+        // this.Angle -= this.deltangle * dt;
+        // this.ShowNode.rotation = -this.Angle;
+        let angle = this.Angle - this.deltangle * dt;
+        this.setAngle(angle);
         this.subChangeAngle += this.deltangle * dt;
     }
 
@@ -226,7 +239,7 @@ export default class FlyingShape extends cc.Component {
             this.haveturn = true;
             this.Angle += this.TurnAngle;
             let action = cc.rotateBy(0.1,-this.TurnAngle);
-            this.node.runAction(action);
+            this.ShowNode.runAction(action);
         }
     }
     
@@ -241,7 +254,7 @@ export default class FlyingShape extends cc.Component {
             this.haveturn = true;
             this.Angle += 180;
             let action = cc.rotateBy(0.1,-180);
-            this.node.runAction(action);
+            this.ShowNode.runAction(action);
         }
     }
 

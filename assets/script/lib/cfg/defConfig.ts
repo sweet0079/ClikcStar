@@ -66,8 +66,8 @@ export const character = cc.Enum({
     division: -1,
     // 旋转
     rotate: -1,
-    // 翻转
-    flipping: -1,
+    // // 翻转
+    // flipping: -1,
     // 渐隐
     fadeout: -1,
     // 闪烁

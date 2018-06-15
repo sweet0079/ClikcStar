@@ -61,9 +61,9 @@ export default class Characteristic extends cc.Component {
             case lib.defConfig.character.rotate:
                 this.rotatechange();
                 break;
-            case lib.defConfig.character.flipping:
-                this.flippingchange();
-                break;
+            // case lib.defConfig.character.flipping:
+            //     this.flippingchange();
+            //     break;
             case lib.defConfig.character.fadeout:
                 this.fadeout();
                 break;
@@ -95,6 +95,7 @@ export default class Characteristic extends cc.Component {
                 && this.node.getComponent(Dissipation).type == lib.defConfig.dissipate.drop)
             {
                 this.node.stopAllActions();
+                this.flyControl.ShowNode.stopAllActions();
             }
         }
     }
@@ -148,18 +149,16 @@ export default class Characteristic extends cc.Component {
     divisionchange(){
         let shape1 = cc.instantiate(this.shapeprefeb);
         shape1.getComponent(FlyingShape).setparameter(this.flyControl.getparameter());
-        shape1.getComponent(FlyingShape).Angle += 45;
+        shape1.getComponent(FlyingShape).addAngle(45);
         shape1.getComponent(Dissipation).setparameter(this.dissControl.getparameter());
         shape1.position = this.node.position;
-        shape1.rotation = this.node.rotation;
         shape1.scale = this.node.scale;
         shape1.parent = this.node.parent;
         let shape2 = cc.instantiate(this.shapeprefeb);
         shape2.getComponent(FlyingShape).setparameter(this.flyControl.getparameter());
-        shape2.getComponent(FlyingShape).Angle -= 45;
+        shape2.getComponent(FlyingShape).addAngle(-45);
         shape2.getComponent(Dissipation).setparameter(this.dissControl.getparameter());
         shape2.position = this.node.position;
-        shape2.rotation = this.node.rotation;
         shape2.scale = this.node.scale;
         shape2.parent = this.node.parent;
         this.node.destroy();
@@ -170,7 +169,7 @@ export default class Characteristic extends cc.Component {
     {
         let action = cc.rotateBy(360 / this.rotateSpeed,360);
         let act = cc.repeatForever(action);
-        this.node.runAction(act);
+        this.flyControl.ShowNode.runAction(act);
     }
 
     //翻转
@@ -186,7 +185,7 @@ export default class Characteristic extends cc.Component {
         let action = cc.sequence(a1, a2, a3, a4, a5);
         let seq = cc.sequence(cc.delayTime(this.flipFrequency),action);
         let rep = cc.repeatForever(seq);
-        this.node.runAction(rep);
+        this.flyControl.ShowNode.runAction(rep);
     }
 
     //渐隐

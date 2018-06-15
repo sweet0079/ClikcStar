@@ -36,6 +36,4 @@ export default class ClickEnd extends cc.Component {
     private _clickStart(){
         lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement);
     }
-
-    
 }
