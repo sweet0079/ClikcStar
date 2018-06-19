@@ -11,7 +11,8 @@ export default class ClickControl extends cc.Component {
     @property(UIControl) UIcon: UIControl = null;
 
     //----- 属性声明 -----//
-    private ScoreArr :Array<_kits.ClickControl.click> = [];
+    private ScoreArr :Array<number> = [];
+    
     //----- 生命周期 -----//
 
     // onLoad () {}
@@ -23,26 +24,26 @@ export default class ClickControl extends cc.Component {
 
     // update (dt) {}
     //----- 私有方法 -----//
-    private add(clickscore: _kits.ClickControl.click){
-        if(this.ScoreArr.length == 0)
-        {
+    private add(clickscore:number){
+        // if(this.ScoreArr.length == 0)
+        // {
             this.ScoreArr.push(clickscore);
-        }
-        else
-        {
-            for(let i = 0; i < this.ScoreArr.length; i++)
-            {
-                if(clickscore.node == this.ScoreArr[i].node)
-                {
-                    console.log("return");
-                    return;
-                }
-                else if(i == this.ScoreArr.length - 1)
-                {
-                    this.ScoreArr.push(clickscore);
-                }
-            }
-        }
+        // }
+        // else
+        // {
+        //     for(let i = 0; i < this.ScoreArr.length; i++)
+        //     {
+        //         if(clickscore.node == this.ScoreArr[i].node)
+        //         {
+        //             console.log("return");
+        //             return;
+        //         }
+        //         else if(i == this.ScoreArr.length - 1)
+        //         {
+        //             this.ScoreArr.push(clickscore);
+        //         }
+        //     }
+        // }
     }
 
     private settlement(){
@@ -53,16 +54,16 @@ export default class ClickControl extends cc.Component {
         }
         else if(this.ScoreArr.length == 1)
         {
-            console.log("length == 1" + " score =" + this.ScoreArr[0].score);
-            this.UIcon.addScore(this.ScoreArr[0].score);
+            console.log("length == 1" + " score =" + this.ScoreArr[0]);
+            this.UIcon.addScore(this.ScoreArr[0]);
         }
         else
         {
             let score = 0;
             for(let i = 0; i < this.ScoreArr.length; i++)
             {
-                score += this.ScoreArr[i].score;
-                console.log("i == " + i + "  score ==" + this.ScoreArr[i].score);
+                score += this.ScoreArr[i];
+                console.log("i == " + i + "  score ==" + this.ScoreArr[i]);
             }
             score *= 2;
             console.log("length == " + this.ScoreArr.length + " score =" + score);

@@ -92,6 +92,27 @@ export const dissipate = cc.Enum({
     // 分解
     decompose: -1,
 });
+/** 形状外形枚举 */
+export const shape = cc.Enum({
+    // 三角形
+    triangle: -1,
+    // 五角星
+    star: -1,
+    // 圆形
+    circular: -1,
+    // 平行四边形
+    parallelogram: -1,
+    // 方形
+    square: -1,
+    // 梯形
+    trapezoid: -1,
+    // 椭圆
+    ellipse: -1,
+    // 菱形
+    diamond: -1,
+    // 长方形
+    rectangle: -1,
+});
 //设计时中间用于点击区域的宽
 export const DesignPlayWidth = 1080;
 //设计时中间用于点击区域的高

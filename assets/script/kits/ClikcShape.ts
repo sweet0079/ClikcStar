@@ -2,6 +2,7 @@
 import * as lib from '../lib/lib'
 import FlyingShape from './FlyingShape'
 import ClickEndControl from './ClickEnd'
+import ShapeControl from './ShapeControl'
 
 const {ccclass, property} = cc._decorator;
 
@@ -14,14 +15,16 @@ export default class ClickShape extends cc.Component {
     //----- 属性声明 -----//
     //飞行轨迹控制器
     private flyControl: FlyingShape = null;
-    //因为点击穿透和冒泡不能单独打开或关闭，导致点击2个以上形状是，触摸事件可能重复触发，因为加入点击锁（还是会重复触发）
+    //形状外形控制器
+    private shapeControl: ShapeControl = null;
+    //因为点击穿透和冒泡不能单独打开或关闭，导致点击2个以上形状是，触摸事件可能重复触发，因此加入点击锁
     private clickLock: boolean = false;
     //----- 生命周期 -----//
 
     onLoad () {
         this.flyControl = this.node.getComponent(FlyingShape);
-        //因为点击穿透和冒泡不能单独打开或关闭，导致点击2个以上形状是，触摸事件可能重复触发，因为使用once监听（还是会重复触发）
-        this.flyControl.ShowNode.once(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
+        this.shapeControl = this.node.getComponent(ShapeControl);
+        this.flyControl.ShowNode.on(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
             this.ClickSatr(event);
         });
         // this.node.on('rotation-changed', this._onNodeRotationChanged, this);
@@ -38,9 +41,9 @@ export default class ClickShape extends cc.Component {
 
     // update (dt) {}
     onEnable(){
-        // this.flyControl.ShowNode.off(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
-        //     this.ClickSatr(event);
-        // });
+        this.flyControl.ShowNode.off(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
+            this.ClickSatr(event);
+        });
     }
     // onDestroy(){
     //     this.flyControl.ShowNode.off(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
@@ -74,29 +77,33 @@ export default class ClickShape extends cc.Component {
         // console.log("getLocationx = " + event.getLocation().x + "  getLocationy = " + event.getLocation().y);
         // console.log("this.node.x = " + this.node.convertToWorldSpaceAR(cc.Vec2.ZERO).x + "  this.node.y = " + this.node.convertToWorldSpaceAR(cc.Vec2.ZERO).y);
         // console.log("x = " + touchx + "  y =" + touchy);
-        if(Math.abs(touchx) < this.highScoreWidth * this.node.scaleX 
-        && Math.abs(touchy) < this.highScoreWidth * this.node.scaleY)
+        if(!this.shapeControl.getIsClickShape(touchx,touchy))
         {
-            console.log("high score");
+            return;
+        }
+        if(Math.abs(touchx) < this.highScoreWidth / 2 * this.node.scaleX 
+        && Math.abs(touchy) < this.highScoreWidth / 2 * this.node.scaleY)
+        {
+            //console.log("high score");
             let score: number = 100;
-            let click:_kits.ClickControl.click = {
-                score: score,
-                node: this.node,
-            }
-            lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,click);
+            // let click:_kits.ClickControl.click = {
+            //     score: score,
+            //     node: this.node,
+            // }
+            lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
         }
         else
         {
-            console.log("low score");
+            //console.log("low score");
             let score: number = 50;
-            let click:_kits.ClickControl.click = {
-                score: score,
-                node: this.node,
-            }
-            lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,click);
+            // let click:_kits.ClickControl.click = {
+            //     score: score,
+            //     node: this.node,
+            // }
+            lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
         }
         this.clickLock = true;
         this.node.destroy();
-        console.log("x = " + this.node.getPositionX() + "  Y = " + this.node.getPositionY());
+        //console.log("touchx = " + touchx + "  touchy = " + touchy);
     }
 }
