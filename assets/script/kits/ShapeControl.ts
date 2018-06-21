@@ -20,16 +20,19 @@ export default class ShapeControl extends cc.Component {
     // onLoad () {}
 
     start () {
-        //暂时写在这里，应该写到birthpoint中
-        let temp = parseInt((cc.random0To1() * (lib.defConfig.shape.rectangle + 1)).toString());
-        this.type = temp;
         this.flyControl = this.node.getComponent(FlyingShape);
-        this.setShape(this.type);
     }
 
     // update (dt) {}
     //----- 公有方法 -----//
+    randomShape(){
+        let temp = parseInt((cc.random0To1() * (lib.defConfig.shape.rectangle + 1)).toString());
+        this.type = temp;
+        this.setShape(this.type);
+    }
+
     setShape(type:number){
+        this.flyControl = this.node.getComponent(FlyingShape);
         let calNode = this.flyControl.ShowNode;
         this.type = type;
         calNode.getComponent(cc.Sprite).spriteFrame = this.SpriteFrameArr[this.type];

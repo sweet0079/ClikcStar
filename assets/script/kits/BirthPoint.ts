@@ -3,12 +3,13 @@ import * as lib from '../lib/lib'
 import FlyingShape from './FlyingShape'
 import characteristic from './Characteristic'
 import disspation from './Disspation'
+import shapeControl from './ShapeControl'
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class BirthPoint extends cc.Component {
-
+    //----- 编辑器属性 -----//
     /** 出生点所在位置 */
     @property({tooltip:"出生点所在位置", type: lib.defConfig.birthpoint }) birthpos = lib.defConfig.birthpoint.left;
     //飞行轨迹参数
@@ -45,28 +46,61 @@ export default class BirthPoint extends cc.Component {
     /** 形状的父节点 */
     @property(cc.Node) shapeParNode: cc.Node = null;
 
+    //----- 属性声明 -----//
+    //进入屏幕前的飞行角
+    private InitialAngle = 0;
+    //----- 生命周期 -----//
     // onLoad () {}
 
     start () {
-            this.schedule(()=>{
-                let temp = cc.random0To1() * 100;
-                if(temp < 20)
-                {
-                    this.createRandomShape();
-                }
-                // if(this.birthpos == lib.defConfig.birthpoint.lefttop)
-                // {
-                //     this.createRandomShape();
-                // }
-            },5);
+            // this.schedule(()=>{
+            //     let temp = cc.random0To1() * 100;
+            //     if(temp < 20)
+            //     {
+            //         this.createRandomShape();
+            //     }
+            //     // if(this.birthpos == lib.defConfig.birthpoint.lefttop)
+            //     // {
+            //     //     this.createRandomShape();
+            //     // }
+            // },5);
+        switch(this.birthpos)
+        {
+            case lib.defConfig.birthpoint.leftbottom:
+                this.InitialAngle = 45;
+                break;
+            case lib.defConfig.birthpoint.left:
+                this.InitialAngle = 0;
+                break;
+            case lib.defConfig.birthpoint.lefttop:
+                this.InitialAngle = -45;
+                break;
+            case lib.defConfig.birthpoint.top:
+                this.InitialAngle = -90;
+                break;
+            case lib.defConfig.birthpoint.righttop:
+                this.InitialAngle = 45;
+                break;
+            case lib.defConfig.birthpoint.right:
+                this.InitialAngle = 0;
+                break;
+            case lib.defConfig.birthpoint.rightbottom:
+                this.InitialAngle = -45;
+                break;
+            case lib.defConfig.birthpoint.bottom:
+                this.InitialAngle = 90;
+                break;
+            default:
+                this.InitialAngle = 0;
+                break;
+        }
     }
 
     // update (dt) {}
-    //----- 私有方法 -----//
+
+    //----- 公有方法 -----//
     //创建随机形状
     createRandomShape(){
-        let shape = cc.instantiate(this.shapeprefeb);
-        shape.position = this.node.position;
         //随机形状的飞行轨迹组件参数
         //取得一个随机速度
         let speed = cc.random0To1() * (this.SpeedUpperLimit - this.SpeedLowerLimit) + this.SpeedLowerLimit;
@@ -92,6 +126,13 @@ export default class BirthPoint extends cc.Component {
                 angle = -angle;
             }
         }
+        this.createShape(speed,angle,trajectory,deltangle,screwspeed,screwAngleSpeed,TurnThreshold,TurnAngle);
+    }
+
+    //----- 私有方法 -----//
+    private createShape(speed,angle,trajectory,deltangle,screwspeed,screwAngleSpeed,TurnThreshold,TurnAngle){
+        let shape = cc.instantiate(this.shapeprefeb);
+        shape.position = this.node.position;
         let shapepath = shape.getComponent(FlyingShape);
         //根据出生点所在位置改变形状出生位置
         switch(this.birthpos)
@@ -151,6 +192,7 @@ export default class BirthPoint extends cc.Component {
                 }
                 break;
         }
+        shapepath.setInitialAngle(this.InitialAngle);
         shapepath.Speed = speed;
         shapepath.Angle = angle;
         shapepath.Flightpath = trajectory;
@@ -165,6 +207,8 @@ export default class BirthPoint extends cc.Component {
         //随机形状的消散参数
         let shapediss = shape.getComponent(disspation);
         shapediss.type = parseInt((cc.random0To1() * (lib.defConfig.dissipate.decompose + 1)).toString());
+        //随机形状的外形参数
+        shape.getComponent(shapeControl).randomShape();
         //赋值父节点
         shape.parent = this.shapeParNode;
     }

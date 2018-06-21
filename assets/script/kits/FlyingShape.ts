@@ -31,6 +31,8 @@ export default class FlyingShape extends cc.Component {
     /** 飞行轨迹枚举 */
     static readonly Flightpath = lib.defConfig.Flightpath;
     //----- 属性声明 -----//
+    //进入屏幕前的飞行角
+    private InitialAngle:number = 0;
     //螺旋模式初始螺旋角度
     private screwAngle:number = 90;
     //长曲线模式以改变角度
@@ -114,10 +116,11 @@ export default class FlyingShape extends cc.Component {
         //还未触发离开屏幕方法，走正常的飞行轨迹
         else
         {
-            this.node.x += this.Speed * dt * Math.cos(this.Angle * lib.defConfig.coefficient);
-            this.node.y += this.Speed * dt * Math.sin(this.Angle * lib.defConfig.coefficient);
+            //如果已经整体进入点击区域
             if(this.dissControl.getAdmission())
             {
+                this.node.x += this.Speed * dt * Math.cos(this.Angle * lib.defConfig.coefficient);
+                this.node.y += this.Speed * dt * Math.sin(this.Angle * lib.defConfig.coefficient);
                 this.subMoveDistence += Math.abs(this.Speed) * dt;
                 switch(this.Flightpath)
                 {
@@ -140,9 +143,18 @@ export default class FlyingShape extends cc.Component {
                         break;
                 }
             }
+            else
+            {
+                this.node.x += this.Speed * dt * Math.cos(this.InitialAngle * lib.defConfig.coefficient);
+                this.node.y += this.Speed * dt * Math.sin(this.InitialAngle * lib.defConfig.coefficient);
+            }
         }
     }
     //----- 公有方法 -----//
+    setInitialAngle(num){
+        this.InitialAngle = num;
+    }
+
     //取得目前移动的总路程
     getsubMoveDis(){
         return this.subMoveDistence;

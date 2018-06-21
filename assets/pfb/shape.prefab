@@ -192,7 +192,7 @@
     "_enabled": true,
     "type": 0,
     "ContinueRebound": true,
-    "MiniDissDistance": 500
+    "MiniDissDistance": 800
   },
   {
     "__type__": "27422WfFDtKYZyD8QxvIlbR",
