@@ -151,6 +151,11 @@ export default class FlyingShape extends cc.Component {
         }
     }
     //----- 公有方法 -----//
+    stopMove(){
+        this.Speed = 0;
+        this.Flightpath = lib.defConfig.Flightpath.straight;
+    }
+
     setInitialAngle(num){
         this.InitialAngle = num;
     }

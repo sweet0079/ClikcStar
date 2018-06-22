@@ -1,6 +1,7 @@
 /** 用于控制形状的特性 */
 import * as lib from '../lib/lib'
 import FlyingShape from './FlyingShape'
+import characteristic from './Characteristic'
 
 const {ccclass, property} = cc._decorator;
 
@@ -11,20 +12,42 @@ export default class ShapeControl extends cc.Component {
     @property({tooltip:"形状",  type: lib.defConfig.shape }) type = lib.defConfig.shape.triangle;
     /** 外形素材数组 */
     @property({tooltip:"外形素材数组", type: [cc.SpriteFrame] }) SpriteFrameArr:Array<cc.SpriteFrame> = [];
+    /** 停滞时间 */
+    @property({tooltip:"停滞时间",  type: cc.Float }) detained:number = 5;
+    
 
     //----- 属性声明 -----//
     //飞行轨迹控制器
     private flyControl: FlyingShape = null;
+    //已滞留时间
+    private haveDetained: number = 0;
     //----- 生命周期 -----//
 
     // onLoad () {}
 
     start () {
         this.flyControl = this.node.getComponent(FlyingShape);
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.ReStart,"reStart",this);
     }
 
     // update (dt) {}
+
+    onDestroy(){
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.ReStart,"reStart",this);
+    }
     //----- 公有方法 -----//
+    startDetained(){
+        
+    }
+
+    destroyAni(){
+        this.stopMoveAndAct();
+        this.flyControl.ShowNode.getComponent(cc.Animation).once('finished',()=>{
+            this.node.destroy();
+        },this);
+        this.flyControl.ShowNode.getComponent(cc.Animation).play();
+    }
+
     randomShape(){
         let temp = parseInt((cc.random0To1() * (lib.defConfig.shape.rectangle + 1)).toString());
         this.type = temp;
@@ -73,6 +96,15 @@ export default class ShapeControl extends cc.Component {
         return this._IsClickShape(x,y);
     }
     //----- 私有方法 -----//
+    private stopMoveAndAct(){
+        this.flyControl.stopMove();
+        this.node.getComponent(characteristic).stopAct();
+    }
+
+    private reStart(){
+        this.node.destroy();
+    }
+
     private _IsClickShape(x:number,y:number){
         return this._DefauleIsClickShape(x,y);
     }

@@ -22,9 +22,6 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 6
-      },
-      {
         "__id__": 7
       },
       {
@@ -38,10 +35,13 @@
       },
       {
         "__id__": 11
+      },
+      {
+        "__id__": 12
       }
     ],
     "_prefab": {
-      "__id__": 12
+      "__id__": 13
     },
     "_id": "",
     "_opacity": 255,
@@ -95,10 +95,13 @@
       },
       {
         "__id__": 4
+      },
+      {
+        "__id__": 5
       }
     ],
     "_prefab": {
-      "__id__": 5
+      "__id__": 6
     },
     "_id": "",
     "_opacity": 255,
@@ -117,13 +120,13 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 196,
-      "height": 185
+      "width": 247,
+      "height": 247
     },
     "_rotationX": 0,
     "_rotationY": 0,
-    "_scaleX": 1,
-    "_scaleY": 1,
+    "_scaleX": 0.8,
+    "_scaleY": 0.8,
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -145,7 +148,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "7f900f5b-aea7-401f-b084-61f2ddac0f55"
+      "__uuid__": "cd0685c1-6149-4585-98ae-1e78f4ad1303"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -170,6 +173,24 @@
       "__id__": 2
     },
     "_enabled": true
+  },
+  {
+    "__type__": "cc.Animation",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "_defaultClip": {
+      "__uuid__": "b36e5fcd-d55a-44e1-8d4b-bdf6603077bb"
+    },
+    "_clips": [
+      {
+        "__uuid__": "b36e5fcd-d55a-44e1-8d4b-bdf6603077bb"
+      }
+    ],
+    "playOnLoad": false
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -243,7 +264,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "highScoreWidth": 30
+    "highScoreWidth": 100
   },
   {
     "__type__": "351a9+8GqZE8rhx0Vm149r5",
@@ -253,36 +274,37 @@
       "__id__": 1
     },
     "_enabled": true,
-    "type": 0,
+    "type": 1,
     "SpriteFrameArr": [
       {
-        "__uuid__": "7f900f5b-aea7-401f-b084-61f2ddac0f55"
+        "__uuid__": "cd0685c1-6149-4585-98ae-1e78f4ad1303"
       },
       {
-        "__uuid__": "834c9d79-d808-4247-bbef-dc75e9ee625d"
+        "__uuid__": "6826a998-d2ee-4b33-a103-9eac4126c947"
       },
       {
-        "__uuid__": "2f50caee-9ecb-4d01-b783-901cbfe6ed94"
+        "__uuid__": "aa655efc-81cd-43e8-a58e-ecdb9fa256fe"
       },
       {
-        "__uuid__": "66259697-fc0c-4f00-a32a-d56839aa1802"
+        "__uuid__": "51769ac6-cd6a-4ad1-babd-f98111411aa3"
       },
       {
-        "__uuid__": "9e604539-2b2e-4ae0-ada7-ddaab9e0b076"
+        "__uuid__": "aafadde7-9ae8-4164-ab4f-4327e820ebbf"
       },
       {
-        "__uuid__": "19fd0281-a036-4c60-8396-36a0f26e1685"
+        "__uuid__": "8502aed5-35b4-4e02-aef9-3134d567cb51"
       },
       {
-        "__uuid__": "bccb517c-635e-41de-92ba-1cdb774f569f"
+        "__uuid__": "4b455713-49dd-481b-9838-f3af04bda86c"
       },
       {
-        "__uuid__": "91e1244f-0cae-41c5-94d2-baeca4b4b405"
+        "__uuid__": "14cfbcff-ea61-4eea-b434-574770024c06"
       },
       {
-        "__uuid__": "bebbbf62-7517-476d-b73a-8d327ec8ea2b"
+        "__uuid__": "e154188b-e30c-4786-8081-0d0e69d3b108"
       }
-    ]
+    ],
+    "detained": 5
   },
   {
     "__type__": "cc.MotionStreak",

@@ -81,8 +81,8 @@ export default class ClickShape extends cc.Component {
         {
             return;
         }
-        if(Math.abs(touchx) < this.highScoreWidth / 2 * this.node.scaleX 
-        && Math.abs(touchy) < this.highScoreWidth / 2 * this.node.scaleY)
+        if(Math.abs(touchx) < this.highScoreWidth / 2 * this.node.scaleX * this.flyControl.ShowNode.scaleX
+        && Math.abs(touchy) < this.highScoreWidth / 2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
         {
             //console.log("high score");
             let score: number = 100;
@@ -103,7 +103,7 @@ export default class ClickShape extends cc.Component {
             lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
         }
         this.clickLock = true;
-        this.node.destroy();
+        this.shapeControl.destroyAni();
         //console.log("touchx = " + touchx + "  touchy = " + touchy);
     }
 }

@@ -49,6 +49,8 @@ export default class BirthPoint extends cc.Component {
     //----- 属性声明 -----//
     //进入屏幕前的飞行角
     private InitialAngle = 0;
+    //速度倍率
+    private SpeedScaleNum = 0;
     //----- 生命周期 -----//
     // onLoad () {}
 
@@ -64,6 +66,7 @@ export default class BirthPoint extends cc.Component {
             //     //     this.createRandomShape();
             //     // }
             // },5);
+        //根据出生点调整形状的初始角
         switch(this.birthpos)
         {
             case lib.defConfig.birthpoint.leftbottom:
@@ -99,6 +102,23 @@ export default class BirthPoint extends cc.Component {
     // update (dt) {}
 
     //----- 公有方法 -----//
+    setSpeed(scale:number){
+        if(this.SpeedScaleNum != scale)
+        {
+            this.SpeedScaleNum = scale;
+            this.SpeedLowerLimit *= this.SpeedScaleNum;
+            this.SpeedUpperLimit *= this.SpeedScaleNum;
+        }
+    }
+
+    resetSpeed(){
+        if(this.SpeedScaleNum != 0)
+        {
+            this.SpeedLowerLimit /= this.SpeedScaleNum;
+            this.SpeedUpperLimit /= this.SpeedScaleNum;
+        }
+    }
+
     //创建随机形状
     createRandomShape(){
         //随机形状的飞行轨迹组件参数

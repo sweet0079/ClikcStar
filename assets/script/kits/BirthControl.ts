@@ -11,6 +11,8 @@ export default class BirthControl extends cc.Component {
     @property({tooltip:"出生间隔数组", type: [cc.Float]}) BirthInterval: Array<number> = [];
     /** 出生个数数组 */
     @property({tooltip:"出生个数数组", type: [cc.Float]}) BirthNumber: Array<number> = [];
+    /** 出生速度数组 */
+    @property({tooltip:"出生速度数组", type: [cc.Float]}) BirthSpeed: Array<number> = [];
     /** 出生点数组 */
     @property([birthPointControl]) birthPoints: Array<birthPointControl> = [];
 
@@ -21,11 +23,26 @@ export default class BirthControl extends cc.Component {
     // onLoad () {}
 
     start () {
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.ReStart,"reStart",this);
         this.startClock();
+    }
+
+    onDestroy(){
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.ReStart,"reStart",this);
     }
 
     // update (dt) {}
     //----- 私有方法 -----//
+    private reStart(){
+        this.unscheduleAllCallbacks();
+        this.time = 0;
+        this.interval = 0;
+        for(let i = 0; i < this.birthPoints.length; i++)
+        {
+            this.birthPoints[i].resetSpeed();
+        }
+        this.startClock();
+    }
     private startClock(){
         this.schedule(()=>{
             this.time += 0.5;
@@ -36,17 +53,21 @@ export default class BirthControl extends cc.Component {
     private checkCreate(){
         this.interval += 0.5;
         let SerialNumber:number = parseInt((this.time / 10).toString());
-        console.log("this.time = " + this.time);
-        console.log("this.interval = " + this.interval);
-        console.log("SerialNumber = " + SerialNumber);
-        if(SerialNumber > this.BirthInterval.length
-        || SerialNumber > this.BirthNumber.length)
+        // console.log("this.time = " + this.time);
+        // console.log("this.interval = " + this.interval);
+        // console.log("SerialNumber = " + SerialNumber);
+        if(SerialNumber >= this.BirthInterval.length
+        || SerialNumber >= this.BirthNumber.length)
         {
             SerialNumber = this.BirthNumber.length - 1;
         }
         if(this.interval >= this.BirthInterval[SerialNumber])
         {
             this.interval = 0;
+            for(let i = 0; i < this.birthPoints.length; i++)
+            {
+                this.birthPoints[i].setSpeed(this.BirthSpeed[SerialNumber]);
+            }
             this.BirthPointsCreate(this.BirthNumber[SerialNumber]);
         }
     }
@@ -79,7 +100,7 @@ export default class BirthControl extends cc.Component {
                 tempArr.push(temp);
             }
         }
-        console.log(tempArr);
+        //console.log(tempArr);
         return tempArr;
     }
 

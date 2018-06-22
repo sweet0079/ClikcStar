@@ -20,10 +20,14 @@ export default class ClickControl extends cc.Component {
     start () {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.clickStart,"add",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.Settlement,"settlement",this);
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.ReStart,"reStart",this);
     }
-
     // update (dt) {}
     //----- 私有方法 -----//
+    private reStart(){
+        this.ScoreArr = [];
+    }
+
     private add(clickscore:number){
         // if(this.ScoreArr.length == 0)
         // {

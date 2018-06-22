@@ -1,6 +1,7 @@
 /** 用于控制形状的消散 */
 import * as lib from '../lib/lib'
 import FlyingShape from './FlyingShape'
+import shapeControl from './ShapeControl'
 
 const {ccclass, property} = cc._decorator;
 
@@ -37,10 +38,10 @@ export default class Dissipation extends cc.Component {
         //离开屏幕后进行销毁判断
         if(this.haveLeave)
         {
-            if(this.node.position.x >= lib.defConfig.DesignPlayWidth/2 + this.node.width/2 * this.node.scaleX - this.flyControl.Speed * dt
-            || this.node.position.x <= -lib.defConfig.DesignPlayWidth/2 - this.node.width/2 * this.node.scaleX + this.flyControl.Speed * dt
-            || this.node.position.y >= lib.defConfig.DesignPlayHeight/2 + this.node.height/2 * this.node.scaleY - this.flyControl.Speed * dt
-            || this.node.position.y <= -lib.defConfig.DesignPlayHeight/2 - this.node.height/2 * this.node.scaleY + this.flyControl.Speed * dt)
+            if(this.node.position.x >= lib.defConfig.DesignPlayWidth/2 + this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX - this.flyControl.Speed * dt
+            || this.node.position.x <= -lib.defConfig.DesignPlayWidth/2 - this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX + this.flyControl.Speed * dt
+            || this.node.position.y >= lib.defConfig.DesignPlayHeight/2 + this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY - this.flyControl.Speed * dt
+            || this.node.position.y <= -lib.defConfig.DesignPlayHeight/2 - this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY + this.flyControl.Speed * dt)
             {
                 this.node.destroy();
             }
@@ -49,10 +50,10 @@ export default class Dissipation extends cc.Component {
         //判断是否进入屏幕
         if(!this.haveAdmission)
         {
-            if(this.node.position.x <= lib.defConfig.DesignPlayWidth/2 - this.node.width/2 * this.node.scaleX
-            && this.node.position.x >= -lib.defConfig.DesignPlayWidth/2 + this.node.width/2 * this.node.scaleX
-            && this.node.position.y <= lib.defConfig.DesignPlayHeight/2 - this.node.height/2 * this.node.scaleY
-            && this.node.position.y >= -lib.defConfig.DesignPlayHeight/2 + this.node.height/2 * this.node.scaleY)
+            if(this.node.position.x <= lib.defConfig.DesignPlayWidth/2 - this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX
+            && this.node.position.x >= -lib.defConfig.DesignPlayWidth/2 + this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX
+            && this.node.position.y <= lib.defConfig.DesignPlayHeight/2 - this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY
+            && this.node.position.y >= -lib.defConfig.DesignPlayHeight/2 + this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
             {
                 this.haveAdmission = true;
             } 
@@ -64,10 +65,10 @@ export default class Dissipation extends cc.Component {
             // || this.node.position.x <= -lib.defConfig.DesignPlayWidth/2 + this.node.width/2 * this.node.scaleX - this.flyControl.Speed * dt
             // || this.node.position.y >= lib.defConfig.DesignPlayHeight/2 - this.node.height/2 * this.node.scaleY + this.flyControl.Speed * dt
             // || this.node.position.y <= -lib.defConfig.DesignPlayHeight/2 + this.node.height/2 * this.node.scaleY - this.flyControl.Speed * dt)
-            if(this.node.position.x >= lib.defConfig.DesignPlayWidth/2 - this.node.width/2 * this.node.scaleX
-            || this.node.position.x <= -lib.defConfig.DesignPlayWidth/2 + this.node.width/2 * this.node.scaleX
-            || this.node.position.y >= lib.defConfig.DesignPlayHeight/2 - this.node.height/2 * this.node.scaleY
-            || this.node.position.y <= -lib.defConfig.DesignPlayHeight/2 + this.node.height/2 * this.node.scaleY)
+            if(this.node.position.x >= lib.defConfig.DesignPlayWidth/2 - this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX
+            || this.node.position.x <= -lib.defConfig.DesignPlayWidth/2 + this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX
+            || this.node.position.y >= lib.defConfig.DesignPlayHeight/2 - this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY
+            || this.node.position.y <= -lib.defConfig.DesignPlayHeight/2 + this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
             {
                 if(this.flyControl.getsubMoveDis() < this.MiniDissDistance)
                 {
@@ -87,34 +88,34 @@ export default class Dissipation extends cc.Component {
             switch(this.lastRebound)
             {
                 case lib.defConfig.lastReboundPos.other:
-                    if(this.node.position.x <= lib.defConfig.DesignPlayWidth/2 - this.node.width/2 * this.node.scaleX
-                    && this.node.position.x >= -lib.defConfig.DesignPlayWidth/2 + this.node.width/2 * this.node.scaleX
-                    && this.node.position.y <= lib.defConfig.DesignPlayHeight/2 - this.node.height/2 * this.node.scaleY
-                    && this.node.position.y >= -lib.defConfig.DesignPlayHeight/2 + this.node.height/2 * this.node.scaleY)
+                    if(this.node.position.x <= lib.defConfig.DesignPlayWidth/2 - this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX
+                    && this.node.position.x >= -lib.defConfig.DesignPlayWidth/2 + this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX
+                    && this.node.position.y <= lib.defConfig.DesignPlayHeight/2 - this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY
+                    && this.node.position.y >= -lib.defConfig.DesignPlayHeight/2 + this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
                     {
                         this.reboundFlag = false;
                     } 
                     break;
                 case lib.defConfig.lastReboundPos.top:
-                    if(this.node.position.y <= lib.defConfig.DesignPlayHeight/2 - this.node.height/2 * this.node.scaleY)
+                    if(this.node.position.y <= lib.defConfig.DesignPlayHeight/2 - this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
                     {
                         this.reboundFlag = false;
                     } 
                     break;
                 case lib.defConfig.lastReboundPos.bottom:
-                    if(this.node.position.y >= -lib.defConfig.DesignPlayHeight/2 + this.node.height/2 * this.node.scaleY)
+                    if(this.node.position.y >= -lib.defConfig.DesignPlayHeight/2 + this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
                     {
                         this.reboundFlag = false;
                     } 
                     break;
                 case lib.defConfig.lastReboundPos.left:
-                    if(this.node.position.x >= -lib.defConfig.DesignPlayWidth/2 + this.node.width/2 * this.node.scaleX)
+                    if(this.node.position.x >= -lib.defConfig.DesignPlayWidth/2 + this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX)
                     {
                         this.reboundFlag = false;
                     } 
                     break;
                 case lib.defConfig.lastReboundPos.right:
-                    if(this.node.position.x <= lib.defConfig.DesignPlayWidth/2 - this.node.width/2 * this.node.scaleX)
+                    if(this.node.position.x <= lib.defConfig.DesignPlayWidth/2 - this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX)
                     {
                         this.reboundFlag = false;
                     } 
@@ -168,6 +169,7 @@ export default class Dissipation extends cc.Component {
                 break;
             case lib.defConfig.dissipate.rebound:
                 this.rebounds();
+                //this.node.getComponent(shapeControl).start();
                 break;
             case lib.defConfig.dissipate.decompose:
                 break;
@@ -203,16 +205,16 @@ export default class Dissipation extends cc.Component {
         // console.log("下边边界 =" + (-lib.defConfig.DesignPlayHeight/2 + this.node.height/2 * this.node.scaleY));
         // console.log("自己坐标X = " + this.node.position.x + "  Y =" + this.node.position.y);
         //右边反弹
-        if(this.node.position.x >= lib.defConfig.DesignPlayWidth/2 - this.node.width/2 * this.node.scaleX)
+        if(this.node.position.x >= lib.defConfig.DesignPlayWidth/2 - this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX)
         {
             //右下角反弹
-            if(this.node.position.y <= -lib.defConfig.DesignPlayHeight/2 + this.node.height/2 * this.node.scaleY)
+            if(this.node.position.y <= -lib.defConfig.DesignPlayHeight/2 + this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
             {
                 this.lastRebound = lib.defConfig.lastReboundPos.other;
                 this.flyControl.setAngle(180 + this.flyControl.Angle);
             }
             //右上角反弹
-            else if(this.node.position.y >= lib.defConfig.DesignPlayHeight/2 - this.node.height/2 * this.node.scaleY)
+            else if(this.node.position.y >= lib.defConfig.DesignPlayHeight/2 - this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
             {
                 this.lastRebound = lib.defConfig.lastReboundPos.other;
                 this.flyControl.setAngle(180 + this.flyControl.Angle);
@@ -224,16 +226,16 @@ export default class Dissipation extends cc.Component {
             }
         }
         //左边反弹
-        else if(this.node.position.x <= -lib.defConfig.DesignPlayWidth/2 + this.node.width/2 * this.node.scaleX)
+        else if(this.node.position.x <= -lib.defConfig.DesignPlayWidth/2 + this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX)
         {
             //左下角反弹
-            if(this.node.position.y <= -lib.defConfig.DesignPlayHeight/2 + this.node.height/2 * this.node.scaleY)
+            if(this.node.position.y <= -lib.defConfig.DesignPlayHeight/2 + this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
             {
                 this.lastRebound = lib.defConfig.lastReboundPos.other;
                 this.flyControl.setAngle(180 + this.flyControl.Angle);
             }
             //左上角反弹
-            else if(this.node.position.y >= lib.defConfig.DesignPlayHeight/2 - this.node.height/2 * this.node.scaleY)
+            else if(this.node.position.y >= lib.defConfig.DesignPlayHeight/2 - this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
             {
                 this.lastRebound = lib.defConfig.lastReboundPos.other;
                 this.flyControl.setAngle(180 + this.flyControl.Angle);
@@ -245,16 +247,16 @@ export default class Dissipation extends cc.Component {
             }
         }
         //上边反弹
-        else if(this.node.position.y >= lib.defConfig.DesignPlayHeight/2 - this.node.height/2 * this.node.scaleY)
+        else if(this.node.position.y >= lib.defConfig.DesignPlayHeight/2 - this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
         {
             //右上角反弹
-            if(this.node.position.x >= lib.defConfig.DesignPlayWidth/2 - this.node.width/2 * this.node.scaleX)
+            if(this.node.position.x >= lib.defConfig.DesignPlayWidth/2 - this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX)
             {
                 this.lastRebound = lib.defConfig.lastReboundPos.other;
                 this.flyControl.setAngle(180 + this.flyControl.Angle);
             }
             //左上角反弹
-            else if(this.node.position.x <= -lib.defConfig.DesignPlayWidth/2 + this.node.width/2 * this.node.scaleX)
+            else if(this.node.position.x <= -lib.defConfig.DesignPlayWidth/2 + this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX)
             {
                 this.lastRebound = lib.defConfig.lastReboundPos.other;
                 this.flyControl.setAngle(180 + this.flyControl.Angle);
@@ -266,16 +268,16 @@ export default class Dissipation extends cc.Component {
             }
         }
         //下边反弹
-        else if(this.node.position.y <= -lib.defConfig.DesignPlayHeight/2 + this.node.height/2 * this.node.scaleY)
+        else if(this.node.position.y <= -lib.defConfig.DesignPlayHeight/2 + this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
         {
             //右下角反弹
-            if(this.node.position.x >= lib.defConfig.DesignPlayWidth/2 - this.node.width/2 * this.node.scaleX)
+            if(this.node.position.x >= lib.defConfig.DesignPlayWidth/2 - this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX)
             {
                 this.lastRebound = lib.defConfig.lastReboundPos.other;
                 this.flyControl.setAngle(180 + this.flyControl.Angle);
             }
             //左下角反弹
-            else if(this.node.position.x <= -lib.defConfig.DesignPlayWidth/2 + this.node.width/2 * this.node.scaleX)
+            else if(this.node.position.x <= -lib.defConfig.DesignPlayWidth/2 + this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX)
             {
                 this.lastRebound = lib.defConfig.lastReboundPos.other;
                 this.flyControl.setAngle(180 + this.flyControl.Angle);

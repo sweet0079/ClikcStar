@@ -99,10 +99,17 @@ export default class Characteristic extends cc.Component {
             }
         }
     }
-    
+    //----- 公有方法 -----//
+    stopAct(){
+        this.node.stopAllActions();
+        this.flyControl.ShowNode.stopAllActions();
+        this.flyControl.ShowNode.opacity = 255;
+        this.node.runAction(cc.fadeIn(0.05));
+        this.node.getComponent(Dissipation).type = lib.defConfig.dissipate.none;
+    }
     //----- 私有方法 -----//
     //改变大小
-    scalechange() {
+    private scalechange() {
         let action1 = cc.scaleBy(1,this.ScaleMultiple);
         let action2 = cc.scaleBy(1,1/this.ScaleMultiple);
         let seq = cc.sequence(action1,action2);
@@ -111,7 +118,7 @@ export default class Characteristic extends cc.Component {
     }
 
     //速度变化
-    speedchange(dt) {
+    private speedchange(dt) {
         //根据当前速度与目标速度的大小，改变速度
         if(Math.abs(this.flyControl.Speed) > this.targetSpeed)
         {
@@ -146,7 +153,7 @@ export default class Characteristic extends cc.Component {
     }   
 
     //分裂变化
-    divisionchange(){
+    private divisionchange(){
         let shape1 = cc.instantiate(this.shapeprefeb);
         shape1.getComponent(FlyingShape).setparameter(this.flyControl.getparameter());
         shape1.getComponent(FlyingShape).addAngle(45);
@@ -165,7 +172,7 @@ export default class Characteristic extends cc.Component {
     }
 
     //旋转
-    rotatechange()
+    private rotatechange()
     {
         let action = cc.rotateBy(360 / this.rotateSpeed,360);
         let act = cc.repeatForever(action);
@@ -173,7 +180,7 @@ export default class Characteristic extends cc.Component {
     }
 
     //翻转
-    flippingchange(){
+    private flippingchange(){
         const defscale = this.node.scale;
         let a1 = cc.skewTo(0.1, 0, 15);
         let a2 = cc.scaleTo(0.1, 0, defscale);
@@ -189,7 +196,7 @@ export default class Characteristic extends cc.Component {
     }
 
     //渐隐
-    fadeout(){
+    private fadeout(){
         let fout = cc.fadeOut(this.fadeFrequency);
         let fin = cc.fadeIn(this.fadeFrequency);
         let seq = cc.sequence(fout,cc.delayTime(0.25),fin,cc.delayTime(0.25));
@@ -198,7 +205,7 @@ export default class Characteristic extends cc.Component {
     }
 
     //闪烁
-    blink(){
+    private blink(){
         let act = cc.blink(this.blinkFrequency,1);
         let rep = cc.repeatForever(act);
         this.node.runAction(rep);

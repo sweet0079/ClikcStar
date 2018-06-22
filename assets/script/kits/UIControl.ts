@@ -21,6 +21,12 @@ export default class UIcontrol extends cc.Component {
     }
 
     // update (dt) {}
+    //----- 按钮回调 -----//
+    startGame(){
+        lib.msgEvent.getinstance().emit(lib.msgConfig.ReStart);
+        this.score = 0;
+        this.Socrelabel.string = this.score.toString();
+    }
     //----- 公有方法 -----//
     addScore(score:number){
         this._addScore(score);
