@@ -2,14 +2,14 @@
 export const Flightpath = cc.Enum({
     // 长直线
     straight: -1,
-    // 长曲线
-    curve: -1,
+    // // 长曲线
+    // curve: -1,
     // 螺旋
     screw: -1,
-    // 转向
-    turn: -1,
-    // 回退,
-    back: -1
+    // // 转向
+    // turn: -1,
+    // // 回退,
+    // back: -1
 });
 /** 出生点位置枚举 */
 export const birthpoint = cc.Enum({

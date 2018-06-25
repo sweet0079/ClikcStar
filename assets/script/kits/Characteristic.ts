@@ -2,6 +2,7 @@
 import * as lib from '../lib/lib'
 import FlyingShape from './FlyingShape'
 import Dissipation from './Disspation'
+import ShapeManager from './ShapeManager'
 
 const {ccclass, property} = cc._decorator;
 
@@ -168,6 +169,9 @@ export default class Characteristic extends cc.Component {
         shape2.position = this.node.position;
         shape2.scale = this.node.scale;
         shape2.parent = this.node.parent;
+        ShapeManager.getinstance().addShape(shape1);
+        ShapeManager.getinstance().addShape(shape2);
+        ShapeManager.getinstance().delShape(this.node);
         this.node.destroy();
     }
 

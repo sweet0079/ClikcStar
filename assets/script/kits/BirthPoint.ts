@@ -4,6 +4,7 @@ import FlyingShape from './FlyingShape'
 import characteristic from './Characteristic'
 import disspation from './Disspation'
 import shapeControl from './ShapeControl'
+import ShapeManager from './ShapeManager'
 
 const {ccclass, property} = cc._decorator;
 
@@ -55,17 +56,17 @@ export default class BirthPoint extends cc.Component {
     // onLoad () {}
 
     start () {
-            // this.schedule(()=>{
-            //     let temp = cc.random0To1() * 100;
-            //     if(temp < 20)
-            //     {
-            //         this.createRandomShape();
-            //     }
-            //     // if(this.birthpos == lib.defConfig.birthpoint.lefttop)
-            //     // {
-            //     //     this.createRandomShape();
-            //     // }
-            // },5);
+            this.schedule(()=>{
+                let temp = cc.random0To1() * 100;
+                // if(temp < 20)
+                // {
+                //     this.createRandomShape();
+                // }
+                if(this.birthpos == lib.defConfig.birthpoint.lefttop)
+                {
+                    this.createRandomShape();
+                }
+            },5);
         //根据出生点调整形状的初始角
         switch(this.birthpos)
         {
@@ -82,13 +83,13 @@ export default class BirthPoint extends cc.Component {
                 this.InitialAngle = -90;
                 break;
             case lib.defConfig.birthpoint.righttop:
-                this.InitialAngle = 45;
+                this.InitialAngle = -45;
                 break;
             case lib.defConfig.birthpoint.right:
                 this.InitialAngle = 0;
                 break;
             case lib.defConfig.birthpoint.rightbottom:
-                this.InitialAngle = -45;
+                this.InitialAngle = 45;
                 break;
             case lib.defConfig.birthpoint.bottom:
                 this.InitialAngle = 90;
@@ -127,7 +128,7 @@ export default class BirthPoint extends cc.Component {
         //取得一个随机入射角度
         let angle = cc.random0To1() * (this.AngleUpperLimit - this.AngleLowerLimit) + this.AngleLowerLimit;
         //取得一个随机飞行轨迹
-        let trajectory = parseInt((cc.random0To1() * (lib.defConfig.Flightpath.back + 1)).toString());
+        let trajectory = parseInt((cc.random0To1() * (lib.defConfig.Flightpath.screw + 1)).toString());
         //取得一个随机长曲线模式角速度加速度
         let deltangle = cc.random0To1() * (this.deltangleUpperLimit - this.deltangleLowerLimit) + this.deltangleLowerLimit;
         //取得一个随机形状的螺旋模式螺旋线速度
@@ -139,13 +140,13 @@ export default class BirthPoint extends cc.Component {
         //取得一个随机形状的转向模式转向角度
         let TurnAngle = cc.random0To1() * (this.TurnAngleUpperLimit - this.TurnAngleLowerLimit) + this.TurnAngleLowerLimit;
         //赋值
-        if(trajectory == lib.defConfig.Flightpath.curve)
-        {
-            if(angle < 0)
-            {
-                angle = -angle;
-            }
-        }
+        // if(trajectory == lib.defConfig.Flightpath.curve)
+        // {
+        //     if(angle < 0)
+        //     {
+        //         angle = -angle;
+        //     }
+        // }
         this.createShape(speed,angle,trajectory,deltangle,screwspeed,screwAngleSpeed,TurnThreshold,TurnAngle);
     }
 
@@ -229,6 +230,8 @@ export default class BirthPoint extends cc.Component {
         shapediss.type = parseInt((cc.random0To1() * (lib.defConfig.dissipate.decompose + 1)).toString());
         //随机形状的外形参数
         shape.getComponent(shapeControl).randomShape();
+        //添加至管理类
+        ShapeManager.getinstance().addShape(shape);
         //赋值父节点
         shape.parent = this.shapeParNode;
     }

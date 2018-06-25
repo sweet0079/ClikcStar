@@ -1,6 +1,7 @@
 /** 所有出生点控制 */
 import * as lib from '../lib/lib'
 import birthPointControl from './BirthPoint'
+import ShapeManager from './ShapeManager'
 
 const {ccclass, property} = cc._decorator;
 
@@ -24,7 +25,7 @@ export default class BirthControl extends cc.Component {
 
     start () {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ReStart,"reStart",this);
-        this.startClock();
+        //this.startClock();
     }
 
     onDestroy(){
@@ -77,6 +78,10 @@ export default class BirthControl extends cc.Component {
         let birtharr = this.randomArray(num);
         for(let i = 0; i < birtharr.length; i++)
         {
+            if(ShapeManager.getinstance().getNum() >= 10)
+            {
+                return;
+            }
             this.birthPoints[birtharr[i]].createRandomShape();
         }
     }

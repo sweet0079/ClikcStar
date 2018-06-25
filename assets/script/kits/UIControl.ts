@@ -1,5 +1,6 @@
 /** 挂在UI层，控制UI显示方面的脚本 */
 import * as lib from '../lib/lib'
+import ShapeManager from './ShapeManager'
 
 const {ccclass, property} = cc._decorator;
 
@@ -22,10 +23,12 @@ export default class UIcontrol extends cc.Component {
 
     // update (dt) {}
     //----- 按钮回调 -----//
+    //重新开始
     startGame(){
         lib.msgEvent.getinstance().emit(lib.msgConfig.ReStart);
         this.score = 0;
         this.Socrelabel.string = this.score.toString();
+        ShapeManager.getinstance().clean();
     }
     //----- 公有方法 -----//
     addScore(score:number){

@@ -2,6 +2,7 @@
 import * as lib from '../lib/lib'
 import FlyingShape from './FlyingShape'
 import shapeControl from './ShapeControl'
+import ShapeManager from './ShapeManager'
 
 const {ccclass, property} = cc._decorator;
 
@@ -43,6 +44,7 @@ export default class Dissipation extends cc.Component {
             || this.node.position.y >= lib.defConfig.DesignPlayHeight/2 + this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY - this.flyControl.Speed * dt
             || this.node.position.y <= -lib.defConfig.DesignPlayHeight/2 - this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY + this.flyControl.Speed * dt)
             {
+                ShapeManager.getinstance().delShape(this.node);
                 this.node.destroy();
             }
             return;

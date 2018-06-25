@@ -96,18 +96,18 @@ export default class FlyingShape extends cc.Component {
                     case lib.defConfig.Flightpath.straight:
                         this.flystraight(dt);
                         break;
-                    case lib.defConfig.Flightpath.curve:
-                        this.flycurve(dt);
-                        break;
+                    // case lib.defConfig.Flightpath.curve:
+                    //     this.flycurve(dt);
+                    //     break;
                     case lib.defConfig.Flightpath.screw:
                         this.flyscrew(dt);
                         break;
-                    case lib.defConfig.Flightpath.turn:
-                        this.flyturn(dt);
-                        break;
-                    case lib.defConfig.Flightpath.back:
-                        this.flyback(dt);
-                        break;
+                    // case lib.defConfig.Flightpath.turn:
+                    //     this.flyturn(dt);
+                    //     break;
+                    // case lib.defConfig.Flightpath.back:
+                    //     this.flyback(dt);
+                    //     break;
                     default:
                         break;
                 }
@@ -127,18 +127,18 @@ export default class FlyingShape extends cc.Component {
                     case lib.defConfig.Flightpath.straight:
                         this.flystraight(dt);
                         break;
-                    case lib.defConfig.Flightpath.curve:
-                        this.flycurve(dt);
-                        break;
+                    // case lib.defConfig.Flightpath.curve:
+                    //     this.flycurve(dt);
+                    //     break;
                     case lib.defConfig.Flightpath.screw:
                         this.flyscrew(dt);
                         break;
-                    case lib.defConfig.Flightpath.turn:
-                        this.flyturn(dt);
-                        break;
-                    case lib.defConfig.Flightpath.back:
-                        this.flyback(dt);
-                        break;
+                    // case lib.defConfig.Flightpath.turn:
+                    //     this.flyturn(dt);
+                    //     break;
+                    // case lib.defConfig.Flightpath.back:
+                    //     this.flyback(dt);
+                    //     break;
                     default:
                         break;
                 }

@@ -3,6 +3,7 @@ import * as lib from '../lib/lib'
 import FlyingShape from './FlyingShape'
 import ClickEndControl from './ClickEnd'
 import ShapeControl from './ShapeControl'
+import ShapeManager from './ShapeManager'
 
 const {ccclass, property} = cc._decorator;
 
@@ -17,11 +18,14 @@ export default class ClickShape extends cc.Component {
     private flyControl: FlyingShape = null;
     //形状外形控制器
     private shapeControl: ShapeControl = null;
+    //形状管理单例
+    private shapeManager: ShapeManager = null;
     //因为点击穿透和冒泡不能单独打开或关闭，导致点击2个以上形状是，触摸事件可能重复触发，因此加入点击锁
     private clickLock: boolean = false;
     //----- 生命周期 -----//
 
     onLoad () {
+        this.shapeManager = ShapeManager.getinstance();
         this.flyControl = this.node.getComponent(FlyingShape);
         this.shapeControl = this.node.getComponent(ShapeControl);
         this.flyControl.ShowNode.on(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
@@ -103,6 +107,7 @@ export default class ClickShape extends cc.Component {
             lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
         }
         this.clickLock = true;
+        this.shapeManager.delShape(this.node);
         this.shapeControl.destroyAni();
         //console.log("touchx = " + touchx + "  touchy = " + touchy);
     }
