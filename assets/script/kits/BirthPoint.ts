@@ -62,42 +62,42 @@ export default class BirthPoint extends cc.Component {
                 // {
                 //     this.createRandomShape();
                 // }
-                if(this.birthpos == lib.defConfig.birthpoint.lefttop)
+                if(this.birthpos == lib.defConfig.birthpoint.top)
                 {
                     this.createRandomShape();
                 }
-            },5);
-        //根据出生点调整形状的初始角
-        switch(this.birthpos)
-        {
-            case lib.defConfig.birthpoint.leftbottom:
-                this.InitialAngle = 45;
-                break;
-            case lib.defConfig.birthpoint.left:
-                this.InitialAngle = 0;
-                break;
-            case lib.defConfig.birthpoint.lefttop:
-                this.InitialAngle = -45;
-                break;
-            case lib.defConfig.birthpoint.top:
-                this.InitialAngle = -90;
-                break;
-            case lib.defConfig.birthpoint.righttop:
-                this.InitialAngle = -45;
-                break;
-            case lib.defConfig.birthpoint.right:
-                this.InitialAngle = 0;
-                break;
-            case lib.defConfig.birthpoint.rightbottom:
-                this.InitialAngle = 45;
-                break;
-            case lib.defConfig.birthpoint.bottom:
-                this.InitialAngle = 90;
-                break;
-            default:
-                this.InitialAngle = 0;
-                break;
-        }
+            },3);
+        // //根据出生点调整形状的初始角
+        // switch(this.birthpos)
+        // {
+        //     case lib.defConfig.birthpoint.leftbottom:
+        //         this.InitialAngle = 45;
+        //         break;
+        //     case lib.defConfig.birthpoint.left:
+        //         this.InitialAngle = 0;
+        //         break;
+        //     case lib.defConfig.birthpoint.lefttop:
+        //         this.InitialAngle = -45;
+        //         break;
+        //     case lib.defConfig.birthpoint.top:
+        //         this.InitialAngle = -90;
+        //         break;
+        //     case lib.defConfig.birthpoint.righttop:
+        //         this.InitialAngle = 45;
+        //         break;
+        //     case lib.defConfig.birthpoint.right:
+        //         this.InitialAngle = 0;
+        //         break;
+        //     case lib.defConfig.birthpoint.rightbottom:
+        //         this.InitialAngle = -45;
+        //         break;
+        //     case lib.defConfig.birthpoint.bottom:
+        //         this.InitialAngle = 90;
+        //         break;
+        //     default:
+        //         this.InitialAngle = 0;
+        //         break;
+        // }
     }
 
     // update (dt) {}
@@ -128,7 +128,7 @@ export default class BirthPoint extends cc.Component {
         //取得一个随机入射角度
         let angle = cc.random0To1() * (this.AngleUpperLimit - this.AngleLowerLimit) + this.AngleLowerLimit;
         //取得一个随机飞行轨迹
-        let trajectory = parseInt((cc.random0To1() * (lib.defConfig.Flightpath.screw + 1)).toString());
+        let trajectory = parseInt((cc.random0To1() * (lib.defConfig.Flightpath.length)).toString());
         //取得一个随机长曲线模式角速度加速度
         let deltangle = cc.random0To1() * (this.deltangleUpperLimit - this.deltangleLowerLimit) + this.deltangleLowerLimit;
         //取得一个随机形状的螺旋模式螺旋线速度
@@ -224,11 +224,12 @@ export default class BirthPoint extends cc.Component {
         shapepath.TurnAngle = TurnAngle;
         //随机形状的特性参数
         let shapechara = shape.getComponent(characteristic);
-        shapechara.type = parseInt((cc.random0To1() * (lib.defConfig.character.blink + 1)).toString());
+        shapechara.type = parseInt((cc.random0To1() * (lib.defConfig.character.length)).toString());
         //随机形状的消散参数
         let shapediss = shape.getComponent(disspation);
-        shapediss.type = parseInt((cc.random0To1() * (lib.defConfig.dissipate.decompose + 1)).toString());
+        shapediss.type = parseInt((cc.random0To1() * (lib.defConfig.dissipate.length)).toString());
         //随机形状的外形参数
+        shape.getComponent(shapeControl).randomcolor();
         shape.getComponent(shapeControl).randomShape();
         //添加至管理类
         ShapeManager.getinstance().addShape(shape);

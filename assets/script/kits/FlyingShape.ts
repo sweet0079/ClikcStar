@@ -99,9 +99,9 @@ export default class FlyingShape extends cc.Component {
                     // case lib.defConfig.Flightpath.curve:
                     //     this.flycurve(dt);
                     //     break;
-                    case lib.defConfig.Flightpath.screw:
-                        this.flyscrew(dt);
-                        break;
+                    // case lib.defConfig.Flightpath.screw:
+                    //     this.flyscrew(dt);
+                    //     break;
                     // case lib.defConfig.Flightpath.turn:
                     //     this.flyturn(dt);
                     //     break;
@@ -116,38 +116,40 @@ export default class FlyingShape extends cc.Component {
         //还未触发离开屏幕方法，走正常的飞行轨迹
         else
         {
-            //如果已经整体进入点击区域
+            // //如果已经整体进入点击区域
+            // if(this.dissControl.getAdmission())
+            // {
+            this.node.x += this.Speed * dt * Math.cos(this.Angle * lib.defConfig.coefficient);
+            this.node.y += this.Speed * dt * Math.sin(this.Angle * lib.defConfig.coefficient);
+            switch(this.Flightpath)
+            {
+                case lib.defConfig.Flightpath.straight:
+                    this.flystraight(dt);
+                    break;
+                // case lib.defConfig.Flightpath.curve:
+                //     this.flycurve(dt);
+                //     break;
+                // case lib.defConfig.Flightpath.screw:
+                //     this.flyscrew(dt);
+                //     break;
+                // case lib.defConfig.Flightpath.turn:
+                //     this.flyturn(dt);
+                //     break;
+                // case lib.defConfig.Flightpath.back:
+                //     this.flyback(dt);
+                //     break;
+                default:
+                    break;
+            }
             if(this.dissControl.getAdmission())
             {
-                this.node.x += this.Speed * dt * Math.cos(this.Angle * lib.defConfig.coefficient);
-                this.node.y += this.Speed * dt * Math.sin(this.Angle * lib.defConfig.coefficient);
                 this.subMoveDistence += Math.abs(this.Speed) * dt;
-                switch(this.Flightpath)
-                {
-                    case lib.defConfig.Flightpath.straight:
-                        this.flystraight(dt);
-                        break;
-                    // case lib.defConfig.Flightpath.curve:
-                    //     this.flycurve(dt);
-                    //     break;
-                    case lib.defConfig.Flightpath.screw:
-                        this.flyscrew(dt);
-                        break;
-                    // case lib.defConfig.Flightpath.turn:
-                    //     this.flyturn(dt);
-                    //     break;
-                    // case lib.defConfig.Flightpath.back:
-                    //     this.flyback(dt);
-                    //     break;
-                    default:
-                        break;
-                }
             }
-            else
-            {
-                this.node.x += this.Speed * dt * Math.cos(this.InitialAngle * lib.defConfig.coefficient);
-                this.node.y += this.Speed * dt * Math.sin(this.InitialAngle * lib.defConfig.coefficient);
-            }
+            // else
+            // {
+            //     this.node.x += this.Speed * dt * Math.cos(this.InitialAngle * lib.defConfig.coefficient);
+            //     this.node.y += this.Speed * dt * Math.sin(this.InitialAngle * lib.defConfig.coefficient);
+            // }
         }
     }
     //----- 公有方法 -----//
@@ -198,7 +200,7 @@ export default class FlyingShape extends cc.Component {
     //设置所有飞行轨迹参数
     setparameter(parameter: _kits.FlyingShape.parameters){
         this.Flightpath = parameter.Flightpath;
-        this.birthpos = parameter.birthpos;
+        //this.birthpos = parameter.birthpos;
         this.Speed = parameter.Speed;
         this.Angle = parameter.Angle;
         this.deltangle = parameter.deltangle;

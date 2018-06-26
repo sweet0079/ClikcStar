@@ -264,7 +264,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "highScoreWidth": 100
+    "highScoreWidth": 120
   },
   {
     "__type__": "351a9+8GqZE8rhx0Vm149r5",
@@ -280,31 +280,84 @@
         "__uuid__": "58f01b09-e8f3-4e0c-b13a-baa32cb99cd9"
       },
       {
+        "__uuid__": "8c65ebfc-5866-40cd-bdae-2d8077ed3d1e"
+      },
+      {
+        "__uuid__": "ee65b6a1-409f-4cc5-afe3-840a52a2784c"
+      },
+      {
         "__uuid__": "b1587ad7-3799-4454-a596-48b4b9dc3405"
+      },
+      {
+        "__uuid__": "327bb3f4-94e2-4d5c-a8b9-bf02cbb84b11"
+      },
+      {
+        "__uuid__": "f9076bde-3806-4711-85e1-aa08e4f5c3fc"
       },
       {
         "__uuid__": "0690a442-2459-4711-b71b-11d7be0f0be4"
       },
       {
+        "__uuid__": "df5878dd-db0d-4464-8405-404783ebb95b"
+      },
+      {
+        "__uuid__": "173b5085-0cb3-4a4d-bef5-ee5b50476b70"
+      },
+      {
         "__uuid__": "a8a413fc-9f84-42c8-99e7-c2531c98124b"
+      },
+      {
+        "__uuid__": "77e1a315-d9ea-4249-8814-ef0322191be7"
+      },
+      {
+        "__uuid__": "57208d8c-bdae-420d-b692-dd53d6ce0905"
       },
       {
         "__uuid__": "0f163920-e6b0-4c80-9155-503bbdd2a98c"
       },
       {
+        "__uuid__": "8902b3a0-a15a-497c-9d84-6df653027692"
+      },
+      {
+        "__uuid__": "673a7c9f-0f11-41d0-8f19-56771361c487"
+      },
+      {
         "__uuid__": "3831b87b-caaf-4ee0-ba15-165c487640c5"
+      },
+      {
+        "__uuid__": "f9e0cf74-291b-42f8-8d9b-4a0bd7223f3b"
+      },
+      {
+        "__uuid__": "139b4a10-83a1-4e71-bd21-5bc839057392"
       },
       {
         "__uuid__": "3b6da8aa-ee27-4b3f-8ac5-2a4e754f21ca"
       },
       {
+        "__uuid__": "9e90b14a-9538-4c9c-bde9-3e1beeb79b12"
+      },
+      {
+        "__uuid__": "c6af39ed-1af3-4da8-82b1-b3bafd4657d0"
+      },
+      {
         "__uuid__": "16e3421e-106a-4868-a5ac-321757a50771"
       },
       {
+        "__uuid__": "5076b845-7c95-4ae7-8020-7b0c85cbccb9"
+      },
+      {
+        "__uuid__": "c96983cd-5bc2-4b52-a6b3-d455da44491b"
+      },
+      {
         "__uuid__": "e52ac5fc-fb42-4a6c-b379-265b70f53c57"
+      },
+      {
+        "__uuid__": "99e10627-b500-4ef2-85ac-12097abb307e"
+      },
+      {
+        "__uuid__": "08dbaeed-f660-4ebf-837f-40a0b4c86351"
       }
-    ],
-    "detained": 5
+    ]
   },
   {
     "__type__": "cc.MotionStreak",

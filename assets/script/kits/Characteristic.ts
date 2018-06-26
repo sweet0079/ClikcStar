@@ -2,6 +2,7 @@
 import * as lib from '../lib/lib'
 import FlyingShape from './FlyingShape'
 import Dissipation from './Disspation'
+import ShapeControl from './ShapeControl'
 import ShapeManager from './ShapeManager'
 
 const {ccclass, property} = cc._decorator;
@@ -68,7 +69,7 @@ export default class Characteristic extends cc.Component {
             case lib.defConfig.character.fadeout:
                 this.fadeout();
                 break;
-            case lib.defConfig.character.blink:
+            case lib.defConfig.character.fadeout:
                 this.blink();
                 break;
         }
@@ -155,10 +156,13 @@ export default class Characteristic extends cc.Component {
 
     //分裂变化
     private divisionchange(){
+        let [type,color] = this.node.getComponent(ShapeControl).gettype();
         let shape1 = cc.instantiate(this.shapeprefeb);
         shape1.getComponent(FlyingShape).setparameter(this.flyControl.getparameter());
         shape1.getComponent(FlyingShape).addAngle(45);
         shape1.getComponent(Dissipation).setparameter(this.dissControl.getparameter());
+        shape1.getComponent(ShapeControl).setcolor(color);
+        shape1.getComponent(ShapeControl).setShape(type);
         shape1.position = this.node.position;
         shape1.scale = this.node.scale;
         shape1.parent = this.node.parent;
@@ -166,6 +170,8 @@ export default class Characteristic extends cc.Component {
         shape2.getComponent(FlyingShape).setparameter(this.flyControl.getparameter());
         shape2.getComponent(FlyingShape).addAngle(-45);
         shape2.getComponent(Dissipation).setparameter(this.dissControl.getparameter());
+        shape2.getComponent(ShapeControl).setcolor(color);
+        shape2.getComponent(ShapeControl).setShape(type);
         shape2.position = this.node.position;
         shape2.scale = this.node.scale;
         shape2.parent = this.node.parent;

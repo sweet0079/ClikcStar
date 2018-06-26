@@ -109,6 +109,5 @@ export default class ClickShape extends cc.Component {
         this.clickLock = true;
         this.shapeManager.delShape(this.node);
         this.shapeControl.destroyAni();
-        //console.log("touchx = " + touchx + "  touchy = " + touchy);
     }
 }

@@ -4,12 +4,14 @@ export const Flightpath = cc.Enum({
     straight: -1,
     // // 长曲线
     // curve: -1,
-    // 螺旋
-    screw: -1,
+    // // 螺旋
+    // screw: -1,
     // // 转向
     // turn: -1,
     // // 回退,
     // back: -1
+    // 枚举的长度
+    length: -1,
 });
 /** 出生点位置枚举 */
 export const birthpoint = cc.Enum({
@@ -70,8 +72,10 @@ export const character = cc.Enum({
     // flipping: -1,
     // 渐隐
     fadeout: -1,
-    // 闪烁
-    blink: -1,
+    // // 闪烁
+    // blink: -1,
+    // 枚举的长度
+    length: -1,
 });
 /** 形状特性枚举 */
 export const dissipate = cc.Enum({    
@@ -91,28 +95,34 @@ export const dissipate = cc.Enum({
     rebound: -1,
     // 分解
     decompose: -1,
+    // 枚举的长度
+    length: -1,
 });
 /** 形状外形枚举 */
 export const shape = cc.Enum({
     // 三角形
-    triangle: 3,
+    triangle: 2,
     // 五角星
-    star: 9,
+    star: 8,
     // 圆形
-    circular: 2,
+    circular: 1,
     // 平行四边形
-    parallelogram: 8,
+    parallelogram: 7,
     // 方形
-    square: 1,
+    square: 0,
     // 梯形
-    trapezoid: 6,
+    trapezoid: 5,
     // 椭圆
-    ellipse: 7,
+    ellipse: 6,
     // 菱形
-    diamond: 5,
+    diamond: 4,
     // 长方形
-    rectangle: 4,
+    rectangle: 3,
+    // 枚举的长度
+    length: 9,
 });
+//每个形状有几种颜色
+export const ColorNum = 3;
 //设计时中间用于点击区域的宽
 export const DesignPlayWidth = 1080;
 //设计时中间用于点击区域的高

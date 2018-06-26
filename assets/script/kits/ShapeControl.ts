@@ -2,6 +2,7 @@
 import * as lib from '../lib/lib'
 import FlyingShape from './FlyingShape'
 import characteristic from './Characteristic'
+import ShapeManager from './ShapeManager'
 
 const {ccclass, property} = cc._decorator;
 
@@ -12,8 +13,6 @@ export default class ShapeControl extends cc.Component {
     @property({tooltip:"形状",  type: lib.defConfig.shape }) type = lib.defConfig.shape.triangle;
     /** 外形素材数组 */
     @property({tooltip:"外形素材数组", type: [cc.SpriteFrame] }) SpriteFrameArr:Array<cc.SpriteFrame> = [];
-    /** 停滞时间 */
-    @property({tooltip:"停滞时间",  type: cc.Float }) detained:number = 5;
     
 
     //----- 属性声明 -----//
@@ -21,6 +20,8 @@ export default class ShapeControl extends cc.Component {
     private flyControl: FlyingShape = null;
     //已滞留时间
     private haveDetained: number = 0;
+    //颜色
+    private color: number = 0;
     //----- 生命周期 -----//
 
     // onLoad () {}
@@ -28,18 +29,16 @@ export default class ShapeControl extends cc.Component {
     start () {
         this.flyControl = this.node.getComponent(FlyingShape);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ReStart,"reStart",this);
+        //this.setShape(2);
     }
 
     // update (dt) {}
 
     onDestroy(){
+        ShapeManager.getinstance().delShape(this.node);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.ReStart,"reStart",this);
     }
     //----- 公有方法 -----//
-    startDetained(){
-        
-    }
-
     destroyAni(){
         this.stopMoveAndAct();
         this.flyControl.ShowNode.getComponent(cc.Animation).once('finished',()=>{
@@ -48,8 +47,21 @@ export default class ShapeControl extends cc.Component {
         this.flyControl.ShowNode.getComponent(cc.Animation).play();
     }
 
+    randomcolor(){
+        let temp = parseInt((cc.random0To1() * lib.defConfig.ColorNum).toString());
+        this.color = temp;
+    }
+
+    setcolor(num:number){
+        this.color = num;
+    }
+
+    gettype(){
+        return [this.type,this.color];
+    }
+
     randomShape(){
-        let temp = parseInt((cc.random0To1() * (lib.defConfig.shape.rectangle + 1)).toString());
+        let temp = parseInt((cc.random0To1() * (lib.defConfig.shape.length)).toString());
         this.type = temp;
         this.setShape(this.type);
     }
@@ -58,7 +70,7 @@ export default class ShapeControl extends cc.Component {
         this.flyControl = this.node.getComponent(FlyingShape);
         let calNode = this.flyControl.ShowNode;
         this.type = type;
-        calNode.getComponent(cc.Sprite).spriteFrame = this.SpriteFrameArr[this.type];
+        calNode.getComponent(cc.Sprite).spriteFrame = this.SpriteFrameArr[this.type * lib.defConfig.ColorNum + this.color];
         //根据不同形状赋予不同的点击判定方法
         if(this.type == lib.defConfig.shape.triangle)
         {
@@ -118,17 +130,26 @@ export default class ShapeControl extends cc.Component {
         let calNode = this.flyControl.ShowNode;
         let temp: number = 0;
         let result: boolean = false;
-        if(x < 0){
-            temp = (2 * calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * x + calNode.height * Math.abs(calNode.scaleY) / 2;
-            if(y < temp)
+        let dis = Math.sqrt((x * x + y * y));
+        let touAngle = Math.asin(y / dis);
+        if(x < 0)
+        {
+            touAngle = 180 * lib.defConfig.coefficient - touAngle;
+        }
+        let nowAngle = touAngle + this.node.rotation * lib.defConfig.coefficient; 
+        let nowx = dis * Math.cos(nowAngle);
+        let nowy = dis * Math.sin(nowAngle);
+        if(nowx < 0){
+            temp = (2 * calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * nowx + calNode.height * Math.abs(calNode.scaleY) / 2;
+            if(nowy < temp)
             {
                 result = true;
             }
         }
         else
         {
-            temp = (-2 * calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * x + calNode.height * Math.abs(calNode.scaleY) / 2;
-            if(y < temp)
+            temp = (-2 * calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * nowx + calNode.height * Math.abs(calNode.scaleY) / 2;
+            if(nowy < temp)
             {
                 result = true;
             }

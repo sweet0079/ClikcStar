@@ -25,7 +25,7 @@ export default class BirthControl extends cc.Component {
 
     start () {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ReStart,"reStart",this);
-        //this.startClock();
+        // this.startClock();
     }
 
     onDestroy(){

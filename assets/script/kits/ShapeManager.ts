@@ -32,8 +32,8 @@ export default class ShapeManager {
         console.log("del");
         if (index > -1) {
             this.shapeArr.splice(index, 1);
+            console.log(this.shapeArr);
         }
-        console.log(this.shapeArr);
     }
 
     clean(){
