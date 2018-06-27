@@ -103,11 +103,14 @@ export default class Characteristic extends cc.Component {
     }
     //----- 公有方法 -----//
     stopAct(){
-        this.node.stopAllActions();
-        this.flyControl.ShowNode.stopAllActions();
-        this.flyControl.ShowNode.opacity = 255;
-        this.node.runAction(cc.fadeIn(0.05));
-        this.node.getComponent(Dissipation).type = lib.defConfig.dissipate.none;
+        if(this.flyControl)
+        {
+            this.node.stopAllActions();
+            this.flyControl.ShowNode.stopAllActions();
+            this.flyControl.ShowNode.opacity = 255;
+            this.node.runAction(cc.fadeIn(0.05));
+            this.node.getComponent(Dissipation).type = lib.defConfig.dissipate.none;
+        }
     }
     //----- 私有方法 -----//
     //改变大小

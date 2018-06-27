@@ -18,3 +18,9 @@ declare namespace _kits.Disspation {
         type: number,
     }
 }
+declare namespace _kits.ShapeControl {
+    interface parameters {
+        type: number,
+        color: number,
+    }
+}

@@ -18,9 +18,6 @@
       },
       {
         "__id__": 6
-      },
-      {
-        "__id__": 86
       }
     ],
     "_tag": -1,
@@ -1302,8 +1299,8 @@
     "birthpos": 4,
     "SpeedLowerLimit": 300,
     "SpeedUpperLimit": 600,
-    "AngleLowerLimit": -80,
-    "AngleUpperLimit": 80,
+    "AngleLowerLimit": -70,
+    "AngleUpperLimit": 27,
     "deltangleLowerLimit": 3,
     "deltangleUpperLimit": 30,
     "screwspeedLowerLimit": 100,
@@ -1409,8 +1406,8 @@
     "birthpos": 4,
     "SpeedLowerLimit": 300,
     "SpeedUpperLimit": 600,
-    "AngleLowerLimit": -80,
-    "AngleUpperLimit": 80,
+    "AngleLowerLimit": -70,
+    "AngleUpperLimit": 59,
     "deltangleLowerLimit": 3,
     "deltangleUpperLimit": 30,
     "screwspeedLowerLimit": 100,
@@ -1516,8 +1513,8 @@
     "birthpos": 4,
     "SpeedLowerLimit": 300,
     "SpeedUpperLimit": 600,
-    "AngleLowerLimit": -80,
-    "AngleUpperLimit": 80,
+    "AngleLowerLimit": -66,
+    "AngleUpperLimit": 66,
     "deltangleLowerLimit": 3,
     "deltangleUpperLimit": 30,
     "screwspeedLowerLimit": 100,
@@ -1623,8 +1620,8 @@
     "birthpos": 4,
     "SpeedLowerLimit": 300,
     "SpeedUpperLimit": 600,
-    "AngleLowerLimit": -80,
-    "AngleUpperLimit": 80,
+    "AngleLowerLimit": -59,
+    "AngleUpperLimit": 70,
     "deltangleLowerLimit": 3,
     "deltangleUpperLimit": 30,
     "screwspeedLowerLimit": 100,
@@ -1730,8 +1727,8 @@
     "birthpos": 4,
     "SpeedLowerLimit": 300,
     "SpeedUpperLimit": 600,
-    "AngleLowerLimit": -80,
-    "AngleUpperLimit": 80,
+    "AngleLowerLimit": -27,
+    "AngleUpperLimit": 70,
     "deltangleLowerLimit": 3,
     "deltangleUpperLimit": 30,
     "screwspeedLowerLimit": 100,
@@ -1944,8 +1941,8 @@
     "birthpos": 6,
     "SpeedLowerLimit": 300,
     "SpeedUpperLimit": 600,
-    "AngleLowerLimit": -80,
-    "AngleUpperLimit": 80,
+    "AngleLowerLimit": -33,
+    "AngleUpperLimit": 66,
     "deltangleLowerLimit": 3,
     "deltangleUpperLimit": 30,
     "screwspeedLowerLimit": 100,
@@ -2051,8 +2048,8 @@
     "birthpos": 6,
     "SpeedLowerLimit": 300,
     "SpeedUpperLimit": 600,
-    "AngleLowerLimit": -80,
-    "AngleUpperLimit": 80,
+    "AngleLowerLimit": -57,
+    "AngleUpperLimit": 57,
     "deltangleLowerLimit": 3,
     "deltangleUpperLimit": 30,
     "screwspeedLowerLimit": 100,
@@ -2158,8 +2155,8 @@
     "birthpos": 6,
     "SpeedLowerLimit": 300,
     "SpeedUpperLimit": 600,
-    "AngleLowerLimit": -80,
-    "AngleUpperLimit": 80,
+    "AngleLowerLimit": -66,
+    "AngleUpperLimit": 33,
     "deltangleLowerLimit": 3,
     "deltangleUpperLimit": 30,
     "screwspeedLowerLimit": 100,
@@ -2372,8 +2369,8 @@
     "birthpos": 0,
     "SpeedLowerLimit": 300,
     "SpeedUpperLimit": 600,
-    "AngleLowerLimit": -80,
-    "AngleUpperLimit": 80,
+    "AngleLowerLimit": -27,
+    "AngleUpperLimit": 70,
     "deltangleLowerLimit": 3,
     "deltangleUpperLimit": 30,
     "screwspeedLowerLimit": 100,
@@ -2479,8 +2476,8 @@
     "birthpos": 0,
     "SpeedLowerLimit": 300,
     "SpeedUpperLimit": 600,
-    "AngleLowerLimit": -80,
-    "AngleUpperLimit": 80,
+    "AngleLowerLimit": -59,
+    "AngleUpperLimit": 70,
     "deltangleLowerLimit": 3,
     "deltangleUpperLimit": 30,
     "screwspeedLowerLimit": 100,
@@ -2586,8 +2583,8 @@
     "birthpos": 0,
     "SpeedLowerLimit": 300,
     "SpeedUpperLimit": 600,
-    "AngleLowerLimit": -80,
-    "AngleUpperLimit": 80,
+    "AngleLowerLimit": -66,
+    "AngleUpperLimit": 66,
     "deltangleLowerLimit": 3,
     "deltangleUpperLimit": 30,
     "screwspeedLowerLimit": 100,
@@ -2693,8 +2690,8 @@
     "birthpos": 0,
     "SpeedLowerLimit": 300,
     "SpeedUpperLimit": 600,
-    "AngleLowerLimit": -80,
-    "AngleUpperLimit": 80,
+    "AngleLowerLimit": -70,
+    "AngleUpperLimit": 59,
     "deltangleLowerLimit": 3,
     "deltangleUpperLimit": 30,
     "screwspeedLowerLimit": 100,
@@ -2800,8 +2797,8 @@
     "birthpos": 0,
     "SpeedLowerLimit": 300,
     "SpeedUpperLimit": 600,
-    "AngleLowerLimit": -80,
-    "AngleUpperLimit": 80,
+    "AngleLowerLimit": -70,
+    "AngleUpperLimit": 27,
     "deltangleLowerLimit": 3,
     "deltangleUpperLimit": 30,
     "screwspeedLowerLimit": 100,
@@ -3239,393 +3236,5 @@
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "shape",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 1
-    },
-    "_children": [
-      {
-        "__id__": 87
-      }
-    ],
-    "_tag": -1,
-    "_active": true,
-    "_components": [
-      {
-        "__id__": 92
-      },
-      {
-        "__id__": 93
-      },
-      {
-        "__id__": 94
-      },
-      {
-        "__id__": 95
-      },
-      {
-        "__id__": 96
-      },
-      {
-        "__id__": 97
-      }
-    ],
-    "_prefab": {
-      "__id__": 98
-    },
-    "_id": "ac6VIz7vlNO7B4KzJp6PJx",
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_cascadeOpacityEnabled": true,
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 100,
-      "height": 100
-    },
-    "_rotationX": 90,
-    "_rotationY": 90,
-    "_scaleX": 1,
-    "_scaleY": 1,
-    "_position": {
-      "__type__": "cc.Vec2",
-      "x": 496,
-      "y": 1048
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_localZOrder": 0,
-    "_globalZOrder": 0,
-    "_opacityModifyRGB": false,
-    "groupIndex": 0
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "showNode",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 86
-    },
-    "_children": [],
-    "_tag": -1,
-    "_active": true,
-    "_components": [
-      {
-        "__id__": 88
-      },
-      {
-        "__id__": 89
-      },
-      {
-        "__id__": 90
-      }
-    ],
-    "_prefab": {
-      "__id__": 91
-    },
-    "_id": "5d0jYa8/5CAKuji8MQ1KeA",
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_cascadeOpacityEnabled": true,
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 249,
-      "height": 238
-    },
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_scaleX": 0.8,
-    "_scaleY": 0.8,
-    "_position": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_localZOrder": 0,
-    "_globalZOrder": 0,
-    "_opacityModifyRGB": false,
-    "groupIndex": 0
-  },
-  {
-    "__type__": "cc.Sprite",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 87
-    },
-    "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "0690a442-2459-4711-b71b-11d7be0f0be4"
-    },
-    "_type": 0,
-    "_sizeMode": 1,
-    "_fillType": 0,
-    "_fillCenter": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_fillStart": 0,
-    "_fillRange": 0,
-    "_isTrimmedMode": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_atlas": null
-  },
-  {
-    "__type__": "7c8a7LY8lNPB6SBwC7kMsHQ",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 87
-    },
-    "_enabled": true
-  },
-  {
-    "__type__": "cc.Animation",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 87
-    },
-    "_enabled": true,
-    "_defaultClip": {
-      "__uuid__": "b36e5fcd-d55a-44e1-8d4b-bdf6603077bb"
-    },
-    "_clips": [
-      {
-        "__uuid__": "b36e5fcd-d55a-44e1-8d4b-bdf6603077bb"
-      }
-    ],
-    "playOnLoad": false
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 86
-    },
-    "asset": {
-      "__uuid__": "c5179e07-421b-416a-bad1-57518ffcd7e0"
-    },
-    "fileId": "1a0f4zwu2VOapqEJkWXIF0R",
-    "sync": false
-  },
-  {
-    "__type__": "5754dBQqJZCuYBsiWmSEsMQ",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 86
-    },
-    "_enabled": true,
-    "type": 0,
-    "ContinueRebound": true,
-    "MiniDissDistance": 800
-  },
-  {
-    "__type__": "27422WfFDtKYZyD8QxvIlbR",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 86
-    },
-    "_enabled": true,
-    "Flightpath": 0,
-    "birthpos": 0,
-    "Speed": 0,
-    "Angle": 0,
-    "deltangle": 10,
-    "screwspeed": 200,
-    "screwAngleSpeed": 180,
-    "TurnThreshold": 500,
-    "TurnAngle": 0,
-    "ShowNode": {
-      "__id__": 87
-    }
-  },
-  {
-    "__type__": "0a62cXMfA5Cq49pBb2v2ehD",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 86
-    },
-    "_enabled": true,
-    "type": 0,
-    "ScaleMultiple": 0.5,
-    "SpeedMultiple": 0.5,
-    "rotateSpeed": 360,
-    "divisionDistance": 500,
-    "flipFrequency": 0.25,
-    "fadeFrequency": 1,
-    "blinkFrequency": 1,
-    "shapeprefeb": {
-      "__uuid__": "c5179e07-421b-416a-bad1-57518ffcd7e0"
-    }
-  },
-  {
-    "__type__": "e04cdsyj11CfLDP6eI2aN2y",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 86
-    },
-    "_enabled": true,
-    "highScoreWidth": 120
-  },
-  {
-    "__type__": "351a9+8GqZE8rhx0Vm149r5",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 86
-    },
-    "_enabled": true,
-    "type": 2,
-    "SpriteFrameArr": [
-      {
-        "__uuid__": "58f01b09-e8f3-4e0c-b13a-baa32cb99cd9"
-      },
-      {
-        "__uuid__": "8c65ebfc-5866-40cd-bdae-2d8077ed3d1e"
-      },
-      {
-        "__uuid__": "ee65b6a1-409f-4cc5-afe3-840a52a2784c"
-      },
-      {
-        "__uuid__": "b1587ad7-3799-4454-a596-48b4b9dc3405"
-      },
-      {
-        "__uuid__": "327bb3f4-94e2-4d5c-a8b9-bf02cbb84b11"
-      },
-      {
-        "__uuid__": "f9076bde-3806-4711-85e1-aa08e4f5c3fc"
-      },
-      {
-        "__uuid__": "0690a442-2459-4711-b71b-11d7be0f0be4"
-      },
-      {
-        "__uuid__": "df5878dd-db0d-4464-8405-404783ebb95b"
-      },
-      {
-        "__uuid__": "173b5085-0cb3-4a4d-bef5-ee5b50476b70"
-      },
-      {
-        "__uuid__": "a8a413fc-9f84-42c8-99e7-c2531c98124b"
-      },
-      {
-        "__uuid__": "77e1a315-d9ea-4249-8814-ef0322191be7"
-      },
-      {
-        "__uuid__": "57208d8c-bdae-420d-b692-dd53d6ce0905"
-      },
-      {
-        "__uuid__": "0f163920-e6b0-4c80-9155-503bbdd2a98c"
-      },
-      {
-        "__uuid__": "8902b3a0-a15a-497c-9d84-6df653027692"
-      },
-      {
-        "__uuid__": "673a7c9f-0f11-41d0-8f19-56771361c487"
-      },
-      {
-        "__uuid__": "3831b87b-caaf-4ee0-ba15-165c487640c5"
-      },
-      {
-        "__uuid__": "f9e0cf74-291b-42f8-8d9b-4a0bd7223f3b"
-      },
-      {
-        "__uuid__": "139b4a10-83a1-4e71-bd21-5bc839057392"
-      },
-      {
-        "__uuid__": "3b6da8aa-ee27-4b3f-8ac5-2a4e754f21ca"
-      },
-      {
-        "__uuid__": "9e90b14a-9538-4c9c-bde9-3e1beeb79b12"
-      },
-      {
-        "__uuid__": "c6af39ed-1af3-4da8-82b1-b3bafd4657d0"
-      },
-      {
-        "__uuid__": "16e3421e-106a-4868-a5ac-321757a50771"
-      },
-      {
-        "__uuid__": "5076b845-7c95-4ae7-8020-7b0c85cbccb9"
-      },
-      {
-        "__uuid__": "c96983cd-5bc2-4b52-a6b3-d455da44491b"
-      },
-      {
-        "__uuid__": "e52ac5fc-fb42-4a6c-b379-265b70f53c57"
-      },
-      {
-        "__uuid__": "99e10627-b500-4ef2-85ac-12097abb307e"
-      },
-      {
-        "__uuid__": "08dbaeed-f660-4ebf-837f-40a0b4c86351"
-      }
-    ]
-  },
-  {
-    "__type__": "cc.MotionStreak",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 86
-    },
-    "_enabled": false,
-    "_fadeTime": 1,
-    "_minSeg": 1,
-    "_stroke": 60,
-    "_texture": {
-      "__uuid__": "edde9f67-37de-4ae4-9522-0818dc09acee"
-    },
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_fastMode": true,
-    "_N$preview": true
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 86
-    },
-    "asset": {
-      "__uuid__": "c5179e07-421b-416a-bad1-57518ffcd7e0"
-    },
-    "fileId": "a5cIikaRlDKKHvniCoLZPV",
-    "sync": false
   }
 ]

@@ -56,17 +56,17 @@ export default class BirthPoint extends cc.Component {
     // onLoad () {}
 
     start () {
-            this.schedule(()=>{
-                let temp = cc.random0To1() * 100;
-                // if(temp < 20)
-                // {
-                //     this.createRandomShape();
-                // }
-                if(this.birthpos == lib.defConfig.birthpoint.top)
-                {
-                    this.createRandomShape();
-                }
-            },3);
+        // this.schedule(()=>{
+        //     let temp = cc.random0To1() * 100;
+        //     // if(temp < 20)
+        //     // {
+        //     //     this.createRandomShape();
+        //     // }
+        //     if(this.birthpos == lib.defConfig.birthpoint.left)
+        //     {
+        //         this.createRandomShape();
+        //     }
+        // },3);
         // //根据出生点调整形状的初始角
         // switch(this.birthpos)
         // {
@@ -147,14 +147,63 @@ export default class BirthPoint extends cc.Component {
         //         angle = -angle;
         //     }
         // }
-        this.createShape(speed,angle,trajectory,deltangle,screwspeed,screwAngleSpeed,TurnThreshold,TurnAngle);
+        let parameters: _kits.FlyingShape.parameters = {
+            Flightpath: trajectory,
+            birthpos: 0,
+            Speed: speed,
+            Angle: angle,
+            deltangle: deltangle,
+            screwspeed: screwspeed,
+            screwAngleSpeed: screwAngleSpeed,
+            TurnThreshold: TurnThreshold,
+            TurnAngle: TurnAngle,
+        }
+        this.createShape(parameters);
+    }
+
+    createAppointShape(parameters:_kits.FlyingShape.parameters,Dparameters:_kits.Disspation.parameters,Ctype){
+
     }
 
     //----- 私有方法 -----//
-    private createShape(speed,angle,trajectory,deltangle,screwspeed,screwAngleSpeed,TurnThreshold,TurnAngle){
+    private createShape(parameters:_kits.FlyingShape.parameters){
         let shape = cc.instantiate(this.shapeprefeb);
         shape.position = this.node.position;
-        let shapepath = shape.getComponent(FlyingShape);
+        this.shapeSetPath(shape,parameters);
+        //随机形状的特性参数
+        this.shapeSetcha(shape,parseInt((cc.random0To1() * (lib.defConfig.character.length)).toString()));
+        //随机形状的消散参数
+        let dispare: _kits.Disspation.parameters ={
+            type: parseInt((cc.random0To1() * (lib.defConfig.dissipate.length)).toString()),
+        }
+        this.shapeSetdiss(shape,dispare);
+        //随机形状的外形参数
+        shape.getComponent(shapeControl).randomcolor();
+        shape.getComponent(shapeControl).randomShape();
+        //添加至管理类
+        ShapeManager.getinstance().addShape(shape);
+        //赋值父节点
+        shape.parent = this.shapeParNode;
+    }
+
+    private shapeSetshape(node:cc.Node,type:_kits.ShapeControl.parameters){
+        let shapediss = node.getComponent(shapeControl);
+        shapediss.setcolor(type.color);
+        shapediss.setShape(type.type);
+    }
+
+    private shapeSetdiss(node:cc.Node,type:_kits.Disspation.parameters){
+        let shapediss = node.getComponent(disspation);
+        shapediss.type = type.type;
+    }
+
+    private shapeSetcha(node:cc.Node,type:number){
+        let shapechara = node.getComponent(characteristic);
+        shapechara.type = type;
+    }
+
+    private shapeSetPath(node:cc.Node,parameters:_kits.FlyingShape.parameters){
+        let shapepath = node.getComponent(FlyingShape);
         //根据出生点所在位置改变形状出生位置
         switch(this.birthpos)
         {
@@ -162,7 +211,7 @@ export default class BirthPoint extends cc.Component {
                 shapepath.birthpos = lib.defConfig.shapebirthpos.left;
                 break;
             case lib.defConfig.birthpoint.lefttop:
-                if(angle >= 0)
+                if(parameters.Angle >= 0)
                 {
                     shapepath.birthpos = lib.defConfig.shapebirthpos.top;
                 }
@@ -175,10 +224,10 @@ export default class BirthPoint extends cc.Component {
                 shapepath.birthpos = lib.defConfig.shapebirthpos.top;
                 break;
             case lib.defConfig.birthpoint.righttop:
-                if(angle >= 0)
+                if(parameters.Angle >= 0)
                 {
                     shapepath.birthpos = lib.defConfig.shapebirthpos.top;
-                    angle = -angle;
+                    parameters.Angle = -parameters.Angle;
                 }
                 else
                 {
@@ -189,21 +238,21 @@ export default class BirthPoint extends cc.Component {
                 shapepath.birthpos = lib.defConfig.shapebirthpos.right;
                 break;
             case lib.defConfig.birthpoint.rightbottom:
-                if(angle >= 0)
+                if(parameters.Angle >= 0)
                 {
                     shapepath.birthpos = lib.defConfig.shapebirthpos.right;
                 }
                 else
                 {
                     shapepath.birthpos = lib.defConfig.shapebirthpos.bottom;
-                    angle = -angle;
+                    parameters.Angle = -parameters.Angle;
                 }
                 break;
             case lib.defConfig.birthpoint.bottom:
                 shapepath.birthpos = lib.defConfig.shapebirthpos.bottom;
                 break;
             case lib.defConfig.birthpoint.leftbottom:
-                if(angle >= 0)
+                if(parameters.Angle >= 0)
                 {
                     shapepath.birthpos = lib.defConfig.shapebirthpos.left;
                 }
@@ -214,26 +263,13 @@ export default class BirthPoint extends cc.Component {
                 break;
         }
         shapepath.setInitialAngle(this.InitialAngle);
-        shapepath.Speed = speed;
-        shapepath.Angle = angle;
-        shapepath.Flightpath = trajectory;
-        shapepath.deltangle = deltangle;
-        shapepath.screwspeed = screwspeed;
-        shapepath.screwAngleSpeed = screwAngleSpeed;
-        shapepath.TurnThreshold = TurnThreshold;
-        shapepath.TurnAngle = TurnAngle;
-        //随机形状的特性参数
-        let shapechara = shape.getComponent(characteristic);
-        shapechara.type = parseInt((cc.random0To1() * (lib.defConfig.character.length)).toString());
-        //随机形状的消散参数
-        let shapediss = shape.getComponent(disspation);
-        shapediss.type = parseInt((cc.random0To1() * (lib.defConfig.dissipate.length)).toString());
-        //随机形状的外形参数
-        shape.getComponent(shapeControl).randomcolor();
-        shape.getComponent(shapeControl).randomShape();
-        //添加至管理类
-        ShapeManager.getinstance().addShape(shape);
-        //赋值父节点
-        shape.parent = this.shapeParNode;
+        shapepath.Speed = parameters.Speed;
+        shapepath.Angle = parameters.Angle;
+        shapepath.Flightpath = parameters.Flightpath;
+        shapepath.deltangle = parameters.deltangle;
+        shapepath.screwspeed = parameters.screwspeed;
+        shapepath.screwAngleSpeed = parameters.screwAngleSpeed;
+        shapepath.TurnThreshold = parameters.TurnThreshold;
+        shapepath.TurnAngle = parameters.TurnAngle;
     }
 }

@@ -25,7 +25,7 @@ export default class BirthControl extends cc.Component {
 
     start () {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ReStart,"reStart",this);
-        // this.startClock();
+        this.startClock();
     }
 
     onDestroy(){
@@ -34,6 +34,13 @@ export default class BirthControl extends cc.Component {
 
     // update (dt) {}
     //----- 私有方法 -----//
+    private volley(startpoint:number){
+        for(let i = 0; i < this.birthPoints.length; i++)
+        {
+            this.birthPoints[i].resetSpeed();
+        }
+    }
+
     private reStart(){
         this.unscheduleAllCallbacks();
         this.time = 0;
@@ -47,12 +54,12 @@ export default class BirthControl extends cc.Component {
     private startClock(){
         this.schedule(()=>{
             this.time += 0.5;
+            this.interval += 0.5;
             this.checkCreate();
         },0.5);
     }
 
     private checkCreate(){
-        this.interval += 0.5;
         let SerialNumber:number = parseInt((this.time / 10).toString());
         // console.log("this.time = " + this.time);
         // console.log("this.interval = " + this.interval);

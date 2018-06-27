@@ -43,8 +43,8 @@ export default class ShapeControl extends cc.Component {
         this.stopMoveAndAct();
         this.flyControl.ShowNode.getComponent(cc.Animation).once('finished',()=>{
             this.node.destroy();
-        },this);
-        this.flyControl.ShowNode.getComponent(cc.Animation).play();
+        },this);;
+        this.flyControl.ShowNode.getComponent(cc.Animation).play(this.flyControl.ShowNode.getComponent(cc.Animation).getClips()[this.color].name);
     }
 
     randomcolor(){
@@ -177,34 +177,43 @@ export default class ShapeControl extends cc.Component {
         let calNode = this.flyControl.ShowNode;
         let temp: number = 0;
         let result: boolean = false;
-        if(x < 0 && y < 0)
+        let dis = Math.sqrt((x * x + y * y));
+        let touAngle = Math.asin(y / dis);
+        if(x < 0)
         {
-            temp = (-1 * calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * x - calNode.height * Math.abs(calNode.scaleY) / 2;
-            if(y > temp)
+            touAngle = 180 * lib.defConfig.coefficient - touAngle;
+        }
+        let nowAngle = touAngle + this.node.rotation * lib.defConfig.coefficient; 
+        let nowx = dis * Math.cos(nowAngle);
+        let nowy = dis * Math.sin(nowAngle);
+        if(nowx < 0 && nowy < 0)
+        {
+            temp = (-1 * calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * nowx - calNode.height * Math.abs(calNode.scaleY) / 2;
+            if(nowy > temp)
             {
                 result = true;
             }
         }
-        else if(x < 0 && y > 0)
+        else if(nowx < 0 && nowy > 0)
         {
-            temp = (calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * x + calNode.height * Math.abs(calNode.scaleY) / 2;
-            if(y < temp)
+            temp = (calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * nowx + calNode.height * Math.abs(calNode.scaleY) / 2;
+            if(nowy < temp)
             {
                 result = true;
             }
         }
-        else if(x > 0 && y > 0)
+        else if(nowx > 0 && nowy > 0)
         {
-            temp = (-1 * calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * x + calNode.height * Math.abs(calNode.scaleY) / 2;
-            if(y < temp)
+            temp = (-1 * calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * nowx + calNode.height * Math.abs(calNode.scaleY) / 2;
+            if(nowy < temp)
             {
                 result = true;
             }
         }
-        else if(x > 0 && y < 0)
+        else if(nowx > 0 && nowy < 0)
         {
-            temp = (calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * x - calNode.height * Math.abs(calNode.scaleY) / 2;
-            if(y > temp)
+            temp = (calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * nowx - calNode.height * Math.abs(calNode.scaleY) / 2;
+            if(nowy > temp)
             {
                 result = true;
             }
