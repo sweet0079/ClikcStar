@@ -8,6 +8,8 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class BirthControl extends cc.Component {
     //----- 编辑器属性 -----//
+    /** 套路多少秒来一波 */
+    @property({tooltip:"套路多少秒来一波", type: cc.Integer}) WeaveComeTime: number = 20;
     /** 出生间隔数组 */
     @property({tooltip:"出生间隔数组", type: [cc.Float]}) BirthInterval: Array<number> = [];
     /** 出生个数数组 */
@@ -20,6 +22,12 @@ export default class BirthControl extends cc.Component {
     //----- 属性声明 -----//
     private time = 0;
     private interval = 0;
+    //套路持续时间
+    private weaveTime = 0;
+    //套路已持续时间
+    private weaveRunTime = 0;
+    //套路是否开始标识符
+    private weaveFlag:boolean = false;
     //----- 生命周期 -----//
     // onLoad () {}
 
@@ -34,10 +42,34 @@ export default class BirthControl extends cc.Component {
 
     // update (dt) {}
     //----- 私有方法 -----//
+    private Weave(){
+        if(this.weaveRunTime == 0)
+        {
+            lib.msgEvent.getinstance().emit(lib.msgConfig.ShowWarn);
+        }
+        this.weaveRunTime += 0.5;
+        if(this.weaveRunTime == 10)
+        {
+            lib.msgEvent.getinstance().emit(lib.msgConfig.HideWarn);
+            this.volley(0);
+        }
+        if(this.weaveRunTime == 10 + this.weaveTime){
+            this.weaveFlag = false;
+            this.time += 0.5;
+        }
+    }
+
     private volley(startpoint:number){
+        this.weaveTime = 20;
+        let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
+        let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
+        let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
         for(let i = 0; i < this.birthPoints.length; i++)
         {
-            this.birthPoints[i].resetSpeed();
+            this.scheduleOnce(()=>{
+                let fpare = this.birthPoints[i].getRandomFlyParameters();
+                this.birthPoints[i].createAppointShape(fpare,dpare,cpare,spare);
+            },i);
         }
     }
 
@@ -45,6 +77,9 @@ export default class BirthControl extends cc.Component {
         this.unscheduleAllCallbacks();
         this.time = 0;
         this.interval = 0;
+        this.weaveFlag = false;
+        this.weaveTime = 0;
+        this.weaveRunTime = 0;
         for(let i = 0; i < this.birthPoints.length; i++)
         {
             this.birthPoints[i].resetSpeed();
@@ -53,9 +88,17 @@ export default class BirthControl extends cc.Component {
     }
     private startClock(){
         this.schedule(()=>{
-            this.time += 0.5;
-            this.interval += 0.5;
-            this.checkCreate();
+            if(!this.weaveFlag)
+            {
+                this.time += 0.5;
+                this.interval += 0.5;
+                this.checkCreate();
+            }
+            else
+            {
+                this.Weave();
+            }
+            console.log("time = " + this.time + "  interval = " + this.interval);
         },0.5);
     }
 
@@ -64,6 +107,12 @@ export default class BirthControl extends cc.Component {
         // console.log("this.time = " + this.time);
         // console.log("this.interval = " + this.interval);
         // console.log("SerialNumber = " + SerialNumber);
+        if(this.time != 0 && this.time % this.WeaveComeTime == 0)
+        {
+            this.weaveFlag = true;
+            this.weaveTime = 0;
+            this.weaveRunTime = 0;
+        }
         if(SerialNumber >= this.BirthInterval.length
         || SerialNumber >= this.BirthNumber.length)
         {

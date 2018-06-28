@@ -22,6 +22,12 @@ export default class ClickControl extends cc.Component {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.Settlement,"settlement",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ReStart,"reStart",this);
     }
+
+    onDestroy(){
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.clickStart,"add",this);
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.Settlement,"settlement",this);
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.ReStart,"reStart",this);
+    }
     // update (dt) {}
     //----- 私有方法 -----//
     private reStart(){

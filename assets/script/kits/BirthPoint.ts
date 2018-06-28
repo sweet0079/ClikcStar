@@ -120,9 +120,8 @@ export default class BirthPoint extends cc.Component {
         }
     }
 
-    //创建随机形状
-    createRandomShape(){
-        //随机形状的飞行轨迹组件参数
+    //随机形状的飞行轨迹组件参数
+    getRandomFlyParameters(){
         //取得一个随机速度
         let speed = cc.random0To1() * (this.SpeedUpperLimit - this.SpeedLowerLimit) + this.SpeedLowerLimit;
         //取得一个随机入射角度
@@ -158,15 +157,34 @@ export default class BirthPoint extends cc.Component {
             TurnThreshold: TurnThreshold,
             TurnAngle: TurnAngle,
         }
-        this.createShape(parameters);
+        return parameters;
     }
 
-    createAppointShape(parameters:_kits.FlyingShape.parameters,Dparameters:_kits.Disspation.parameters,Ctype){
+    //创建随机形状
+    createRandomShape(){
+        let parameters = this.getRandomFlyParameters();
+        this._createRandomShape(parameters);
+    }
 
+    createAppointShape(parameters:_kits.FlyingShape.parameters,Dparameters:_kits.Disspation.parameters,Ctype:number,Sparameters:_kits.ShapeControl.parameters){
+        let shape = cc.instantiate(this.shapeprefeb);
+        shape.position = this.node.position;
+        this.shapeSetPath(shape,parameters);
+        //随机形状的特性参数
+        this.shapeSetcha(shape,Ctype);
+        //随机形状的消散参数
+        this.shapeSetdiss(shape,Dparameters);
+        //随机形状的外形参数
+        shape.getComponent(shapeControl).setcolor(Sparameters.color);
+        shape.getComponent(shapeControl).setShape(Sparameters.type);
+        //添加至管理类
+        ShapeManager.getinstance().addShape(shape);
+        //赋值父节点
+        shape.parent = this.shapeParNode;
     }
 
     //----- 私有方法 -----//
-    private createShape(parameters:_kits.FlyingShape.parameters){
+    private _createRandomShape(parameters:_kits.FlyingShape.parameters){
         let shape = cc.instantiate(this.shapeprefeb);
         shape.position = this.node.position;
         this.shapeSetPath(shape,parameters);

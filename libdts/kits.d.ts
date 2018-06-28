@@ -1,5 +1,6 @@
 /** kits的接口库 */
-declare namespace _kits {}
+declare namespace _kits {
+}
 declare namespace _kits.FlyingShape {
     interface parameters {
         Flightpath: number,

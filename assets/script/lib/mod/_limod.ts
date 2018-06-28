@@ -3,3 +3,6 @@ export { limsgEvent as msgEvent }
 
 import * as tools from './litools'
 export { tools as tools }
+
+import * as RandomParameters from './RandomParameters'
+export { RandomParameters as RandomParameters }

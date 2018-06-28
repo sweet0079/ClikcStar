@@ -121,6 +121,13 @@ export const shape = cc.Enum({
     // 枚举的长度
     length: 9,
 });
+// /** 难度数组 */
+// export object diff = {
+//     Interval:0,
+//     Number:0,
+//     Speed:0,
+// }
+
 //每个形状有几种颜色
 export const ColorNum = 3;
 //设计时中间用于点击区域的宽
