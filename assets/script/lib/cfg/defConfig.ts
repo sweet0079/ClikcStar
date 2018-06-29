@@ -79,24 +79,24 @@ export const character = cc.Enum({
 });
 /** 形状特性枚举 */
 export const dissipate = cc.Enum({    
-    // 无
-    none: -1,
-    // 碎裂
-    fragmentation: -1,
-    // 融入
-    integration: -1,
-    // 消失
-    disappear: -1,
-    // 掉落
-    drop: -1,
-    // 黏滞
-    sticky: -1,
-    // 反弹
-    rebound: -1,
-    // 分解
-    decompose: -1,
-    // 枚举的长度
-    length: -1,
+    
+    none: -1,// 无
+    
+    fragmentation: -1,// 碎裂
+    
+    integration: -1,// 融入
+    
+    disappear: -1,// 消失
+    
+    drop: -1,// 掉落
+
+    sticky: -1,// 黏滞
+    
+    rebound: -1,// 反弹
+    
+    decompose: -1,// 分解
+    
+    length: -1,// 枚举的长度
 });
 /** 形状外形枚举 */
 export const shape = cc.Enum({
@@ -121,12 +121,13 @@ export const shape = cc.Enum({
     // 枚举的长度
     length: 9,
 });
-// /** 难度数组 */
-// export object diff = {
-//     Interval:0,
-//     Number:0,
-//     Speed:0,
-// }
+/** 套路大类型枚举 */
+export const Tricks = cc.Enum({
+    //齐射
+    volley: -1,
+    // 枚举的长度
+    length: -1,
+});
 
 //每个形状有几种颜色
 export const ColorNum = 3;

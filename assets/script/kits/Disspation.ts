@@ -36,6 +36,15 @@ export default class Dissipation extends cc.Component {
     }
 
     update (dt) {
+        //因为某些原因遗漏的形状删除
+        if(this.node.position.x > lib.defConfig.DesignPlayWidth * 1.5 
+        || this.node.position.x < -lib.defConfig.DesignPlayWidth * 1.5
+        || this.node.position.y > lib.defConfig.DesignPlayHeight * 1.5
+        || this.node.position.y < -lib.defConfig.DesignPlayHeight * 1.5) 
+        {
+            ShapeManager.getinstance().delShape(this.node);
+            this.node.destroy();
+        }
         //离开屏幕后进行销毁判断
         if(this.haveLeave)
         {
@@ -89,6 +98,7 @@ export default class Dissipation extends cc.Component {
         {
             switch(this.lastRebound)
             {
+                //四个角落
                 case lib.defConfig.lastReboundPos.other:
                     if(this.node.position.x <= lib.defConfig.DesignPlayWidth/2 - this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX
                     && this.node.position.x >= -lib.defConfig.DesignPlayWidth/2 + this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX
@@ -98,24 +108,28 @@ export default class Dissipation extends cc.Component {
                         this.reboundFlag = false;
                     } 
                     break;
+                //上
                 case lib.defConfig.lastReboundPos.top:
                     if(this.node.position.y <= lib.defConfig.DesignPlayHeight/2 - this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
                     {
                         this.reboundFlag = false;
                     } 
                     break;
+                //下
                 case lib.defConfig.lastReboundPos.bottom:
                     if(this.node.position.y >= -lib.defConfig.DesignPlayHeight/2 + this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
                     {
                         this.reboundFlag = false;
                     } 
                     break;
+                //左
                 case lib.defConfig.lastReboundPos.left:
                     if(this.node.position.x >= -lib.defConfig.DesignPlayWidth/2 + this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX)
                     {
                         this.reboundFlag = false;
                     } 
                     break;
+                //右
                 case lib.defConfig.lastReboundPos.right:
                     if(this.node.position.x <= lib.defConfig.DesignPlayWidth/2 - this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX)
                     {
@@ -168,6 +182,7 @@ export default class Dissipation extends cc.Component {
                 this.dropdes();
                 break;
             case lib.defConfig.dissipate.sticky:
+                this.stickies();
                 break;
             case lib.defConfig.dissipate.rebound:
                 this.rebounds();
@@ -180,16 +195,20 @@ export default class Dissipation extends cc.Component {
         }
     }
 
-    private setdestroy(fun:_li.cb.norCallBack) {
-        this._destfun = fun;
-    }
+    // private setdestroy(fun:_li.cb.norCallBack) {
+    //     this._destfun = fun;
+    // }
 
     private dropdes(){
         //this.flyControl.drop();
         //this.type = lib.defConfig.dissipate.none;
     }
 
-    //参数强行控制可以连续反弹
+    private stickies(){
+        this.flyControl.Speed *= 0.1;
+    }
+
+    //参数强行控制可以连续反弹，用于没有飞行到最小距离就出边的情况
     private rebounds(once:boolean = false){
         if(this.reboundFlag)
         {
@@ -201,11 +220,6 @@ export default class Dissipation extends cc.Component {
             }
             return;
         }
-        // console.log("右边边界 =" + (lib.defConfig.DesignPlayWidth/2 - this.node.width/2 * this.node.scaleX));
-        // console.log("左边边界 =" + (-lib.defConfig.DesignPlayWidth/2 + this.node.width/2 * this.node.scaleX));
-        // console.log("上边边界 =" + (lib.defConfig.DesignPlayHeight/2 - this.node.height/2 * this.node.scaleY));
-        // console.log("下边边界 =" + (-lib.defConfig.DesignPlayHeight/2 + this.node.height/2 * this.node.scaleY));
-        // console.log("自己坐标X = " + this.node.position.x + "  Y =" + this.node.position.y);
         //右边反弹
         if(this.node.position.x >= lib.defConfig.DesignPlayWidth/2 - this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX)
         {
@@ -292,7 +306,7 @@ export default class Dissipation extends cc.Component {
         }
         this.reboundFlag = true;
         //判断是否可以连续反弹
-            if(this.ContinueRebound
+        if(this.ContinueRebound
                 || once)
         {
             this.haveLeave = false;

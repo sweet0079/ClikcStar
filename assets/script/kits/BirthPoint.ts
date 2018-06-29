@@ -67,42 +67,12 @@ export default class BirthPoint extends cc.Component {
         //         this.createRandomShape();
         //     }
         // },3);
-        // //根据出生点调整形状的初始角
-        // switch(this.birthpos)
-        // {
-        //     case lib.defConfig.birthpoint.leftbottom:
-        //         this.InitialAngle = 45;
-        //         break;
-        //     case lib.defConfig.birthpoint.left:
-        //         this.InitialAngle = 0;
-        //         break;
-        //     case lib.defConfig.birthpoint.lefttop:
-        //         this.InitialAngle = -45;
-        //         break;
-        //     case lib.defConfig.birthpoint.top:
-        //         this.InitialAngle = -90;
-        //         break;
-        //     case lib.defConfig.birthpoint.righttop:
-        //         this.InitialAngle = 45;
-        //         break;
-        //     case lib.defConfig.birthpoint.right:
-        //         this.InitialAngle = 0;
-        //         break;
-        //     case lib.defConfig.birthpoint.rightbottom:
-        //         this.InitialAngle = -45;
-        //         break;
-        //     case lib.defConfig.birthpoint.bottom:
-        //         this.InitialAngle = 90;
-        //         break;
-        //     default:
-        //         this.InitialAngle = 0;
-        //         break;
-        // }
     }
 
     // update (dt) {}
 
     //----- 公有方法 -----//
+    //设置这个点出生的形状的速度系数
     setSpeed(scale:number){
         if(this.SpeedScaleNum != scale)
         {
@@ -112,6 +82,7 @@ export default class BirthPoint extends cc.Component {
         }
     }
 
+    //重置这个点出生的形状的速度系数
     resetSpeed(){
         if(this.SpeedScaleNum != 0)
         {
@@ -166,6 +137,7 @@ export default class BirthPoint extends cc.Component {
         this._createRandomShape(parameters);
     }
 
+    //创建指定形状
     createAppointShape(parameters:_kits.FlyingShape.parameters,Dparameters:_kits.Disspation.parameters,Ctype:number,Sparameters:_kits.ShapeControl.parameters){
         let shape = cc.instantiate(this.shapeprefeb);
         shape.position = this.node.position;
@@ -184,6 +156,7 @@ export default class BirthPoint extends cc.Component {
     }
 
     //----- 私有方法 -----//
+    //创建一个随机形状
     private _createRandomShape(parameters:_kits.FlyingShape.parameters){
         let shape = cc.instantiate(this.shapeprefeb);
         shape.position = this.node.position;
@@ -204,22 +177,26 @@ export default class BirthPoint extends cc.Component {
         shape.parent = this.shapeParNode;
     }
 
+    //为传入节点设置形状参数
     private shapeSetshape(node:cc.Node,type:_kits.ShapeControl.parameters){
         let shapediss = node.getComponent(shapeControl);
         shapediss.setcolor(type.color);
         shapediss.setShape(type.type);
     }
 
+    //为传入节点设置消散参数
     private shapeSetdiss(node:cc.Node,type:_kits.Disspation.parameters){
         let shapediss = node.getComponent(disspation);
         shapediss.type = type.type;
     }
 
+    //为传入节点设置特性参数
     private shapeSetcha(node:cc.Node,type:number){
         let shapechara = node.getComponent(characteristic);
         shapechara.type = type;
     }
 
+    //为传入节点设置飞行轨迹参数
     private shapeSetPath(node:cc.Node,parameters:_kits.FlyingShape.parameters){
         let shapepath = node.getComponent(FlyingShape);
         //根据出生点所在位置改变形状出生位置
@@ -280,7 +257,6 @@ export default class BirthPoint extends cc.Component {
                 }
                 break;
         }
-        shapepath.setInitialAngle(this.InitialAngle);
         shapepath.Speed = parameters.Speed;
         shapepath.Angle = parameters.Angle;
         shapepath.Flightpath = parameters.Flightpath;

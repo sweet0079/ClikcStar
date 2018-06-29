@@ -39,6 +39,7 @@ export default class ShapeControl extends cc.Component {
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.ReStart,"reStart",this);
     }
     //----- 公有方法 -----//
+    //播放点击爆裂动画
     destroyAni(){
         this.stopMoveAndAct();
         this.flyControl.ShowNode.getComponent(cc.Animation).once('finished',()=>{
@@ -47,25 +48,30 @@ export default class ShapeControl extends cc.Component {
         this.flyControl.ShowNode.getComponent(cc.Animation).play(this.flyControl.ShowNode.getComponent(cc.Animation).getClips()[this.color].name);
     }
 
+    //随机颜色
     randomcolor(){
         let temp = parseInt((cc.random0To1() * lib.defConfig.ColorNum).toString());
         this.color = temp;
     }
 
+    //设置为指定颜色
     setcolor(num:number){
         this.color = num;
     }
 
+    //获取形状颜色和外形
     gettype(){
         return [this.type,this.color];
     }
 
+    //获取形状颜色和外形
     randomShape(){
         let temp = parseInt((cc.random0To1() * (lib.defConfig.shape.length)).toString());
         this.type = temp;
         this.setShape(this.type);
     }
 
+    //设置形状外形，此方法写在设置颜色之后
     setShape(type:number){
         this.flyControl = this.node.getComponent(FlyingShape);
         let calNode = this.flyControl.ShowNode;
@@ -107,14 +113,18 @@ export default class ShapeControl extends cc.Component {
     getIsClickShape(x:number,y:number){
         return this._IsClickShape(x,y);
     }
+    
+    //----- 事件回调 -----//
+    //重新开始事件回调
+    private reStart(){
+        this.node.destroy();
+    }
+
     //----- 私有方法 -----//
+    //停止形状所有的移动和动作事件
     private stopMoveAndAct(){
         this.flyControl.stopMove();
         this.node.getComponent(characteristic).stopAct();
-    }
-
-    private reStart(){
-        this.node.destroy();
     }
 
     private _IsClickShape(x:number,y:number){
@@ -130,8 +140,10 @@ export default class ShapeControl extends cc.Component {
         let calNode = this.flyControl.ShowNode;
         let temp: number = 0;
         let result: boolean = false;
+        //计算旋转前的点击落点（点击落点在形状旋转前后始终在同一个圈上）
         let dis = Math.sqrt((x * x + y * y));
         let touAngle = Math.asin(y / dis);
+        //如果是一个大于90度的角a，asin函数默认会返回180 - a
         if(x < 0)
         {
             touAngle = 180 * lib.defConfig.coefficient - touAngle;
@@ -140,16 +152,18 @@ export default class ShapeControl extends cc.Component {
         let nowx = dis * Math.cos(nowAngle);
         let nowy = dis * Math.sin(nowAngle);
         if(nowx < 0){
-            temp = (2 * calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * nowx + calNode.height * Math.abs(calNode.scaleY) / 2;
-            if(nowy < temp)
+            temp = (2 * calNode.height * Math.abs(calNode.scaleY) * this.node.scaleY / calNode.width * Math.abs(calNode.scaleX)) * this.node.scaleX * nowx
+                 + calNode.height * Math.abs(calNode.scaleY) / 2 * this.node.scaleY;
+            if(nowy < temp + 40 * Math.abs(calNode.scaleY) * this.node.scaleY)
             {
                 result = true;
             }
         }
         else
         {
-            temp = (-2 * calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * nowx + calNode.height * Math.abs(calNode.scaleY) / 2;
-            if(nowy < temp)
+            temp = (-2 * calNode.height * Math.abs(calNode.scaleY) * this.node.scaleY / calNode.width * Math.abs(calNode.scaleX)) * nowx * this.node.scaleX
+                 + calNode.height * Math.abs(calNode.scaleY) * this.node.scaleY / 2;
+            if(nowy < temp + 40 * Math.abs(calNode.scaleY) * this.node.scaleY)
             {
                 result = true;
             }
@@ -161,8 +175,8 @@ export default class ShapeControl extends cc.Component {
     private _circulargetIsClickShape(x:number,y:number){
         let calNode = this.flyControl.ShowNode;
         let dis = Math.sqrt((x * x + y * y));
-        if(dis < calNode.width * Math.abs(calNode.scaleX) / 2
-        ||dis < calNode.height * Math.abs(calNode.scaleY) / 2)
+        if(dis < calNode.width * Math.abs(calNode.scaleX) * this.node.scaleX / 2
+        ||dis < calNode.height * Math.abs(calNode.scaleY) * this.node.scaleY / 2)
         {
             return true;
         }
@@ -177,6 +191,7 @@ export default class ShapeControl extends cc.Component {
         let calNode = this.flyControl.ShowNode;
         let temp: number = 0;
         let result: boolean = false;
+        //计算旋转前的点击落点
         let dis = Math.sqrt((x * x + y * y));
         let touAngle = Math.asin(y / dis);
         if(x < 0)
@@ -188,32 +203,36 @@ export default class ShapeControl extends cc.Component {
         let nowy = dis * Math.sin(nowAngle);
         if(nowx < 0 && nowy < 0)
         {
-            temp = (-1 * calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * nowx - calNode.height * Math.abs(calNode.scaleY) / 2;
-            if(nowy > temp)
+            temp = (-1 * calNode.height * Math.abs(calNode.scaleY) * this.node.scaleY / calNode.width * Math.abs(calNode.scaleX)) * nowx * this.node.scaleX
+                 - calNode.height * Math.abs(calNode.scaleY) * this.node.scaleY / 2;
+            if(nowy > temp - 15 * Math.abs(calNode.scaleY) * this.node.scaleY)
             {
                 result = true;
             }
         }
         else if(nowx < 0 && nowy > 0)
         {
-            temp = (calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * nowx + calNode.height * Math.abs(calNode.scaleY) / 2;
-            if(nowy < temp)
+            temp = (calNode.height * Math.abs(calNode.scaleY) * this.node.scaleY / calNode.width * Math.abs(calNode.scaleX)) * nowx * this.node.scaleX
+                 + calNode.height * Math.abs(calNode.scaleY) * this.node.scaleY / 2;
+            if(nowy < temp + 15 * Math.abs(calNode.scaleY) * this.node.scaleY)
             {
                 result = true;
             }
         }
         else if(nowx > 0 && nowy > 0)
         {
-            temp = (-1 * calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * nowx + calNode.height * Math.abs(calNode.scaleY) / 2;
-            if(nowy < temp)
+            temp = (-1 * calNode.height * Math.abs(calNode.scaleY) * this.node.scaleY / calNode.width * Math.abs(calNode.scaleX)) * nowx  * this.node.scaleX
+                 + calNode.height * Math.abs(calNode.scaleY) * this.node.scaleY / 2;
+            if(nowy < temp + 15 * Math.abs(calNode.scaleY) * this.node.scaleY)
             {
                 result = true;
             }
         }
         else if(nowx > 0 && nowy < 0)
         {
-            temp = (calNode.height * Math.abs(calNode.scaleY) / calNode.width * Math.abs(calNode.scaleX)) * nowx - calNode.height * Math.abs(calNode.scaleY) / 2;
-            if(nowy > temp)
+            temp = (calNode.height * Math.abs(calNode.scaleY) * this.node.scaleY / calNode.width * Math.abs(calNode.scaleX)) * nowx * this.node.scaleX
+                 - calNode.height * Math.abs(calNode.scaleY) * this.node.scaleY / 2;
+            if(nowy > temp - 15 * Math.abs(calNode.scaleY) * this.node.scaleY)
             {
                 result = true;
             }

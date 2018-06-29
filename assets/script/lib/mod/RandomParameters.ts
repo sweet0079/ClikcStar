@@ -21,4 +21,18 @@ export const RandomParameters = {
         }
         return shapare;
     },
+
+    getRandomBool(){
+        console.log(cc.random0To1() * 2);
+        let temp = parseInt((cc.random0To1() * 2).toString());
+        console.log(temp);
+        if(temp == 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 }

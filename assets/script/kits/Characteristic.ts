@@ -96,6 +96,8 @@ export default class Characteristic extends cc.Component {
             if(!this.havestop
                 && this.node.getComponent(Dissipation).type == lib.defConfig.dissipate.drop)
             {
+                this.flyControl.ShowNode.opacity = 255;
+                this.node.runAction(cc.fadeIn(0.05));
                 this.node.stopAllActions();
                 this.flyControl.ShowNode.stopAllActions();
             }

@@ -31,8 +31,6 @@ export default class FlyingShape extends cc.Component {
     /** 飞行轨迹枚举 */
     static readonly Flightpath = lib.defConfig.Flightpath;
     //----- 属性声明 -----//
-    //进入屏幕前的飞行角
-    private InitialAngle:number = 0;
     //螺旋模式初始螺旋角度
     private screwAngle:number = 90;
     //长曲线模式以改变角度
@@ -146,21 +144,13 @@ export default class FlyingShape extends cc.Component {
             {
                 this.subMoveDistence += Math.abs(this.Speed) * dt;
             }
-            // else
-            // {
-            //     this.node.x += this.Speed * dt * Math.cos(this.InitialAngle * lib.defConfig.coefficient);
-            //     this.node.y += this.Speed * dt * Math.sin(this.InitialAngle * lib.defConfig.coefficient);
-            // }
         }
     }
     //----- 公有方法 -----//
+    //停止移动
     stopMove(){
         this.Speed = 0;
         this.Flightpath = lib.defConfig.Flightpath.straight;
-    }
-
-    setInitialAngle(num){
-        this.InitialAngle = num;
     }
 
     //取得目前移动的总路程
@@ -168,16 +158,19 @@ export default class FlyingShape extends cc.Component {
         return this.subMoveDistence;
     }
 
+    //增加角度
     addAngle(angle: number){
         this.Angle += angle;
         this.ShowNode.rotation = -this.Angle;
     }
     
+    //设置角度
     setAngle(angle: number){
         this.Angle = angle;
         this.ShowNode.rotation = -this.Angle;
     }
 
+    //获得当前显示节点的旋转度数
     getRotation(){
         return this.ShowNode.rotation;
     }

@@ -41,7 +41,24 @@ export default class BirthControl extends cc.Component {
     }
 
     // update (dt) {}
+    //----- 事件回调 -----//
+    //逐个点生成形状
+    private reStart(){
+        this.unscheduleAllCallbacks();
+        this.time = 0;
+        this.interval = 0;
+        this.weaveFlag = false;
+        this.weaveTime = 0;
+        this.weaveRunTime = 0;
+        for(let i = 0; i < this.birthPoints.length; i++)
+        {
+            this.birthPoints[i].resetSpeed();
+        }
+        this.startClock();
+    }
+
     //----- 私有方法 -----//
+    //套路开始主方法
     private Weave(){
         if(this.weaveRunTime == 0)
         {
@@ -59,33 +76,55 @@ export default class BirthControl extends cc.Component {
         }
     }
 
+    //齐射主方法
     private volley(startpoint:number){
+        //根据套路持续时间设置
         this.weaveTime = 20;
+
+        //获取随机bool值
+        let fpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的飞行轨迹
+        let dpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的消散
+        let cpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的特性
+        let spareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的形状
+        //获取随机参数数值
+        let angle = 0;
+        let speed = this.birthPoints[1].getRandomFlyParameters().Speed;
         let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
         let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
         let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+        //逐个点生成形状
         for(let i = 0; i < this.birthPoints.length; i++)
         {
             this.scheduleOnce(()=>{
                 let fpare = this.birthPoints[i].getRandomFlyParameters();
+                if(fpareFlag)
+                {
+                    fpare.Angle = angle;
+                    //角落4个出生点的入射角设置为45度
+                    if(i == 0 || i == 4 || i == 10 || i == 14)
+                    {
+                        fpare.Angle = 45;
+                    }
+                    fpare.Speed = speed;
+                }
+                if(!dpareFlag)
+                {
+                    dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
+                }
+                if(!cpareFlag)
+                {
+                    cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
+                }
+                if(!spareFlag)
+                {
+                    spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+                }
                 this.birthPoints[i].createAppointShape(fpare,dpare,cpare,spare);
             },i);
         }
     }
 
-    private reStart(){
-        this.unscheduleAllCallbacks();
-        this.time = 0;
-        this.interval = 0;
-        this.weaveFlag = false;
-        this.weaveTime = 0;
-        this.weaveRunTime = 0;
-        for(let i = 0; i < this.birthPoints.length; i++)
-        {
-            this.birthPoints[i].resetSpeed();
-        }
-        this.startClock();
-    }
+    //开始计时，根据时间增长，创建形状、提高难度
     private startClock(){
         this.schedule(()=>{
             if(!this.weaveFlag)
@@ -98,26 +137,30 @@ export default class BirthControl extends cc.Component {
             {
                 this.Weave();
             }
-            console.log("time = " + this.time + "  interval = " + this.interval);
+            // console.log("time = " + this.time + "  interval = " + this.interval);
         },0.5);
     }
 
+    //检验是否可以创建形状
     private checkCreate(){
         let SerialNumber:number = parseInt((this.time / 10).toString());
         // console.log("this.time = " + this.time);
         // console.log("this.interval = " + this.interval);
         // console.log("SerialNumber = " + SerialNumber);
+        //判断套路是否结束
         if(this.time != 0 && this.time % this.WeaveComeTime == 0)
         {
             this.weaveFlag = true;
             this.weaveTime = 0;
             this.weaveRunTime = 0;
         }
+        //判断当前难度
         if(SerialNumber >= this.BirthInterval.length
         || SerialNumber >= this.BirthNumber.length)
         {
             SerialNumber = this.BirthNumber.length - 1;
         }
+        //判断是否该出形状
         if(this.interval >= this.BirthInterval[SerialNumber])
         {
             this.interval = 0;
