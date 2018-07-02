@@ -91,6 +91,24 @@ export default class BirthPoint extends cc.Component {
         }
     }
 
+    //获取当前出生点到点（x，y）的角度
+    getAngleToPoint(x:number,y:number){
+        let dis = Math.sqrt(((this.node.x - x) * (this.node.x - x) + (this.node.y - y) * (this.node.y - y)));
+        let rad = Math.asin((Math.abs(this.node.y - y) / dis));
+        let ang = rad * 180 / Math.PI;
+        let angle = 0;
+        if(y > this.node.y)
+        {
+            angle = -ang;
+        }
+        else
+        {
+            angle = ang;
+        }
+        console.log(ang);
+        return ang; 
+    }
+
     //随机形状的飞行轨迹组件参数
     getRandomFlyParameters(){
         //取得一个随机速度
@@ -155,6 +173,19 @@ export default class BirthPoint extends cc.Component {
         shape.parent = this.shapeParNode;
     }
 
+    //判断角度是否合法
+    JudgeAngleLegality(angle)
+    {
+        if(angle <= this.AngleUpperLimit &&
+            angle >= this.AngleLowerLimit)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+    }
     //----- 私有方法 -----//
     //创建一个随机形状
     private _createRandomShape(parameters:_kits.FlyingShape.parameters){

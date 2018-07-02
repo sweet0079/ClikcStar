@@ -167,7 +167,7 @@ export default class FlyingShape extends cc.Component {
     //设置角度
     setAngle(angle: number){
         this.Angle = angle;
-        this.ShowNode.rotation = -this.Angle;
+        //this.ShowNode.rotation = -this.Angle;
     }
 
     //获得当前显示节点的旋转度数

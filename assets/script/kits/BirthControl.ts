@@ -65,21 +65,36 @@ export default class BirthControl extends cc.Component {
             lib.msgEvent.getinstance().emit(lib.msgConfig.ShowWarn);
         }
         this.weaveRunTime += 0.5;
-        if(this.weaveRunTime == 10)
+        if(this.weaveRunTime == lib.defConfig.WarningTime)
         {
             lib.msgEvent.getinstance().emit(lib.msgConfig.HideWarn);
-            this.volley(0);
+            let weavetype = parseInt((cc.random0To1() * (lib.defConfig.Tricks.length)).toString());
+            console.log("lib.defConfig.Tricks.length = " + lib.defConfig.Tricks.length);
+            console.log("weavetype = " + weavetype);
+            switch(weavetype)
+            {
+                case lib.defConfig.Tricks.order:
+                    let startPoint = parseInt((cc.random0To1() * (this.birthPoints.length)).toString());
+                    this.order(startPoint);
+                    break;
+                case lib.defConfig.Tricks.symmetry:
+                    this.symmetry();
+                    break;
+                default:
+                    break;
+            }
         }
-        if(this.weaveRunTime == 10 + this.weaveTime){
+        if(this.weaveRunTime == lib.defConfig.WarningTime + this.weaveTime){
             this.weaveFlag = false;
             this.time += 0.5;
         }
     }
 
-    //齐射主方法
-    private volley(startpoint:number){
+    //有序主方法
+    private order(startpoint:number){
+        startpoint = startpoint % this.birthPoints.length;
         //根据套路持续时间设置
-        this.weaveTime = 20;
+        this.weaveTime = 21;
 
         //获取随机bool值
         let fpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的飞行轨迹
@@ -96,12 +111,17 @@ export default class BirthControl extends cc.Component {
         for(let i = 0; i < this.birthPoints.length; i++)
         {
             this.scheduleOnce(()=>{
-                let fpare = this.birthPoints[i].getRandomFlyParameters();
+                let temp = i + startpoint;
+                if(temp >= this.birthPoints.length)
+                {
+                    temp -= this.birthPoints.length;
+                }
+                let fpare = this.birthPoints[temp].getRandomFlyParameters();
                 if(fpareFlag)
                 {
                     fpare.Angle = angle;
                     //角落4个出生点的入射角设置为45度
-                    if(i == 0 || i == 4 || i == 10 || i == 14)
+                    if(temp == 0 || temp == 4 || temp == 10 || temp == 14)
                     {
                         fpare.Angle = 45;
                     }
@@ -119,7 +139,60 @@ export default class BirthControl extends cc.Component {
                 {
                     spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
                 }
-                this.birthPoints[i].createAppointShape(fpare,dpare,cpare,spare);
+                this.birthPoints[temp].createAppointShape(fpare,dpare,cpare,spare);
+            },i);
+        }
+    }
+
+    //对称套路主方法
+    private symmetry(){
+        //根据套路持续时间设置
+        this.weaveTime = 5;
+
+        //获取随机bool值
+        let fpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的飞行轨迹
+        let dpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的消散
+        let cpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的特性
+        let spareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的形状
+        //获取随机参数数值
+        let speed = this.birthPoints[1].getRandomFlyParameters().Speed;
+        let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
+        let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
+        let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+        //随机三个点
+        let pointArr = this.randomArray(3);
+        for(let i = 0 ; i < 3; i++)
+        {
+            this.scheduleOnce(()=>{
+                let fpare = this.birthPoints[pointArr[i]].getRandomFlyParameters();
+                let angle = fpare.Angle;
+                let reverse:boolean = lib.RandomParameters.RandomParameters.getRandomBool();
+                this.birthPoints[pointArr[i]].createAppointShape(fpare,dpare,cpare,spare);
+                //根据是否随机各项参数来判断是否需要重新赋值
+                if(fpareFlag)
+                {
+                    fpare.Speed = speed;
+                }
+                if(!dpareFlag)
+                {
+                    dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
+                }
+                if(!cpareFlag)
+                {
+                    cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
+                }
+                if(!spareFlag)
+                {
+                    spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+                }
+                if(reverse)
+                {
+                    if(this.birthPoints[lib.RandomParameters.RandomParameters.getSymmetricPoint(pointArr[i])].JudgeAngleLegality(-angle))
+                    {
+                        fpare.Angle = -angle;
+                    }
+                }
+                this.birthPoints[lib.RandomParameters.RandomParameters.getSymmetricPoint(pointArr[i])].createAppointShape(fpare,dpare,cpare,spare);
             },i);
         }
     }

@@ -11,8 +11,8 @@ export default class Dissipation extends cc.Component {
     //----- 编辑器属性 -----//
     /** 默认消散类型 */
     @property({tooltip:"消散类型",  type: lib.defConfig.dissipate }) type = lib.defConfig.dissipate.none;
-    /** 默认消散类型 */
-    @property({tooltip:"是否可以连续反弹",  type: cc.Boolean }) ContinueRebound: boolean = true;
+    /** 反弹上限次数 */
+    @property({tooltip:"反弹上限次数",  type: cc.Integer }) ReboundLimit: number = 4;
     /** 默认最小消散距离 */
     @property({tooltip:"最小消散距离",  type: cc.Integer }) MiniDissDistance: number = 500;
     //----- 属性声明 -----//
@@ -26,6 +26,8 @@ export default class Dissipation extends cc.Component {
     private reboundFlag: boolean = false;
     //上次反弹触碰的边界
     private lastRebound: number = lib.defConfig.lastReboundPos.bottom;
+    //已经反弹次数
+    private ReboundTime: number = 0;
  
     //----- 生命周期 -----//
 
@@ -213,8 +215,7 @@ export default class Dissipation extends cc.Component {
         if(this.reboundFlag)
         {
             //判断是否可以连续反弹
-            if(this.ContinueRebound
-            || once)
+            if(this.ReboundTime < this.ReboundLimit)
             {
                 this.haveLeave = false;
             }
@@ -306,10 +307,13 @@ export default class Dissipation extends cc.Component {
         }
         this.reboundFlag = true;
         //判断是否可以连续反弹
-        if(this.ContinueRebound
-                || once)
+        if(this.ReboundTime < this.ReboundLimit)
         {
             this.haveLeave = false;
+        }
+        if(!once)
+        {
+            this.ReboundTime++;
         }
     }
 }
