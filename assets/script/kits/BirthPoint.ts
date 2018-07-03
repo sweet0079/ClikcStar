@@ -62,9 +62,18 @@ export default class BirthPoint extends cc.Component {
         //     // {
         //     //     this.createRandomShape();
         //     // }
-        //     if(this.birthpos == lib.defConfig.birthpoint.left)
+        //     if(this.birthpos == lib.defConfig.birthpoint.lefttop
+        //     ||this.birthpos == lib.defConfig.birthpoint.leftbottom
+        //     ||this.birthpos == lib.defConfig.birthpoint.righttop
+        //     ||this.birthpos == lib.defConfig.birthpoint.rightbottom)
         //     {
-        //         this.createRandomShape();
+        //         // this.createRandomShape();
+        //         let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
+        //         let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
+        //         let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+        //         let fpare = this.getRandomFlyParameters();
+        //         fpare.Angle = this.getAngleToPoint(0,0);
+        //         this.createAppointShape(fpare,dpare,cpare,spare);
         //     }
         // },3);
     }
@@ -97,16 +106,46 @@ export default class BirthPoint extends cc.Component {
         let rad = Math.asin((Math.abs(this.node.y - y) / dis));
         let ang = rad * 180 / Math.PI;
         let angle = 0;
-        if(y > this.node.y)
+        if(this.birthpos == lib.defConfig.birthpoint.top
+            || this.birthpos == lib.defConfig.birthpoint.bottom) 
+        {
+            rad = Math.asin((Math.abs(this.node.x - x) / dis));
+            ang = rad * 180 / Math.PI;
+            if((this.node.x > x
+            && this.node.y > 0)
+            || (this.node.x < x
+                && this.node.y < 0))
+            {
+                angle = -ang;
+            }
+            else 
+            {
+                angle = ang;
+            }
+        }
+        else if(this.birthpos == lib.defConfig.birthpoint.righttop
+        ||this.birthpos == lib.defConfig.birthpoint.lefttop)
         {
             angle = -ang;
         }
-        else
+        else if(this.birthpos == lib.defConfig.birthpoint.rightbottom
+        ||this.birthpos == lib.defConfig.birthpoint.leftbottom)
         {
             angle = ang;
         }
-        console.log(ang);
-        return ang; 
+        else if(this.birthpos == lib.defConfig.birthpoint.right
+            ||this.birthpos == lib.defConfig.birthpoint.left)
+        {
+            if(this.node.y > y)
+            {
+                angle = -ang;
+            }
+            else
+            {
+                angle = ang;
+            }
+        }
+        return angle; 
     }
 
     //随机形状的飞行轨迹组件参数
@@ -187,6 +226,7 @@ export default class BirthPoint extends cc.Component {
             }
     }
     //----- 私有方法 -----//
+
     //创建一个随机形状
     private _createRandomShape(parameters:_kits.FlyingShape.parameters){
         let shape = cc.instantiate(this.shapeprefeb);

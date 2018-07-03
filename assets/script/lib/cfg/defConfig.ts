@@ -123,6 +123,8 @@ export const shape = cc.Enum({
 });
 /** 套路大类型枚举 */
 export const Tricks = cc.Enum({
+    //齐射
+    volley: -1,
     //有序
     order: -1,
     //对称
