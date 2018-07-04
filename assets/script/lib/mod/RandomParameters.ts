@@ -2,11 +2,13 @@ import * as defConfig from '../cfg/defConfig'
 
 /** 一个生成随机形状组件参数的类 */
 export const RandomParameters = {
+    //获得一个随机的特性参数
     getRandomChaParameters(){
         let type: number = parseInt((cc.random0To1() * (defConfig.character.length)).toString());
         return type;
     },
 
+    //获得一个随机的消散参数
     getRandomDisParameters(){
         let dispare: _kits.Disspation.parameters ={
             type: parseInt((cc.random0To1() * (defConfig.dissipate.length)).toString()),
@@ -14,6 +16,7 @@ export const RandomParameters = {
         return dispare;
     },
 
+    //获得一个随机的外形参数
     getRandomShaParameters(){
         let shapare: _kits.ShapeControl.parameters ={
             type: parseInt((cc.random0To1() * (defConfig.shape.length)).toString()),
@@ -22,6 +25,7 @@ export const RandomParameters = {
         return shapare;
     },
 
+    //获得一个随机的bool值
     getRandomBool(){
         //console.log(cc.random0To1() * 2);
         let temp = parseInt((cc.random0To1() * 2).toString());

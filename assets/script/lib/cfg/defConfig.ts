@@ -125,15 +125,23 @@ export const shape = cc.Enum({
 export const Tricks = cc.Enum({
     //齐射
     volley: -1,
-    //有序
-    order: -1,
     //对称
     symmetry: -1,
+    //联合
+    union: -1,
+    //有序
+    order: -1,
+    //飞瀑
+    Waterfall: -1,
+    //集中
+    focus: -1,
     // 枚举的长度
     length: -1,
 });
 //套路开始前warning持续时间
 export const WarningTime = 10;
+//套路结束后持续时间
+export const WeaveEndTime = 5;
 //每个形状有几种颜色
 export const ColorNum = 3;
 //设计时中间用于点击区域的宽
