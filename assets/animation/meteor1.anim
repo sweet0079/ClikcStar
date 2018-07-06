@@ -1,0 +1,91 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "meteor1",
+  "_objFlags": 0,
+  "_rawFiles": null,
+  "_duration": 0.6833333333333333,
+  "sample": 60,
+  "speed": 1.1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "59ce791a-04b1-43d2-a714-06047b2bf914"
+            }
+          },
+          {
+            "frame": 0.08333333333333333,
+            "value": {
+              "__uuid__": "a21bed25-e008-4fd8-a46b-7cf1738855db"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "d535a72b-21ec-41c3-afc9-9bc39d221d41"
+            }
+          },
+          {
+            "frame": 0.25,
+            "value": {
+              "__uuid__": "7c4fe7f6-f555-453d-b864-210327ed91a6"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "69ac1e28-8558-46cf-b020-080fe59d9a0d"
+            }
+          },
+          {
+            "frame": 0.4166666666666667,
+            "value": {
+              "__uuid__": "3ec054aa-8089-411b-b861-7d70a6768669"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "f4f29a8c-a110-4228-ba19-e433a2425dcc"
+            }
+          },
+          {
+            "frame": 0.5833333333333334,
+            "value": {
+              "__uuid__": "5c0ebef0-cf6a-4f0f-99a7-6f686b7bab97"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "3f1a8913-fa4e-4b2d-a25e-2f74180dc594"
+            }
+          }
+        ]
+      }
+    },
+    "props": {
+      "position": [
+        {
+          "frame": 0,
+          "value": [
+            -435,
+            735
+          ]
+        },
+        {
+          "frame": 0.6666666666666666,
+          "value": [
+            180,
+            337
+          ]
+        }
+      ]
+    }
+  },
+  "events": []
+}

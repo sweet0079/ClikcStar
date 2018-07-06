@@ -69,31 +69,34 @@ export default class BirthControl extends cc.Component {
         {
             lib.msgEvent.getinstance().emit(lib.msgConfig.HideWarn);
             let weavetype = parseInt((cc.random0To1() * (lib.defConfig.Tricks.length)).toString());
-            // switch(weavetype)
-            // {
-            //     case lib.defConfig.Tricks.volley:
-            //         this.volley();
-            //         break
-            //     case lib.defConfig.Tricks.order:
-            //         let startPoint = parseInt((cc.random0To1() * (this.birthPoints.length)).toString());
-            //         this.order(startPoint);
-            //         break;
-            //     case lib.defConfig.Tricks.union:
-            //         this.union();
-            //         break;
-            //     case lib.defConfig.Tricks.symmetry:
-            //         this.symmetry();
-            //         break;
-            //     case lib.defConfig.Tricks.Waterfall:
-            //         this.Waterfall();
-            //         break;
-            //     case lib.defConfig.Tricks.focus:
-            //         this.focus();
-            //         break;
-            //     default:
-            //         break;
-            // }
-            this.focus();
+            switch(weavetype)
+            {
+                case lib.defConfig.Tricks.volley:
+                    this.volley();
+                    break
+                case lib.defConfig.Tricks.order:
+                    let startPoint = parseInt((cc.random0To1() * (this.birthPoints.length)).toString());
+                    this.order(startPoint);
+                    break;
+                case lib.defConfig.Tricks.union:
+                    this.union();
+                    break;
+                case lib.defConfig.Tricks.symmetry:
+                    this.symmetry();
+                    break;
+                case lib.defConfig.Tricks.Waterfall:
+                    this.Waterfall();
+                    break;
+                case lib.defConfig.Tricks.focus:
+                    this.focus();
+                    break;
+                case lib.defConfig.Tricks.focusDiv:
+                    this.focusDiv();
+                    break;
+                default:
+                    break;
+            }
+            // this.focusDiv();
         }
         if(this.weaveRunTime == lib.defConfig.WarningTime + this.weaveTime){
             this.weaveFlag = false;
@@ -101,9 +104,71 @@ export default class BirthControl extends cc.Component {
         }
     }
 
+    //集中分裂主方法
+    private focusDiv(){
+        let temp = lib.RandomParameters.RandomParameters.getRandomInt(3);
+        //根据套路持续时间设置
+        this.weaveTime = 6 + lib.defConfig.WeaveEndTime;
+
+        //获取随机bool值
+        let fpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的飞行轨迹
+        let dpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的消散
+        let cpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的特性
+        let spareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的形状
+        //获取随机参数数值
+        let angle = 0;
+        let speed = this.birthPoints[1].getRandomFlyParameters().Speed;
+        let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
+        let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
+        cpare.type = lib.defConfig.character.division;
+        let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+        //所有点同时生成形状
+        for(let i = 0; i < this.birthPoints.length; i++)
+        {
+            if(i % 2 == temp
+            && temp != 2)
+            {
+                continue;
+            }
+            let fpare = this.birthPoints[i].getRandomFlyParameters();
+            // if(fpareFlag)
+            // {
+                fpare.Angle = angle;
+                //角落4个出生点的入射角设置为45度
+                if(i == 0 || i == 4 || i == 10 || i == 14)
+                {
+                    fpare.Angle = 45;
+                }
+                fpare.Speed = speed;
+            // }
+            fpare.Angle = this.birthPoints[i].getAngleToPoint(0,0);
+            // if(!dpareFlag)
+            // {
+            //     dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
+            // }
+            // if(!cpareFlag)
+            // {
+            //     cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
+            // }
+            // if(!spareFlag)
+            // {
+            //     spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+            // }
+            let index = i;
+            for(let j = 0; j < 3; j++)
+            {
+                this.scheduleOnce(()=>{
+                    cpare.divisionDistance =  this.birthPoints[index].getDisToPoint(0,0);
+                    this.birthPoints[index].createAppointShape(fpare,dpare,cpare,spare);
+                },j * 0.5);
+            }
+        }
+    }
+
     //集中主方法
     private focus()
     {
+        let temp = lib.RandomParameters.RandomParameters.getRandomInt(3);
         //根据套路持续时间设置
         this.weaveTime = 6 + lib.defConfig.WeaveEndTime;
 
@@ -121,6 +186,11 @@ export default class BirthControl extends cc.Component {
         //所有点同时生成形状
         for(let i = 0; i < this.birthPoints.length; i++)
         {
+            if(i % 2 == temp
+            && temp != 2)
+            {
+                continue;
+            }
             let fpare = this.birthPoints[i].getRandomFlyParameters();
             // if(fpareFlag)
             // {

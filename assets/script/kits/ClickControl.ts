@@ -59,12 +59,13 @@ export default class ClickControl extends cc.Component {
     private settlement(){
         if(this.ScoreArr.length == 0)
         {
-            console.log("扣血");
+            //console.log("扣血");
+            this.UIcon.minHP();
             return;
         }
         else if(this.ScoreArr.length == 1)
         {
-            console.log("length == 1" + " score =" + this.ScoreArr[0]);
+            //console.log("length == 1" + " score =" + this.ScoreArr[0]);
             this.UIcon.addScore(this.ScoreArr[0]);
         }
         else
@@ -73,10 +74,10 @@ export default class ClickControl extends cc.Component {
             for(let i = 0; i < this.ScoreArr.length; i++)
             {
                 score += this.ScoreArr[i];
-                console.log("i == " + i + "  score ==" + this.ScoreArr[i]);
+                //console.log("i == " + i + "  score ==" + this.ScoreArr[i]);
             }
             score *= 2;
-            console.log("length == " + this.ScoreArr.length + " score =" + score);
+            //console.log("length == " + this.ScoreArr.length + " score =" + score);
             this.UIcon.addScore(score);
         }
         this.ScoreArr = [];

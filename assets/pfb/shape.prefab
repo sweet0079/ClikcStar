@@ -218,7 +218,7 @@
     },
     "_enabled": true,
     "type": 0,
-    "ContinueRebound": true,
+    "ReboundLimit": 4,
     "MiniDissDistance": 800
   },
   {
@@ -362,6 +362,24 @@
       },
       {
         "__uuid__": "08dbaeed-f660-4ebf-837f-40a0b4c86351"
+      },
+      {
+        "__uuid__": "0764c959-7e83-4f0f-8de7-a83f091b62b0"
+      },
+      {
+        "__uuid__": "997e3fe3-42dc-450c-977a-5345601c338b"
+      },
+      {
+        "__uuid__": "56c1cf47-9e59-4948-ab71-beec97fe92a9"
+      },
+      {
+        "__uuid__": "a2b8f1b8-1517-40ed-b2a1-64a83579c768"
+      },
+      {
+        "__uuid__": "70f8b35d-5121-4286-84df-1e97fe47bd3f"
+      },
+      {
+        "__uuid__": "26445140-1ed7-4104-8e35-86b81f18b5d8"
       }
     ]
   },

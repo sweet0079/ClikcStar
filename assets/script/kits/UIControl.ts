@@ -11,6 +11,8 @@ export default class UIcontrol extends cc.Component {
     @property(cc.Label) Socrelabel: cc.Label = null;
     //warning节点组件
     @property(cc.Node) warning: cc.Node = null;
+    //warning节点组件
+    @property(cc.ProgressBar) HP: cc.ProgressBar = null;
     
     //----- 属性声明 -----//
     //记录当前分数
@@ -37,9 +39,18 @@ export default class UIcontrol extends cc.Component {
         this.score = 0;
         this.Socrelabel.string = this.score.toString();
         this.hidewarn();
+        this.initHP();
         ShapeManager.getinstance().clean();
     }
     //----- 公有方法 -----//
+    initHP(){
+        this.HP.progress = 1;
+    }
+
+    minHP(){
+        this.HP.progress -= parseFloat((1 / 6).toString());
+    }
+
     addScore(score:number){
         this._addScore(score);
     }

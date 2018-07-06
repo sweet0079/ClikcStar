@@ -19,6 +19,12 @@ declare namespace _kits.Disspation {
         type: number,
     }
 }
+declare namespace _kits.Characteristic {
+    interface parameters {
+        type: number,
+        divisionDistance: number,
+    }
+}
 declare namespace _kits.ShapeControl {
     interface parameters {
         type: number,

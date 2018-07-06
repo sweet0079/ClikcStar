@@ -118,8 +118,12 @@ export const shape = cc.Enum({
     diamond: 4,
     // 长方形
     rectangle: 3,
+    // 半月
+    halfmoon: 9,
+    // 六边形
+    Hexagon: 10,
     // 枚举的长度
-    length: 9,
+    length: 11,
 });
 /** 套路大类型枚举 */
 export const Tricks = cc.Enum({
@@ -135,6 +139,8 @@ export const Tricks = cc.Enum({
     Waterfall: -1,
     //集中
     focus: -1,
+    //集中分裂
+    focusDiv: -1,
     // 枚举的长度
     length: -1,
 });

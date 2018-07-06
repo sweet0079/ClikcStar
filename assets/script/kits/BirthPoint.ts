@@ -50,7 +50,7 @@ export default class BirthPoint extends cc.Component {
     //----- 属性声明 -----//
     //进入屏幕前的飞行角
     private InitialAngle = 0;
-    //速度倍率
+    //速度倍率，用于难度控制
     private SpeedScaleNum = 0;
     //----- 生命周期 -----//
     // onLoad () {}
@@ -86,18 +86,18 @@ export default class BirthPoint extends cc.Component {
         if(this.SpeedScaleNum != scale)
         {
             this.SpeedScaleNum = scale;
-            this.SpeedLowerLimit *= this.SpeedScaleNum;
-            this.SpeedUpperLimit *= this.SpeedScaleNum;
         }
     }
 
     //重置这个点出生的形状的速度系数
     resetSpeed(){
-        if(this.SpeedScaleNum != 0)
-        {
-            this.SpeedLowerLimit /= this.SpeedScaleNum;
-            this.SpeedUpperLimit /= this.SpeedScaleNum;
-        }
+        this.SpeedScaleNum = 0;
+    }
+
+    //获取当前出生点到点（x，y）的距离
+    getDisToPoint(x:number,y:number){
+        let dis = Math.sqrt(((this.node.x - x) * (this.node.x - x) + (this.node.y - y) * (this.node.y - y)));
+        return (dis - 200);
     }
 
     //获取当前出生点到点（x，y）的角度
@@ -151,7 +151,7 @@ export default class BirthPoint extends cc.Component {
     //随机形状的飞行轨迹组件参数
     getRandomFlyParameters(){
         //取得一个随机速度
-        let speed = cc.random0To1() * (this.SpeedUpperLimit - this.SpeedLowerLimit) + this.SpeedLowerLimit;
+        let speed = (cc.random0To1() * (this.SpeedUpperLimit - this.SpeedLowerLimit) + this.SpeedLowerLimit) * this.SpeedScaleNum;
         //取得一个随机入射角度
         let angle = cc.random0To1() * (this.AngleUpperLimit - this.AngleLowerLimit) + this.AngleLowerLimit;
         //取得一个随机飞行轨迹
@@ -195,12 +195,16 @@ export default class BirthPoint extends cc.Component {
     }
 
     //创建指定形状
-    createAppointShape(parameters:_kits.FlyingShape.parameters,Dparameters:_kits.Disspation.parameters,Ctype:number,Sparameters:_kits.ShapeControl.parameters){
+    createAppointShape(parameters:_kits.FlyingShape.parameters,Dparameters:_kits.Disspation.parameters,Ctype:_kits.Characteristic.parameters,Sparameters:_kits.ShapeControl.parameters){
         let shape = cc.instantiate(this.shapeprefeb);
         shape.position = this.node.position;
         this.shapeSetPath(shape,parameters);
         //随机形状的特性参数
-        this.shapeSetcha(shape,Ctype);
+        this.shapeSetcha(shape,Ctype.type);
+        if(Ctype.divisionDistance != 0)
+        {
+            shape.getComponent(characteristic).setdivisionDistance(Ctype.divisionDistance);
+        }
         //随机形状的消散参数
         this.shapeSetdiss(shape,Dparameters);
         //随机形状的外形参数

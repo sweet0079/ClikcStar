@@ -44,7 +44,7 @@ export default class ShapeControl extends cc.Component {
         this.stopMoveAndAct();
         this.flyControl.ShowNode.getComponent(cc.Animation).once('finished',()=>{
             this.node.destroy();
-        },this);;
+        },this);
         this.flyControl.ShowNode.getComponent(cc.Animation).play(this.flyControl.ShowNode.getComponent(cc.Animation).getClips()[this.color].name);
     }
 

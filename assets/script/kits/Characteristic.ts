@@ -114,6 +114,11 @@ export default class Characteristic extends cc.Component {
             this.node.getComponent(Dissipation).type = lib.defConfig.dissipate.none;
         }
     }
+
+    //设置分裂距离
+    setdivisionDistance(num:number){
+        this.divisionDistance = num;
+    }
     //----- 私有方法 -----//
     //改变大小
     private scalechange() {

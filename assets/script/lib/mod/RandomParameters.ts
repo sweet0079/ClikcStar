@@ -4,8 +4,11 @@ import * as defConfig from '../cfg/defConfig'
 export const RandomParameters = {
     //获得一个随机的特性参数
     getRandomChaParameters(){
-        let type: number = parseInt((cc.random0To1() * (defConfig.character.length)).toString());
-        return type;
+        let cispare: _kits.Characteristic.parameters ={
+            type: parseInt((cc.random0To1() * (defConfig.character.length)).toString()),
+            divisionDistance: 0,
+        }
+        return cispare;
     },
 
     //获得一个随机的消散参数
@@ -38,6 +41,12 @@ export const RandomParameters = {
         {
             return true;
         }
+    },
+
+    //获得一个随机的int值,y到x + y之间的随机int值，不填y默认是0
+    getRandomInt(x,y = 0){
+        let temp = parseInt((cc.random0To1() * x).toString()) + y;
+        return temp;
     },
 
     //返回对称点
