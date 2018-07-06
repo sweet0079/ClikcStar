@@ -11,6 +11,8 @@ export default class ShapeControl extends cc.Component {
     //----- 编辑器属性 -----//
     /** 默认形状 */
     @property({tooltip:"形状",  type: lib.defConfig.shape }) type = lib.defConfig.shape.triangle;
+    /** 是否是特殊 */
+    @property({tooltip:"是否是特殊",  type: cc.Boolean }) isSpecial:boolean = false;
     /** 外形素材数组 */
     @property({tooltip:"外形素材数组", type: [cc.SpriteFrame] }) SpriteFrameArr:Array<cc.SpriteFrame> = [];
     
@@ -42,6 +44,17 @@ export default class ShapeControl extends cc.Component {
     //播放点击爆裂动画
     destroyAni(){
         this.stopMoveAndAct();
+        if(this.isSpecial)
+        {
+            if(this.type == 0)
+            {
+                lib.msgEvent.getinstance().emit(lib.msgConfig.addHP);
+            }
+            else if(this.type == 1)
+            {
+                lib.msgEvent.getinstance().emit(lib.msgConfig.OverGame);
+            }
+        }
         this.flyControl.ShowNode.getComponent(cc.Animation).once('finished',()=>{
             this.node.destroy();
         },this);
@@ -75,27 +88,37 @@ export default class ShapeControl extends cc.Component {
     setShape(type:number){
         this.flyControl = this.node.getComponent(FlyingShape);
         let calNode = this.flyControl.ShowNode;
-        this.type = type;
-        calNode.getComponent(cc.Sprite).spriteFrame = this.SpriteFrameArr[this.type * lib.defConfig.ColorNum + this.color];
-        //根据不同形状赋予不同的点击判定方法
-        if(this.type == lib.defConfig.shape.triangle)
+        if(this.isSpecial)
         {
-            // this.setClickJudgeFun((x,y) => {
-            //     return this._trianglegetIsClickShape(x,y);
-            // });
-            this.setClickJudgeFun(this._trianglegetIsClickShape);
+            this.type = type % 2;
+            this.color = this.type;//播放破碎动画是根据color属性
+            calNode.getComponent(cc.Sprite).spriteFrame = this.SpriteFrameArr[this.type];
         }
-        else if(this.type == lib.defConfig.shape.diamond)
+        else
         {
-            this.setClickJudgeFun(this._diamondgetIsClickShape);
-        }
-        else if(this.type == lib.defConfig.shape.circular
-        || this.type == lib.defConfig.shape.ellipse)
-        {
-            // this.setClickJudgeFun((x,y) => {
-            //     return this._circulargetIsClickShape(x,y);
-            // });
-            this.setClickJudgeFun(this._circulargetIsClickShape);
+            this.type = type;
+            calNode.getComponent(cc.Sprite).spriteFrame = this.SpriteFrameArr[this.type * lib.defConfig.ColorNum + this.color];
+            //根据不同形状赋予不同的点击判定方法
+            if(this.type == lib.defConfig.shape.triangle)
+            {
+                // this.setClickJudgeFun((x,y) => {
+                //     return this._trianglegetIsClickShape(x,y);
+                // });
+                this.setClickJudgeFun(this._trianglegetIsClickShape);
+            }
+            else if(this.type == lib.defConfig.shape.diamond)
+            {
+                this.setClickJudgeFun(this._diamondgetIsClickShape);
+            }
+            else if(this.type == lib.defConfig.shape.circular
+            || this.type == lib.defConfig.shape.ellipse)
+            {
+                // this.setClickJudgeFun((x,y) => {
+                //     return this._circulargetIsClickShape(x,y);
+                // });
+                this.setClickJudgeFun(this._circulargetIsClickShape);
+            }
+
         }
     }
 

@@ -1,6 +1,7 @@
 /** 用于控制形状的飞行轨迹 */
 import * as lib from '../lib/lib'
 import Dissipation from './Disspation'
+import shapeControl from './ShapeControl'
 
 const {ccclass, property} = cc._decorator;
 
@@ -45,6 +46,8 @@ export default class FlyingShape extends cc.Component {
     private stopFlag:boolean = false;
     //消散组件
     private dissControl:Dissipation = null;
+
+    private _shapeControl:shapeControl = null;
     
     //----- 生命周期 -----//
     // onLoad () {}
@@ -66,7 +69,14 @@ export default class FlyingShape extends cc.Component {
             default:
                 break;
         }
-        this.ShowNode.rotation = -this.Angle;
+        this._shapeControl = this.node.getComponent(shapeControl);
+        if(this._shapeControl)
+        {
+            if(!this._shapeControl.isSpecial)
+            {
+                this.ShowNode.rotation = -this.Angle;
+            }
+        }
         this.dissControl = this.node.getComponent(Dissipation);
     }
 

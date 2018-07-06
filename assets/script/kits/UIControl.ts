@@ -13,6 +13,8 @@ export default class UIcontrol extends cc.Component {
     @property(cc.Node) warning: cc.Node = null;
     //warning节点组件
     @property(cc.ProgressBar) HP: cc.ProgressBar = null;
+    //warning节点组件
+    @property(cc.Node) OverLayer: cc.Node = null;
     
     //----- 属性声明 -----//
     //记录当前分数
@@ -24,6 +26,8 @@ export default class UIcontrol extends cc.Component {
     start () {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ShowWarn,"showarn",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.HideWarn,"hidewarn",this);
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.addHP,"addHP",this);
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.OverGame,"gameover",this);
     }
 
     // update (dt) {}
@@ -31,6 +35,8 @@ export default class UIcontrol extends cc.Component {
     onDestroy(){
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.ShowWarn,"showarn",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.HideWarn,"hidewarn",this);
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.addHP,"addHP",this);
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.OverGame,"gameover",this);
     }
     //----- 按钮回调 -----//
     //重新开始
@@ -40,15 +46,32 @@ export default class UIcontrol extends cc.Component {
         this.Socrelabel.string = this.score.toString();
         this.hidewarn();
         this.initHP();
+        this.OverLayer.active = false;
         ShapeManager.getinstance().clean();
     }
     //----- 公有方法 -----//
+    gameover(){
+        this.hidewarn();
+        this.OverLayer.active = true;
+    }
+
+    addHP(){
+        if(this.HP.progress < 1)
+        {
+            this.HP.progress += parseFloat((1 / 6).toString());
+        }
+    }
+
     initHP(){
         this.HP.progress = 1;
     }
 
     minHP(){
         this.HP.progress -= parseFloat((1 / 6).toString());
+        if(this.HP.progress < 0)
+        {
+            lib.msgEvent.getinstance().emit(lib.msgConfig.OverGame);
+        }
     }
 
     addScore(score:number){

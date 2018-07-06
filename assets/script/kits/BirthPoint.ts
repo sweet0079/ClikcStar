@@ -44,6 +44,8 @@ export default class BirthPoint extends cc.Component {
     @property({tooltip:"随机形状的转向模式转向角度上限", type: cc.Integer }) TurnAngleUpperLimit:number = 179;
     /** 形状的预制体 */
     @property(cc.Prefab) shapeprefeb: cc.Prefab = null;
+    /** 特殊的预制体 */
+    @property(cc.Prefab) specialprefeb: cc.Prefab = null;
     /** 形状的父节点 */
     @property(cc.Node) shapeParNode: cc.Node = null;
 
@@ -67,13 +69,13 @@ export default class BirthPoint extends cc.Component {
         //     ||this.birthpos == lib.defConfig.birthpoint.righttop
         //     ||this.birthpos == lib.defConfig.birthpoint.rightbottom)
         //     {
-        //         // this.createRandomShape();
-        //         let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
-        //         let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
-        //         let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
-        //         let fpare = this.getRandomFlyParameters();
-        //         fpare.Angle = this.getAngleToPoint(0,0);
-        //         this.createAppointShape(fpare,dpare,cpare,spare);
+        //         this.createSpecialShape();
+        //         // let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
+        //         // let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
+        //         // let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+        //         // let fpare = this.getRandomFlyParameters();
+        //         // fpare.Angle = this.getAngleToPoint(0,0);
+        //         // this.createAppointShape(fpare,dpare,cpare,spare);
         //     }
         // },3);
     }
@@ -81,6 +83,43 @@ export default class BirthPoint extends cc.Component {
     // update (dt) {}
 
     //----- 公有方法 -----//
+    //生成指定特殊形状
+    createSpecialShape(){
+        if(ShapeManager.getinstance().getSpecialNum() > 0)
+        {
+            return;
+        }
+        let parameters = this.getRandomFlyParameters();
+        let Ctype:_kits.Characteristic.parameters = {
+            type: lib.defConfig.character.none,
+            divisionDistance: 0,
+        }
+        let Dparameters:_kits.Disspation.parameters = {
+            type: lib.defConfig.dissipate.none,
+        }
+        let Sparameters:_kits.ShapeControl.parameters = {
+            type: lib.RandomParameters.RandomParameters.getRandomInt(2),
+            color: 0,
+        }
+        let shape = cc.instantiate(this.specialprefeb);
+        shape.position = this.node.position;
+        this.shapeSetPath(shape,parameters);
+        //随机形状的特性参数
+        this.shapeSetcha(shape,Ctype.type);
+        if(Ctype.divisionDistance != 0)
+        {
+            shape.getComponent(characteristic).setdivisionDistance(Ctype.divisionDistance);
+        }
+        //随机形状的消散参数
+        this.shapeSetdiss(shape,Dparameters);
+        //随机形状的外形参数
+        shape.getComponent(shapeControl).setShape(Sparameters.type);
+        //添加至管理类
+        ShapeManager.getinstance().addSpecial(shape);
+        //赋值父节点
+        shape.parent = this.shapeParNode;
+    }
+
     //设置这个点出生的形状的速度系数
     setSpeed(scale:number){
         if(this.SpeedScaleNum != scale)
@@ -92,6 +131,25 @@ export default class BirthPoint extends cc.Component {
     //重置这个点出生的形状的速度系数
     resetSpeed(){
         this.SpeedScaleNum = 0;
+    }
+
+    
+    //获取当前的直线入场角度（边0度，角45度）
+    getStarightAngle(){
+        if(this.birthpos == lib.defConfig.birthpoint.bottom
+        || this.birthpos == lib.defConfig.birthpoint.left
+        || this.birthpos == lib.defConfig.birthpoint.right
+        || this.birthpos == lib.defConfig.birthpoint.top)
+        {
+            return 0;
+        }
+        else if(this.birthpos == lib.defConfig.birthpoint.leftbottom
+            || this.birthpos == lib.defConfig.birthpoint.lefttop
+            || this.birthpos == lib.defConfig.birthpoint.rightbottom
+            || this.birthpos == lib.defConfig.birthpoint.righttop)
+        {
+            return 45;
+        }
     }
 
     //获取当前出生点到点（x，y）的距离

@@ -4,4 +4,6 @@ export default {
     ReStart: 'reStart',
     ShowWarn: 'ShowWarn',
     HideWarn: 'HideWarn',
+    addHP:'addHP',
+    OverGame:'OverGame',
 }

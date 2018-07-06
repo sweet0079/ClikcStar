@@ -13,15 +13,26 @@ export default class ShapeManager {
 
     private constructor() {
         this.shapeArr = [];
+        this.specialArr = [];
         ShapeManager.instance = this;
     }
 
     private shapeArr: Array<cc.Node>;
+    private specialArr: Array<cc.Node>;
 
     getNum(){
         return this.shapeArr.length;
     }
 
+    getSpecialNum(){
+        return this.specialArr.length;
+    }
+
+    addSpecial(special:cc.Node){
+        this.specialArr.push(special);
+        console.log("addspecial");
+    }
+    
     addShape(shape:cc.Node){
         this.shapeArr.push(shape);
         console.log("add");
@@ -29,14 +40,24 @@ export default class ShapeManager {
 
     delShape(shape:cc.Node){
         let index = this.shapeArr.indexOf(shape);
-        console.log("del");
         if (index > -1) {
+            console.log("del");
             this.shapeArr.splice(index, 1);
             console.log(this.shapeArr);
+        }
+        else
+        {
+            index = this.specialArr.indexOf(shape);
+            if (index > -1) {
+                console.log("delspecial");
+                this.specialArr.splice(index, 1);
+                console.log(this.specialArr);
+            }
         }
     }
 
     clean(){
         this.shapeArr = [];
+        this.specialArr = [];
     }
 }
