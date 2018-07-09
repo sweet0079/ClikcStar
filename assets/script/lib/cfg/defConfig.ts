@@ -141,6 +141,10 @@ export const Tricks = cc.Enum({
     focus: -1,
     //集中分裂
     focusDiv: -1,
+    //交叉
+    across: -1,
+    //闪烁
+    blink: -1,
     // 枚举的长度
     length: -1,
 });

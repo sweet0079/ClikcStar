@@ -83,6 +83,11 @@ export default class BirthPoint extends cc.Component {
     // update (dt) {}
 
     //----- 公有方法 -----//
+    //返回生成形状的父节点
+    getShapeParentNode(){
+        return this.shapeParNode;
+    }
+
     //生成指定特殊形状
     createSpecialShape(){
         if(ShapeManager.getinstance().getSpecialNum() > 0)
@@ -288,7 +293,6 @@ export default class BirthPoint extends cc.Component {
             }
     }
     //----- 私有方法 -----//
-
     //创建一个随机形状
     private _createRandomShape(parameters:_kits.FlyingShape.parameters){
         let shape = cc.instantiate(this.shapeprefeb);

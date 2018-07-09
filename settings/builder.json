@@ -26,12 +26,12 @@
     "orientation": "portrait"
   },
   "renderMode": "0",
-  "startScene": "3c47ddcc-0098-4613-91cf-8f52cfdf8247",
+  "startScene": "48f9c55f-66b1-42fe-91d7-b1645c7f6678",
   "title": "ClikcStar",
   "webOrientation": "portrait",
   "wechatgame": {
     "REMOTE_SERVER_ROOT": "",
-    "appid": "wx6ac3f5090a6b99c5",
+    "appid": "wx60f8642f180acb7e",
     "isSubdomain": false,
     "orientation": "portrait",
     "subContext": ""
