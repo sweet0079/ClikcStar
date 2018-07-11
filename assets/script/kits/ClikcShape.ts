@@ -4,6 +4,7 @@ import FlyingShape from './FlyingShape'
 import ClickEndControl from './ClickEnd'
 import ShapeControl from './ShapeControl'
 import ShapeManager from './ShapeManager'
+import touchInstance from "./touchInstance"
 
 const {ccclass, property} = cc._decorator;
 
@@ -70,6 +71,10 @@ export default class ClickShape extends cc.Component {
     // }
 
     private ClickSatr(event:cc.Event.EventTouch){
+        if(touchInstance.getinstance().getCanMove())
+        {
+            return;
+        }
         //event.stopPropagation();吞没事件不向上冒泡，也不进行穿透
         //将触摸坐标转化为以node中心为原点的坐标
         if(this.clickLock)

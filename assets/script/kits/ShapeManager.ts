@@ -30,28 +30,28 @@ export default class ShapeManager {
 
     addSpecial(special:cc.Node){
         this.specialArr.push(special);
-        console.log("addspecial");
+        // console.log("addspecial");
     }
     
     addShape(shape:cc.Node){
         this.shapeArr.push(shape);
-        console.log("add");
+        // console.log("add");
     }
 
     delShape(shape:cc.Node){
         let index = this.shapeArr.indexOf(shape);
         if (index > -1) {
-            console.log("del");
+            // console.log("del");
             this.shapeArr.splice(index, 1);
-            console.log(this.shapeArr);
+            // console.log(this.shapeArr);
         }
         else
         {
             index = this.specialArr.indexOf(shape);
             if (index > -1) {
-                console.log("delspecial");
+                // console.log("delspecial");
                 this.specialArr.splice(index, 1);
-                console.log(this.specialArr);
+                // console.log(this.specialArr);
             }
         }
     }

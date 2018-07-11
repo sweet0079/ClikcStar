@@ -53,6 +53,39 @@ export default class BirthControl extends cc.Component {
     getbirthPoints(){
         return this.birthPoints;
     }
+    getweaveRunTime(){
+        return this.weaveRunTime;
+    }
+    setweaveRunTime(num){
+        this.weaveRunTime = num;
+    }
+    setweaveFlag(flag:boolean)
+    {
+        this.weaveFlag = flag;
+    }
+    addtime(){
+        this.time += 0.5;
+    }
+    getweaveTime(){
+        return this.weaveTime;
+    }
+    setweaveTime(num){
+        this.weaveTime = num;
+    }
+    //判断一个数字在数组中是否有重复，false指有重复
+    checkRepeat(num:number,arr:Array<number>){
+        for(let i = 0; i < arr.length; i++)
+        {
+            if(num == arr[i])
+            {
+                return false;
+            }
+            if(i == arr.length - 1)
+            {
+                return true;
+            }
+        }
+    }
     // update (dt) {}
     //----- 事件回调 -----//
     private gameover(){
@@ -164,20 +197,5 @@ export default class BirthControl extends cc.Component {
         }
         //console.log(tempArr);
         return tempArr;
-    }
-
-    //判断一个数字在数组中是否有重复，false指有重复
-    private checkRepeat(num:number,arr:Array<number>){
-        for(let i = 0; i < arr.length; i++)
-        {
-            if(num == arr[i])
-            {
-                return false;
-            }
-            if(i == arr.length - 1)
-            {
-                return true;
-            }
-        }
     }
 }

@@ -22,12 +22,6 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 7
-      },
-      {
-        "__id__": 8
-      },
-      {
         "__id__": 9
       },
       {
@@ -38,10 +32,16 @@
       },
       {
         "__id__": 12
+      },
+      {
+        "__id__": 13
+      },
+      {
+        "__id__": 14
       }
     ],
     "_prefab": {
-      "__id__": 13
+      "__id__": 15
     },
     "_id": "",
     "_opacity": 255,
@@ -98,10 +98,16 @@
       },
       {
         "__id__": 5
+      },
+      {
+        "__id__": 6
+      },
+      {
+        "__id__": 7
       }
     ],
     "_prefab": {
-      "__id__": 6
+      "__id__": 8
     },
     "_id": "",
     "_opacity": 255,
@@ -120,8 +126,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 240,
-      "height": 292
+      "width": 306,
+      "height": 210
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -129,8 +135,8 @@
     "_scaleY": 0.8,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": 102,
+      "y": -15
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -148,7 +154,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "0f163920-e6b0-4c80-9155-503bbdd2a98c"
+      "__uuid__": "16e3421e-106a-4868-a5ac-321757a50771"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -197,6 +203,31 @@
       }
     ],
     "playOnLoad": false
+  },
+  {
+    "__type__": "cc.CircleCollider",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "tag": 0,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_radius": 153
+  },
+  {
+    "__type__": "a60d0zppZpIhqrGTeImowhF",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -281,6 +312,7 @@
     },
     "_enabled": true,
     "type": 1,
+    "isSpecial": false,
     "SpriteFrameArr": [
       {
         "__uuid__": "58f01b09-e8f3-4e0c-b13a-baa32cb99cd9"

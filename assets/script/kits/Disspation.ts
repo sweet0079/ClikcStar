@@ -177,6 +177,7 @@ export default class Dissipation extends cc.Component {
             case lib.defConfig.dissipate.fragmentation:
                 break;
             case lib.defConfig.dissipate.integration:
+                this.integration();
                 break;
             case lib.defConfig.dissipate.disappear:
                 break;
@@ -200,6 +201,10 @@ export default class Dissipation extends cc.Component {
     // private setdestroy(fun:_li.cb.norCallBack) {
     //     this._destfun = fun;
     // }
+
+    private integration(){
+
+    }
 
     private dropdes(){
         //this.flyControl.drop();

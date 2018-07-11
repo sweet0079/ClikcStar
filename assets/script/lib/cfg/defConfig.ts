@@ -149,7 +149,7 @@ export const Tricks = cc.Enum({
     length: -1,
 });
 //套路开始前warning持续时间
-export const WarningTime = 10;
+export const WarningTime = 5;
 //套路结束后持续时间
 export const WeaveEndTime = 5;
 //每个形状有几种颜色
