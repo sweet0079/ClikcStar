@@ -12,7 +12,7 @@ export default class BirthControl extends cc.Component {
     /** 套路多少秒来一波 */
     @property({tooltip:"套路多少秒来一波", type: cc.Integer}) WeaveComeTime: number = 20;
     /** 套路多少秒随机刷特殊 */
-    @property({tooltip:"套路多少秒来一波", type: cc.Integer}) SpecialComeTime: number = 13;
+    @property({tooltip:"特殊多少秒来一波", type: cc.Integer}) SpecialComeTime: number = 1;
     /** 出生间隔数组 */
     @property({tooltip:"出生间隔数组", type: [cc.Float]}) BirthInterval: Array<number> = [];
     /** 出生个数数组 */

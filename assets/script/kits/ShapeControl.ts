@@ -58,7 +58,12 @@ export default class ShapeControl extends cc.Component {
         this.flyControl.ShowNode.getComponent(cc.Animation).once('finished',()=>{
             this.node.destroy();
         },this);
-        this.flyControl.ShowNode.getComponent(cc.Animation).play(this.flyControl.ShowNode.getComponent(cc.Animation).getClips()[this.color].name);
+        let temp = lib.RandomParameters.RandomParameters.getRandomInt(lib.defConfig.DissAniNum);
+        if(this.isSpecial)
+        {
+            temp = this.type;
+        }
+        this.flyControl.ShowNode.getComponent(cc.Animation).play(this.flyControl.ShowNode.getComponent(cc.Animation).getClips()[temp].name);
     }
 
     //随机颜色
@@ -105,13 +110,13 @@ export default class ShapeControl extends cc.Component {
                 //     return this._trianglegetIsClickShape(x,y);
                 // });
                 this.setClickJudgeFun(this._trianglegetIsClickShape);
+                calNode.children[0].setPositionY(-20);
             }
             else if(this.type == lib.defConfig.shape.diamond)
             {
                 this.setClickJudgeFun(this._diamondgetIsClickShape);
             }
-            else if(this.type == lib.defConfig.shape.circular
-            || this.type == lib.defConfig.shape.ellipse)
+            else if(this.type == lib.defConfig.shape.circular)
             {
                 // this.setClickJudgeFun((x,y) => {
                 //     return this._circulargetIsClickShape(x,y);

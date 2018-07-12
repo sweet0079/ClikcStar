@@ -96,7 +96,7 @@ export default class BirthPoint extends cc.Component {
         }
         let parameters = this.getRandomFlyParameters();
         let Ctype:_kits.Characteristic.parameters = {
-            type: lib.defConfig.character.none,
+            type: lib.defConfig.character.rotate,
             divisionDistance: 0,
         }
         let Dparameters:_kits.Disspation.parameters = {

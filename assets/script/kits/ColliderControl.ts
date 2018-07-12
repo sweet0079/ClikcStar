@@ -8,6 +8,9 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class ColliderControl extends cc.Component {
 
+    //----- 属性声明 -----//
+    //是否已经毁灭标识符
+    private hasDes: boolean = false;
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -20,9 +23,14 @@ export default class ColliderControl extends cc.Component {
 
     onCollisionEnter(other, self)
     {
+        if(this.hasDes)
+        {
+            return;
+        }
         lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,100);
         ShapeManager.getinstance().delShape(this.node);
         this.node.parent.getComponent(ShapeControl).destroyAni();
         lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement);
+        this.hasDes = true;
     }
 }

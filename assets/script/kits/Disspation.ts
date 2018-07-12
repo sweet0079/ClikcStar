@@ -28,6 +28,8 @@ export default class Dissipation extends cc.Component {
     private lastRebound: number = lib.defConfig.lastReboundPos.bottom;
     //已经反弹次数
     private ReboundTime: number = 0;
+    //已经反弹过了
+    private hasTransform: boolean = false;
  
     //----- 生命周期 -----//
 
@@ -91,6 +93,7 @@ export default class Dissipation extends cc.Component {
                 {
                     this.haveLeave = true;
                     this._destfun();
+                    // this.integration();
                 }
             }
         }
@@ -202,8 +205,39 @@ export default class Dissipation extends cc.Component {
     //     this._destfun = fun;
     // }
 
+    // 融入
     private integration(){
-
+        if(this.hasTransform)
+        {
+            console.log("return");
+            return;
+        }
+        console.log("integration");
+        this.haveLeave = false;
+        if(this.node.position.x >= lib.defConfig.DesignPlayWidth/2 + this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX)
+        {
+            this.node.position.x = -this.node.position.x;
+            this.hasTransform = true;
+            console.log("右");
+        }
+        else if(this.node.position.x <= -lib.defConfig.DesignPlayWidth/2 - this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX)
+        {
+            this.node.position.x = -this.node.position.x;
+            this.hasTransform = true;
+            console.log("左");
+        }
+        else if(this.node.position.y >= lib.defConfig.DesignPlayHeight/2 + this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
+        {
+            this.node.position.y = -this.node.position.y;
+            this.hasTransform = true;
+            console.log("上");
+        }
+        else if(this.node.position.y <= -lib.defConfig.DesignPlayHeight/2 - this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
+        {
+            this.node.position.y = -this.node.position.y;
+            this.hasTransform = true;
+            console.log("下");
+        }
     }
 
     private dropdes(){

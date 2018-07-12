@@ -103,27 +103,29 @@ export const shape = cc.Enum({
     // 三角形
     triangle: 2,
     // 五角星
-    star: 8,
+    star: 6,
     // 圆形
     circular: 1,
     // 平行四边形
-    parallelogram: 7,
+    parallelogram: 8,
     // 方形
     square: 0,
     // 梯形
-    trapezoid: 5,
-    // 椭圆
-    ellipse: 6,
+    trapezoid: 4,
+    // // 椭圆
+    // ellipse: 6,
     // 菱形
-    diamond: 4,
-    // 长方形
-    rectangle: 3,
-    // 半月
-    halfmoon: 9,
+    diamond: 3,
+    // // 长方形
+    // rectangle: 3,
+    // // 半月
+    // halfmoon: 9,
+    // 十字形
+    cross: 7,
     // 六边形
-    Hexagon: 10,
+    Hexagon: 5,
     // 枚举的长度
-    length: 11,
+    length: 9,
 });
 /** 套路大类型枚举 */
 export const Tricks = cc.Enum({
@@ -153,7 +155,9 @@ export const WarningTime = 5;
 //套路结束后持续时间
 export const WeaveEndTime = 5;
 //每个形状有几种颜色
-export const ColorNum = 3;
+export const ColorNum = 1;
+//每个形状有几种消散特效
+export const DissAniNum = 1;
 //设计时中间用于点击区域的宽
 export const DesignPlayWidth = 1080;
 //设计时中间用于点击区域的高

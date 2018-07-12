@@ -126,8 +126,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 310,
-      "height": 261
+      "width": 135,
+      "height": 189
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -154,7 +154,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "b1ab5e14-7820-4d37-b8fb-6f81a7ee7953"
+      "__uuid__": "d6285e8c-727e-4cf2-8f47-a6fa240d9c0b"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -259,7 +259,7 @@
     "_enabled": true,
     "Flightpath": 0,
     "birthpos": 0,
-    "Speed": 100,
+    "Speed": 300,
     "Angle": 0,
     "deltangle": 10,
     "screwspeed": 200,
@@ -315,7 +315,7 @@
         "__uuid__": "b1ab5e14-7820-4d37-b8fb-6f81a7ee7953"
       },
       {
-        "__uuid__": "9a4afea5-ef44-40e1-b9a3-d4d40fadfa30"
+        "__uuid__": "d6285e8c-727e-4cf2-8f47-a6fa240d9c0b"
       }
     ]
   },

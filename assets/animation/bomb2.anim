@@ -3,7 +3,7 @@
   "_name": "bomb2",
   "_objFlags": 0,
   "_rawFiles": null,
-  "_duration": 0.26666666666666666,
+  "_duration": 0.5166666666666667,
   "sample": 60,
   "speed": 1.3,
   "wrapMode": 1,
@@ -14,25 +14,43 @@
           {
             "frame": 0,
             "value": {
-              "__uuid__": "9a2e28b7-ff6c-4b28-846f-75057a115fe1"
+              "__uuid__": "37278a8e-868e-4888-843c-0050393ed7d9"
             }
           },
           {
             "frame": 0.08333333333333333,
             "value": {
-              "__uuid__": "6e5158d7-83e4-4959-88a2-b66635ad183c"
+              "__uuid__": "352ccc25-9753-4fed-a27e-576fe04863be"
             }
           },
           {
             "frame": 0.16666666666666666,
             "value": {
-              "__uuid__": "e74831ff-7a74-4548-be96-03ae46c6a80f"
+              "__uuid__": "d8359ca7-7afd-4a6d-b75a-5d2bee32175a"
             }
           },
           {
             "frame": 0.25,
             "value": {
-              "__uuid__": "6ba3e749-8d8c-4823-b238-4f10dab771df"
+              "__uuid__": "d668344b-5e3e-495f-bfcf-ec027eab9d1c"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "21723653-0a27-474b-9855-761dc3c9c740"
+            }
+          },
+          {
+            "frame": 0.4166666666666667,
+            "value": {
+              "__uuid__": "1d1f2f0d-d454-43f2-bec3-228c2e01e0a7"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "ce8a9df4-2416-40a1-bda6-1f41d9dcaf89"
             }
           }
         ]

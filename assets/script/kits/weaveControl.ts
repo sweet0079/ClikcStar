@@ -3,6 +3,7 @@ const {ccclass, property} = cc._decorator;
 
 import * as lib from '../lib/lib'
 import birthControl from './BirthControl'
+import shapeControl from './ShapeControl'
 
 @ccclass
 export default class weaveControl extends cc.Component {
@@ -38,41 +39,41 @@ export default class weaveControl extends cc.Component {
         {
             lib.msgEvent.getinstance().emit(lib.msgConfig.HideWarn);
             let weavetype = parseInt((cc.random0To1() * (lib.defConfig.Tricks.length)).toString());
-            // switch(weavetype)
-            // {
-            //     case lib.defConfig.Tricks.volley:
-            //         this.volley();
-            //         break
-            //     case lib.defConfig.Tricks.order:
-            //         let startPoint = parseInt((cc.random0To1() * (this._birthControl.birthPoints.length)).toString());
-            //         this.order(startPoint);
-            //         break;
-            //     case lib.defConfig.Tricks.union:
-            //         this.union();
-            //         break;
-            //     case lib.defConfig.Tricks.symmetry:
-            //         this.symmetry();
-            //         break;
-            //     case lib.defConfig.Tricks.Waterfall:
-            //         this.Waterfall();
-            //         break;
-            //     case lib.defConfig.Tricks.focus:
-            //         this.focus();
-            //         break;
-            //     case lib.defConfig.Tricks.focusDiv:
-            //         this.focusDiv();
-            //         break;
-            //     case lib.defConfig.Tricks.across:
-            //         this.across();
-            //         break;
-            //     case lib.defConfig.Tricks.blink:
-            //         this.blink();
-            //         break;
-            //     default:
-            //         break;
-            // }            
-            // let startPoint = parseInt((cc.random0To1() * (this._birthControl.birthPoints.length)).toString());
-            this.symmetry();
+            switch(weavetype)
+            {
+                case lib.defConfig.Tricks.volley:
+                    this.volley();
+                    break
+                case lib.defConfig.Tricks.order:
+                    let startPoint = parseInt((cc.random0To1() * (this._birthControl.birthPoints.length)).toString());
+                    this.order(startPoint);
+                    break;
+                case lib.defConfig.Tricks.union:
+                    this.union();
+                    break;
+                case lib.defConfig.Tricks.symmetry:
+                    this.symmetry();
+                    break;
+                case lib.defConfig.Tricks.Waterfall:
+                    this.Waterfall();
+                    break;
+                case lib.defConfig.Tricks.focus:
+                    this.focus();
+                    break;
+                case lib.defConfig.Tricks.focusDiv:
+                    this.focusDiv();
+                    break;
+                case lib.defConfig.Tricks.across:
+                    this.across();
+                    break;
+                case lib.defConfig.Tricks.blink:
+                    this.blink();
+                    break;
+                default:
+                    break;
+            }            
+            let startPoint = parseInt((cc.random0To1() * (this._birthControl.birthPoints.length)).toString());
+            // this.blink();
         }
         if(this._birthControl.getweaveRunTime() == lib.defConfig.WarningTime + this._birthControl.getweaveTime())
         {
@@ -91,13 +92,19 @@ export default class weaveControl extends cc.Component {
         let dpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的消散
         let cpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的特性
         let spareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的形状
+        let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
 
         for(let i = 0; i < this.BlinkXArr.length; i++)
         {
             for(let j = 0; j < this.BlinkYArr.length; j++)
             {
+                if(!spareFlag)
+                {
+                    spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+                }
                 let shape = cc.instantiate(this.blinkShapePre);
                 shape.setPosition(this.BlinkXArr[i],this.BlinkYArr[j]);
+                shape.getComponent(shapeControl).setShape(spare.type);
                 shape.parent = this._birthControl.birthPoints[0].getShapeParentNode();
             }
         }
