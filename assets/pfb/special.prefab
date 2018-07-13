@@ -65,8 +65,8 @@
     },
     "_rotationX": 0,
     "_rotationY": 0,
-    "_scaleX": 1,
-    "_scaleY": 1,
+    "_scaleX": 1.5,
+    "_scaleY": 1.5,
     "_position": {
       "__type__": "cc.Vec2",
       "x": -145,
@@ -247,6 +247,7 @@
     "_enabled": true,
     "type": 0,
     "ReboundLimit": 4,
+    "IntegrationLimit": 3,
     "MiniDissDistance": 800
   },
   {
@@ -281,7 +282,7 @@
     "type": 0,
     "ScaleMultiple": 0.5,
     "SpeedMultiple": 0.5,
-    "rotateSpeed": 360,
+    "rotateSpeed": 270,
     "divisionDistance": 500,
     "flipFrequency": 0.25,
     "fadeFrequency": 1,

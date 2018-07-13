@@ -69,11 +69,14 @@ export default class weaveControl extends cc.Component {
                 case lib.defConfig.Tricks.blink:
                     this.blink();
                     break;
+                case lib.defConfig.Tricks.transform:
+                    this.transform();
+                    break;
                 default:
                     break;
             }            
-            let startPoint = parseInt((cc.random0To1() * (this._birthControl.birthPoints.length)).toString());
-            // this.blink();
+            //let startPoint = parseInt((cc.random0To1() * (this._birthControl.birthPoints.length)).toString());
+            // this.transform();
         }
         if(this._birthControl.getweaveRunTime() == lib.defConfig.WarningTime + this._birthControl.getweaveTime())
         {
@@ -82,6 +85,48 @@ export default class weaveControl extends cc.Component {
         }
     }
     //----- 私有方法 -----//
+    //传送主方法
+    private transform(){
+        //随机是上下还是左右出
+        let temp = lib.RandomParameters.RandomParameters.getRandomInt(2);
+        let pointArr = [];
+        if(temp == 0)
+        {
+            pointArr = [1,2,3];
+        }
+        else
+        {
+            pointArr = [5,7,9];
+        }
+        //根据套路持续时间设置
+        this._birthControl.setweaveTime(5 + lib.defConfig.WeaveEndTime);
+
+        //获取随机bool值
+        let fpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的飞行轨迹
+        let dpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的消散
+        let cpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的特性
+        let spareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的形状
+        
+        //获取随机参数数值
+        let fpare = this._birthControl.birthPoints[pointArr[0]].getRandomFlyParameters();
+        let sfpare = fpare;
+        let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
+        let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
+        let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+        dpare.type = lib.defConfig.dissipate.integration;
+        for(let i = 0 ; i < 3; i++)
+        {
+            this.scheduleOnce(()=>{
+                for(let j = 0 ; j < pointArr.length; j++)
+                {
+                    let angle = fpare.Angle;
+                    this._birthControl.birthPoints[pointArr[j]].createAppointShape(fpare,dpare,cpare,spare);
+                    this._birthControl.birthPoints[lib.RandomParameters.RandomParameters.getSymmetricPoint(pointArr[j])].createAppointShape(sfpare,dpare,cpare,spare);
+                }
+            },i);
+        }
+    }
+
     //闪烁主方法
     private blink(){
         //根据套路持续时间设置

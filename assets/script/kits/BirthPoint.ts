@@ -53,31 +53,31 @@ export default class BirthPoint extends cc.Component {
     //进入屏幕前的飞行角
     private InitialAngle = 0;
     //速度倍率，用于难度控制
-    private SpeedScaleNum = 0;
+    private SpeedScaleNum = 1;
     //----- 生命周期 -----//
     // onLoad () {}
 
     start () {
         // this.schedule(()=>{
-        //     let temp = cc.random0To1() * 100;
-        //     // if(temp < 20)
-        //     // {
-        //     //     this.createRandomShape();
-        //     // }
-        //     if(this.birthpos == lib.defConfig.birthpoint.lefttop
-        //     ||this.birthpos == lib.defConfig.birthpoint.leftbottom
-        //     ||this.birthpos == lib.defConfig.birthpoint.righttop
-        //     ||this.birthpos == lib.defConfig.birthpoint.rightbottom)
+        //     // let temp = cc.random0To1() * 100;
+        //     if(this.birthpos == lib.defConfig.birthpoint.lefttop)
         //     {
-        //         this.createSpecialShape();
-        //         // let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
-        //         // let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
-        //         // let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
-        //         // let fpare = this.getRandomFlyParameters();
-        //         // fpare.Angle = this.getAngleToPoint(0,0);
-        //         // this.createAppointShape(fpare,dpare,cpare,spare);
+        //         this.createRandomShape();
         //     }
-        // },3);
+        //     // if(this.birthpos == lib.defConfig.birthpoint.lefttop
+        //     // ||this.birthpos == lib.defConfig.birthpoint.leftbottom
+        //     // ||this.birthpos == lib.defConfig.birthpoint.righttop
+        //     // ||this.birthpos == lib.defConfig.birthpoint.rightbottom)
+        //     // {
+        //     //     this.createSpecialShape();
+        //     //     // let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
+        //     //     // let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
+        //     //     // let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+        //     //     // let fpare = this.getRandomFlyParameters();
+        //     //     // fpare.Angle = this.getAngleToPoint(0,0);
+        //     //     // this.createAppointShape(fpare,dpare,cpare,spare);
+        //     // }
+        // },10);
     }
 
     // update (dt) {}
@@ -135,7 +135,7 @@ export default class BirthPoint extends cc.Component {
 
     //重置这个点出生的形状的速度系数
     resetSpeed(){
-        this.SpeedScaleNum = 0;
+        this.SpeedScaleNum = 1;
     }
 
     
@@ -304,6 +304,7 @@ export default class BirthPoint extends cc.Component {
         let dispare: _kits.Disspation.parameters ={
             type: parseInt((cc.random0To1() * (lib.defConfig.dissipate.length)).toString()),
         }
+        dispare.type = lib.defConfig.dissipate.integration;
         this.shapeSetdiss(shape,dispare);
         //随机形状的外形参数
         shape.getComponent(shapeControl).randomcolor();

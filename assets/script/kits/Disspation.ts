@@ -13,6 +13,8 @@ export default class Dissipation extends cc.Component {
     @property({tooltip:"消散类型",  type: lib.defConfig.dissipate }) type = lib.defConfig.dissipate.none;
     /** 反弹上限次数 */
     @property({tooltip:"反弹上限次数",  type: cc.Integer }) ReboundLimit: number = 4;
+    /** 融入上限次数 */
+    @property({tooltip:"融入上限次数",  type: cc.Integer }) IntegrationLimit: number = 3;
     /** 默认最小消散距离 */
     @property({tooltip:"最小消散距离",  type: cc.Integer }) MiniDissDistance: number = 500;
     //----- 属性声明 -----//
@@ -28,8 +30,6 @@ export default class Dissipation extends cc.Component {
     private lastRebound: number = lib.defConfig.lastReboundPos.bottom;
     //已经反弹次数
     private ReboundTime: number = 0;
-    //已经反弹过了
-    private hasTransform: boolean = false;
  
     //----- 生命周期 -----//
 
@@ -41,10 +41,10 @@ export default class Dissipation extends cc.Component {
 
     update (dt) {
         //因为某些原因遗漏的形状删除
-        if(this.node.position.x > lib.defConfig.DesignPlayWidth * 1.5 
-        || this.node.position.x < -lib.defConfig.DesignPlayWidth * 1.5
-        || this.node.position.y > lib.defConfig.DesignPlayHeight * 1.5
-        || this.node.position.y < -lib.defConfig.DesignPlayHeight * 1.5) 
+        if(this.node.position.x > lib.defConfig.DesignPlayWidth 
+        || this.node.position.x < -lib.defConfig.DesignPlayWidth
+        || this.node.position.y > lib.defConfig.DesignPlayHeight
+        || this.node.position.y < -lib.defConfig.DesignPlayHeight) 
         {
             ShapeManager.getinstance().delShape(this.node);
             this.node.destroy();
@@ -57,6 +57,11 @@ export default class Dissipation extends cc.Component {
             || this.node.position.y >= lib.defConfig.DesignPlayHeight/2 + this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY - this.flyControl.Speed * dt
             || this.node.position.y <= -lib.defConfig.DesignPlayHeight/2 - this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY + this.flyControl.Speed * dt)
             {
+                if(this.type == lib.defConfig.dissipate.integration
+                && this.IntegrationLimit != 0)
+                {
+                    return;
+                }
                 ShapeManager.getinstance().delShape(this.node);
                 this.node.destroy();
             }
@@ -207,36 +212,34 @@ export default class Dissipation extends cc.Component {
 
     // 融入
     private integration(){
-        if(this.hasTransform)
+        if(this.IntegrationLimit == 0)
         {
-            console.log("return");
             return;
         }
-        console.log("integration");
         this.haveLeave = false;
         if(this.node.position.x >= lib.defConfig.DesignPlayWidth/2 + this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX)
         {
-            this.node.position.x = -this.node.position.x;
-            this.hasTransform = true;
-            console.log("右");
+            this.node.x *= -1;
+            this.IntegrationLimit--;
+            this.haveAdmission = false;
         }
         else if(this.node.position.x <= -lib.defConfig.DesignPlayWidth/2 - this.flyControl.ShowNode.width/2 * this.node.scaleX * this.flyControl.ShowNode.scaleX)
         {
-            this.node.position.x = -this.node.position.x;
-            this.hasTransform = true;
-            console.log("左");
+            this.node.x *= -1;
+            this.IntegrationLimit--;
+            this.haveAdmission = false;
         }
         else if(this.node.position.y >= lib.defConfig.DesignPlayHeight/2 + this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
         {
-            this.node.position.y = -this.node.position.y;
-            this.hasTransform = true;
-            console.log("上");
+            this.node.y *= -1;
+            this.IntegrationLimit--;
+            this.haveAdmission = false;
         }
         else if(this.node.position.y <= -lib.defConfig.DesignPlayHeight/2 - this.flyControl.ShowNode.height/2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
         {
-            this.node.position.y = -this.node.position.y;
-            this.hasTransform = true;
-            console.log("下");
+            this.node.y *= -1;
+            this.IntegrationLimit--;
+            this.haveAdmission = false;
         }
     }
 

@@ -147,6 +147,8 @@ export const Tricks = cc.Enum({
     across: -1,
     //闪烁
     blink: -1,
+    //传送
+    transform: -1,
     // 枚举的长度
     length: -1,
 });

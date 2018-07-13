@@ -111,6 +111,7 @@ export default class Characteristic extends cc.Component {
             this.flyControl.ShowNode.stopAllActions();
             this.flyControl.ShowNode.opacity = 255;
             this.node.runAction(cc.fadeIn(0.05));
+            this.flyControl.ShowNode.rotation = 0;
             this.node.getComponent(Dissipation).type = lib.defConfig.dissipate.none;
         }
     }
@@ -126,7 +127,7 @@ export default class Characteristic extends cc.Component {
         let action2 = cc.scaleBy(1,1/this.ScaleMultiple);
         let seq = cc.sequence(action1,action2);
         let act = cc.repeatForever(seq);
-        this.node.runAction(act);
+        this.flyControl.ShowNode.runAction(act);
     }
 
     //速度变化

@@ -3213,7 +3213,7 @@
     },
     "_enabled": true,
     "WeaveComeTime": 20,
-    "SpecialComeTime": 1,
+    "SpecialComeTime": 13,
     "BirthInterval": [
       2.5,
       2,

@@ -65,8 +65,8 @@
     },
     "_rotationX": 0,
     "_rotationY": 0,
-    "_scaleX": 1,
-    "_scaleY": 1,
+    "_scaleX": 1.5,
+    "_scaleY": 1.5,
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -363,6 +363,7 @@
     "_enabled": true,
     "type": 0,
     "ReboundLimit": 4,
+    "IntegrationLimit": 3,
     "MiniDissDistance": 800
   },
   {
