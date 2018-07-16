@@ -164,5 +164,9 @@ export const DissAniNum = 1;
 export const DesignPlayWidth = 1080;
 //设计时中间用于点击区域的高
 export const DesignPlayHeight = 1720;
+//HP上限
+export const MAXHP = 6;
+//power上限
+export const MAXPOWER = 50;
 //角度和弧度的转化系数
 export const coefficient = 2 * Math.PI / 360;

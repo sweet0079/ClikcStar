@@ -1,6 +1,7 @@
 /** 挂在UI层，控制UI显示方面的脚本 */
 import * as lib from '../lib/lib'
 import ShapeManager from './ShapeManager'
+import touchInstance from "./touchInstance"
 
 const {ccclass, property} = cc._decorator;
 
@@ -11,14 +12,20 @@ export default class UIcontrol extends cc.Component {
     @property(cc.Label) Socrelabel: cc.Label = null;
     //warning节点组件
     @property(cc.Node) warning: cc.Node = null;
-    //warning节点组件
+    //血条组件
     @property(cc.ProgressBar) HP: cc.ProgressBar = null;
-    //warning节点组件
+    //能量条组件
+    @property(cc.ProgressBar) POWER: cc.ProgressBar = null;
+    //gameover界面
     @property(cc.Node) OverLayer: cc.Node = null;
     
     //----- 属性声明 -----//
     //记录当前分数
     score: number = 0;
+    //记录当前血量
+    nowHP: number = lib.defConfig.MAXHP;
+    //记录当前能量
+    nowPOWER: number = 0;
     //----- 生命周期 -----//
 
     // onLoad () {}
@@ -46,7 +53,10 @@ export default class UIcontrol extends cc.Component {
         this.Socrelabel.string = this.score.toString();
         this.hidewarn();
         this.initHP();
+        this.initPOWER();
+        touchInstance.getinstance().setCanMove(false);
         this.OverLayer.active = false;
+        this.unschedule(this.minPOWER);
         ShapeManager.getinstance().clean();
     }
     //----- 公有方法 -----//
@@ -56,26 +66,41 @@ export default class UIcontrol extends cc.Component {
     }
 
     addHP(){
-        if(this.HP.progress < 1)
+        if(this.nowHP < lib.defConfig.MAXHP)
         {
-            this.HP.progress += parseFloat((1 / 6).toString());
+            this.nowHP++;
+            this.HP.progress = parseFloat((this.nowHP / lib.defConfig.MAXHP).toString());
         }
     }
 
     initHP(){
+        this.nowHP = lib.defConfig.MAXHP;
         this.HP.progress = 1;
     }
 
     minHP(){
-        this.HP.progress -= parseFloat((1 / 6).toString());
-        if(this.HP.progress < 0)
+        this.nowHP--;
+        this.HP.progress = parseFloat((this.nowHP / lib.defConfig.MAXHP).toString());
+        if(this.nowHP <= 0)
         {
             lib.msgEvent.getinstance().emit(lib.msgConfig.OverGame);
         }
     }
 
+    initPOWER(){
+        this.nowPOWER = 0;
+        this.POWER.progress = 0;
+    }
+
     addScore(score:number){
         this._addScore(score);
+        if(touchInstance.getinstance().getCanMove())
+        {
+            return;
+        }
+        let temp = score / 50;
+        this.addPOWER(temp);
+        console.log(this.nowPOWER);
     }
 
     showarn(){
@@ -95,5 +120,32 @@ export default class UIcontrol extends cc.Component {
     private _addScore(score:number){
         this.score += score;
         this.Socrelabel.string = this.score.toString();
+    }
+
+    private addPOWER(num:number){
+        this.nowPOWER += num;
+        if(this.nowPOWER >= lib.defConfig.MAXPOWER)
+        {
+            this.nowPOWER = lib.defConfig.MAXPOWER;
+        }
+        this.POWER.progress = parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
+        if(this.nowPOWER == lib.defConfig.MAXPOWER)
+        {
+            touchInstance.getinstance().setCanMove(true);
+            this.schedule(this.minPOWER,0.1,50);
+        }
+    }
+
+    private minPOWER(){
+        if(this.nowPOWER <= 0)
+        {
+            return;
+        }
+        this.nowPOWER--;
+        this.POWER.progress = parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
+        if(this.nowPOWER <= 0)
+        {
+            touchInstance.getinstance().setCanMove(false);
+        }
     }
 }

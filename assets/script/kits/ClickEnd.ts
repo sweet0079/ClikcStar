@@ -9,6 +9,8 @@ export default class ClickEnd extends cc.Component {
     //----- 编辑器属性 -----//
     //UI控制组件
     @property(cc.Node) touchPoint: cc.Node = null;
+    //UI控制组件
+    @property(cc.Prefab) clickPre: cc.Prefab = null;
     //----- 属性声明 -----//
     //点击开始时间戳
     private time:number = 0;
@@ -19,6 +21,7 @@ export default class ClickEnd extends cc.Component {
     //----- 生命周期 -----//
 
     onLoad () {
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.EndMove,"_endMove",this);
         this._touchInstance = touchInstance.getinstance();
         this.node.on(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
             this._clickStart(event);
@@ -40,11 +43,21 @@ export default class ClickEnd extends cc.Component {
     // }
 
     // update (dt) {}
+
+    onDestroy(){
+    }
     
     //----- 私有方法 -----//
     // private _clickEnd(){
     // }
+    private _endMove(){
+        this.touchPoint.active = false;
+        this.startMove = false;
+    }
+
     private _clickStart(event:cc.Event.EventTouch){
+        let touchx = event.getLocation().x - this.node.convertToWorldSpaceAR(cc.Vec2.ZERO).x;
+        let touchy = event.getLocation().y - this.node.convertToWorldSpaceAR(cc.Vec2.ZERO).y;
         if(this._touchInstance.getCanMove())
         {
             if(this.startMove)
@@ -52,14 +65,19 @@ export default class ClickEnd extends cc.Component {
                 return;
             }
             this.startMove = true;
-            let touchx = event.getLocation().x - this.node.convertToWorldSpaceAR(cc.Vec2.ZERO).x;
-            let touchy = event.getLocation().y - this.node.convertToWorldSpaceAR(cc.Vec2.ZERO).y;
             this.touchPoint.setPosition(touchx,touchy);
             this.touchPoint.active = true;
         }
         else
         {
             lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement);
+            let clickAni = cc.instantiate(this.clickPre);
+            clickAni.getComponent(cc.Animation).once('finished',()=>{
+                clickAni.destroy();
+            },this);
+            clickAni.getComponent(cc.Animation).play();
+            clickAni.setPosition(touchx,touchy);
+            this.node.parent.addChild(clickAni);
         }
     }
 

@@ -1,4 +1,6 @@
 /** 控制点击和滑动的单例 */
+import * as lib from '../lib/lib'
+
 export default class touchInstance {
     static instance: touchInstance
     /** 获取单例 */
@@ -12,7 +14,7 @@ export default class touchInstance {
     }
 
     private constructor() {
-        this.canMove = true;
+        this.canMove = false;
         cc.director.getCollisionManager().enabled = true;
         touchInstance.instance = this;
     }
@@ -25,5 +27,9 @@ export default class touchInstance {
 
     setCanMove(flag:boolean){
         this.canMove = flag;
+        if(!flag)
+        {
+            lib.msgEvent.getinstance().emit(lib.msgConfig.EndMove);
+        }
     }
 }

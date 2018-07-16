@@ -6,4 +6,5 @@ export default {
     HideWarn: 'HideWarn',
     addHP:'addHP',
     OverGame:'OverGame',
+    EndMove:'EndMove',
 }
