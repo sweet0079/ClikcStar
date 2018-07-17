@@ -10,6 +10,7 @@ export default class weaveControl extends cc.Component {
     //----- 编辑器属性 -----//
     /** 形状的预制体 */
     @property(cc.Prefab) blinkShapePre: cc.Prefab = null;
+    @property(cc.Prefab) blinkSpeShapePre: cc.Prefab = null;
     /** 闪烁X轴数组 */
     @property({tooltip:"闪烁X轴数组", type: [cc.Integer]}) BlinkXArr: Array<number> = [];
     /** 闪烁Y轴数组 */
@@ -28,6 +29,19 @@ export default class weaveControl extends cc.Component {
 
     // update (dt) {} 
     //----- 公有方法 -----//
+    //创建闪烁的特殊形状
+    createBlinkSpecial(num){
+        let i = lib.RandomParameters.RandomParameters.getRandomInt(this.BlinkXArr.length);
+        let j = lib.RandomParameters.RandomParameters.getRandomInt(this.BlinkYArr.length);
+        let spare:_kits.ShapeControl.parameters = {
+            type: num,
+            color: 0,
+        }
+        let shape = cc.instantiate(this.blinkSpeShapePre);
+        shape.setPosition(this.BlinkXArr[i],this.BlinkYArr[j]);
+        shape.getComponent(shapeControl).setShape(spare.type);
+        shape.parent = this._birthControl.birthPoints[0].getShapeParentNode();
+    }
     //套路开始主方法
     Weave(){
         if(this._birthControl.getweaveRunTime() == 0)
@@ -72,11 +86,14 @@ export default class weaveControl extends cc.Component {
                 case lib.defConfig.Tricks.transform:
                     this.transform();
                     break;
+                case lib.defConfig.Tricks.AbsoluteReb:
+                    this.AbsoluteReb();
+                    break;
                 default:
                     break;
             }            
             //let startPoint = parseInt((cc.random0To1() * (this._birthControl.birthPoints.length)).toString());
-            // this.transform();
+            // this.AbsoluteReb();
         }
         if(this._birthControl.getweaveRunTime() == lib.defConfig.WarningTime + this._birthControl.getweaveTime())
         {
@@ -85,6 +102,70 @@ export default class weaveControl extends cc.Component {
         }
     }
     //----- 私有方法 -----//
+    //阶梯主方法
+    private ladder(){
+
+    }
+
+    //绝对反弹主方法
+    private AbsoluteReb(){
+        //根据套路持续时间设置
+        this._birthControl.setweaveTime(5 + lib.defConfig.WeaveEndTime);
+
+        //获取随机bool值
+        let fpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的飞行轨迹
+        let dpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的消散
+        let cpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的特性
+        let spareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的形状
+        
+        //获取随机参数数值
+        let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
+        dpare.type = lib.defConfig.dissipate.rebound;
+        let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
+        let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+
+        for(let i = 0 ; i < 5; i++)
+        {
+            this.scheduleOnce(()=>{
+                let spare1 = spare;
+                if(!spareFlag)
+                {
+                    spare1 = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+                }
+                let fpare1 = this._birthControl.birthPoints[2].getRandomFlyParameters();
+                fpare1.Angle = this._birthControl.birthPoints[2].getAngleToPoint(lib.defConfig.DesignPlayWidth,0);
+                this._birthControl.birthPoints[2].createAppointShape(fpare1,dpare,cpare,spare1);
+                
+                let spare2 = spare;
+                if(!spareFlag)
+                {
+                    spare2 = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+                }
+                let fpare2 = this._birthControl.birthPoints[7].getRandomFlyParameters();
+                fpare2.Angle = this._birthControl.birthPoints[7].getAngleToPoint(0,-lib.defConfig.DesignPlayHeight);
+                this._birthControl.birthPoints[7].createAppointShape(fpare2,dpare,cpare,spare2);
+
+                let spare3 = spare;
+                if(!spareFlag)
+                {
+                    spare3 = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+                }
+                let fpare3 = this._birthControl.birthPoints[12].getRandomFlyParameters();
+                fpare3.Angle = this._birthControl.birthPoints[12].getAngleToPoint(-lib.defConfig.DesignPlayWidth,0);
+                this._birthControl.birthPoints[12].createAppointShape(fpare3,dpare,cpare,spare3);
+
+                let spare4 = spare;
+                if(!spareFlag)
+                {
+                    spare4 = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+                }
+                let fpare4 = this._birthControl.birthPoints[17].getRandomFlyParameters();
+                fpare4.Angle = this._birthControl.birthPoints[17].getAngleToPoint(0,lib.defConfig.DesignPlayHeight);
+                this._birthControl.birthPoints[17].createAppointShape(fpare4,dpare,cpare,spare4);
+            },i * 0.5);
+        }
+    }
+
     //传送主方法
     private transform(){
         //随机是上下还是左右出

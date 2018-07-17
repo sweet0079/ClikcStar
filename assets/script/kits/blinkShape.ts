@@ -31,7 +31,10 @@ export default class BlinkShape extends cc.Component {
 
     //闪烁
     private blink(){
-        let act = cc.blink(this.blinkFrequency,1);
+        this.node.opacity = 0;
+        let act1 = cc.fadeIn(this.blinkFrequency / 2);
+        let act2 = cc.fadeOut(this.blinkFrequency / 2);
+        let act = cc.sequence(act1,act2);
         let rep = cc.repeatForever(act);
         this.node.runAction(rep);
     }

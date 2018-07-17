@@ -149,13 +149,15 @@ export const Tricks = cc.Enum({
     blink: -1,
     //传送
     transform: -1,
+    //绝对反弹
+    AbsoluteReb: -1,
     // 枚举的长度
     length: -1,
 });
 //套路开始前warning持续时间
 export const WarningTime = 5;
 //套路结束后持续时间
-export const WeaveEndTime = 5;
+export const WeaveEndTime = 3;
 //每个形状有几种颜色
 export const ColorNum = 1;
 //每个形状有几种消散特效
@@ -163,7 +165,7 @@ export const DissAniNum = 1;
 //设计时中间用于点击区域的宽
 export const DesignPlayWidth = 1080;
 //设计时中间用于点击区域的高
-export const DesignPlayHeight = 1720;
+export const DesignPlayHeight = 1620;
 //HP上限
 export const MAXHP = 6;
 //power上限

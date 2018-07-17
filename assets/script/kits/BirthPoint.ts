@@ -89,8 +89,8 @@ export default class BirthPoint extends cc.Component {
     }
 
     //生成指定特殊形状
-    createSpecialShape(){
-        if(ShapeManager.getinstance().getSpecialNum() > 0)
+    createSpecialShape(num:number){
+        if(ShapeManager.getinstance().getSpecialNum() > 3)
         {
             return;
         }
@@ -103,7 +103,7 @@ export default class BirthPoint extends cc.Component {
             type: lib.defConfig.dissipate.none,
         }
         let Sparameters:_kits.ShapeControl.parameters = {
-            type: lib.RandomParameters.RandomParameters.getRandomInt(2),
+            type: num,
             color: 0,
         }
         let shape = cc.instantiate(this.specialprefeb);

@@ -34,7 +34,10 @@ export default class BirthControl extends cc.Component {
     //套路是否开始标识符
     private weaveFlag:boolean = false;
     //套路控制组件
-    private _weaveControl = null;
+    private _weaveControl:weaveControl = null;
+    //特殊图形出现时间数组
+    private _SpeArr = [lib.RandomParameters.RandomParameters.getRandomInt(this.SpecialComeTime),
+        lib.RandomParameters.RandomParameters.getRandomInt(this.SpecialComeTime),lib.RandomParameters.RandomParameters.getRandomInt(this.SpecialComeTime)];
     //----- 生命周期 -----//
     // onLoad () {}
 
@@ -90,6 +93,7 @@ export default class BirthControl extends cc.Component {
     //----- 事件回调 -----//
     private gameover(){
         this.unschedule(this.clockFun);
+        this._weaveControl.unscheduleAllCallbacks();
     }
 
     //重新开始游戏回调
@@ -127,13 +131,64 @@ export default class BirthControl extends cc.Component {
         this.schedule(this.clockFun,0.5);
     }
 
-    //检验是否可以创建形状
-    private checkCreate(){
+    //检验是否可以创建特殊形状
+    private createSpeical(){
         if(this.time % this.SpecialComeTime == 0)
         {
-            let index = lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length);
-            this.birthPoints[index].createSpecialShape();
+            this._SpeArr = [lib.RandomParameters.RandomParameters.getRandomInt(this.SpecialComeTime),
+                lib.RandomParameters.RandomParameters.getRandomInt(this.SpecialComeTime),lib.RandomParameters.RandomParameters.getRandomInt(this.SpecialComeTime)];
         }
+        if(this.time % this.SpecialComeTime == this._SpeArr[0])
+        {
+            console.log("this.time = " + this.time);
+            console.log("this.time % this.SpecialComeTime = " + this.time % this.SpecialComeTime);
+            console.log("arr[0] = " + this._SpeArr[0]);
+            if(this.time < 60)
+            {
+                this.birthPoints[lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length)].createSpecialShape(0);
+            }
+            else
+            {
+                this._weaveControl.createBlinkSpecial(0);
+            }
+        }
+        if(this.time % this.SpecialComeTime == this._SpeArr[1])
+        {
+            console.log("this.time = " + this.time);
+            console.log("this.time % this.SpecialComeTime = " + this.time % this.SpecialComeTime);
+            console.log("arr[1] = " + this._SpeArr[1]);
+            if(this.time <= 30)
+            {
+                this.birthPoints[lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length)].createSpecialShape(0);
+            }
+            else if(this.time < 60)
+            {
+                this.birthPoints[lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length)].createSpecialShape(1);
+            }
+            else
+            {
+                this._weaveControl.createBlinkSpecial(1);
+            }
+        }
+        if(this.time % this.SpecialComeTime == this._SpeArr[2])
+        {
+            console.log("this.time = " + this.time);
+            console.log("this.time % this.SpecialComeTime = " + this.time % this.SpecialComeTime);
+            console.log("arr[2] = " + this._SpeArr[2]);
+            if(this.time < 60)
+            {
+                this.birthPoints[lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length)].createSpecialShape(1);
+            }
+            else
+            {
+                this._weaveControl.createBlinkSpecial(1);
+            }
+        }
+    }
+
+    //检验是否可以创建形状
+    private checkCreate(){
+        this.createSpeical();
         let SerialNumber:number = parseInt((this.time / 10).toString());
         // console.log("this.time = " + this.time);
         // console.log("this.interval = " + this.interval);
