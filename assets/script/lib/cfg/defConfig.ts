@@ -151,6 +151,8 @@ export const Tricks = cc.Enum({
     transform: -1,
     //绝对反弹
     AbsoluteReb: -1,
+    //阶梯
+    ladder: -1,
     // 枚举的长度
     length: -1,
 });

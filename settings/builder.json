@@ -12,7 +12,7 @@
   "md5Cache": false,
   "mergeStartScene": false,
   "oauthLoginServer": "",
-  "optimizeHotUpdate": false,
+  "optimizeHotUpdate": true,
   "orientation": {
     "landscapeLeft": true,
     "landscapeRight": true,
@@ -25,7 +25,7 @@
     "REMOTE_SERVER_ROOT": "",
     "orientation": "portrait"
   },
-  "renderMode": "0",
+  "renderMode": "2",
   "startScene": "48f9c55f-66b1-42fe-91d7-b1645c7f6678",
   "title": "ClikcStar",
   "webOrientation": "portrait",

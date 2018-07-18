@@ -18,6 +18,8 @@ export default class UIcontrol extends cc.Component {
     @property(cc.ProgressBar) POWER: cc.ProgressBar = null;
     //gameover界面
     @property(cc.Node) OverLayer: cc.Node = null;
+    //pause界面
+    @property(cc.Node) PauseLayer: cc.Node = null;
     
     //----- 属性声明 -----//
     //记录当前分数
@@ -58,6 +60,17 @@ export default class UIcontrol extends cc.Component {
         this.OverLayer.active = false;
         this.unschedule(this.minPOWER);
         ShapeManager.getinstance().clean();
+    }
+
+    //暂停
+    pause(){
+        this.PauseLayer.active = true;
+        cc.director.pause();
+    }
+
+    continue(){
+        this.PauseLayer.active = false;
+        cc.director.resume();
     }
     //----- 公有方法 -----//
     gameover(){
