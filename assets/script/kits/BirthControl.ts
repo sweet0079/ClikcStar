@@ -140,9 +140,6 @@ export default class BirthControl extends cc.Component {
         }
         if(this.time % this.SpecialComeTime == this._SpeArr[0])
         {
-            console.log("this.time = " + this.time);
-            console.log("this.time % this.SpecialComeTime = " + this.time % this.SpecialComeTime);
-            console.log("arr[0] = " + this._SpeArr[0]);
             if(this.time < 60)
             {
                 this.birthPoints[lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length)].createSpecialShape(0);
@@ -154,9 +151,6 @@ export default class BirthControl extends cc.Component {
         }
         if(this.time % this.SpecialComeTime == this._SpeArr[1])
         {
-            console.log("this.time = " + this.time);
-            console.log("this.time % this.SpecialComeTime = " + this.time % this.SpecialComeTime);
-            console.log("arr[1] = " + this._SpeArr[1]);
             if(this.time <= 30)
             {
                 this.birthPoints[lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length)].createSpecialShape(0);
@@ -172,9 +166,6 @@ export default class BirthControl extends cc.Component {
         }
         if(this.time % this.SpecialComeTime == this._SpeArr[2])
         {
-            console.log("this.time = " + this.time);
-            console.log("this.time % this.SpecialComeTime = " + this.time % this.SpecialComeTime);
-            console.log("arr[2] = " + this._SpeArr[2]);
             if(this.time < 60)
             {
                 this.birthPoints[lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length)].createSpecialShape(1);
