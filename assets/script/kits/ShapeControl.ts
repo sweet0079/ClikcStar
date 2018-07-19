@@ -3,6 +3,7 @@ import * as lib from '../lib/lib'
 import FlyingShape from './FlyingShape'
 import characteristic from './Characteristic'
 import ShapeManager from './ShapeManager'
+import randomRotate from './randomRotate'
 
 const {ccclass, property} = cc._decorator;
 
@@ -61,9 +62,19 @@ export default class ShapeControl extends cc.Component {
         let temp = lib.RandomParameters.RandomParameters.getRandomInt(lib.defConfig.DissAniNum);
         if(this.isSpecial)
         {
+            this.flyControl.ShowNode.getComponent(randomRotate).stopRot();
             temp = this.type;
+            let round = this.node.getChildByName("round");
+            round.active = false;
         }
-        this.flyControl.ShowNode.getComponent(cc.Animation).play(this.flyControl.ShowNode.getComponent(cc.Animation).getClips()[temp].name);
+        let Clip = this.flyControl.ShowNode.getComponent(cc.Animation).getClips()[temp];
+        // if(this.isSpecial && this.type == 0)
+        // {
+        //     let act = cc.moveTo(Clip.duration * Clip.speed,-263,810);
+        //     this.node.runAction(act);
+        // }
+        this.flyControl.ShowNode.getComponent(cc.Animation).play(Clip.name);
+
     }
 
     //随机颜色
@@ -98,6 +109,10 @@ export default class ShapeControl extends cc.Component {
             this.type = type % 2;
             this.color = this.type;//播放破碎动画是根据color属性
             calNode.getComponent(cc.Sprite).spriteFrame = this.SpriteFrameArr[this.type];
+            if(this.type == 1)
+            {
+                this.flyControl.ShowNode.getComponent(cc.Animation).play(this.flyControl.ShowNode.getComponent(cc.Animation).getClips()[2].name);
+            }
         }
         else
         {

@@ -20,6 +20,8 @@ export default class UIcontrol extends cc.Component {
     @property(cc.Node) OverLayer: cc.Node = null;
     //pause界面
     @property(cc.Node) PauseLayer: cc.Node = null;
+    //shan界面
+    @property(cc.Node) ShanLayer: cc.Node = null;
     
     //----- 属性声明 -----//
     //记录当前分数
@@ -120,6 +122,8 @@ export default class UIcontrol extends cc.Component {
         if(this.warning)
         {
             this.warning.active = true;
+            let act = cc.repeatForever(cc.blink(0.3,1));
+            this.warning.runAction(act);
         }
     }
 
@@ -144,6 +148,10 @@ export default class UIcontrol extends cc.Component {
         this.POWER.progress = parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
         if(this.nowPOWER == lib.defConfig.MAXPOWER)
         {
+            this.ShanLayer.active = true;
+            let act = cc.repeatForever(cc.sequence(cc.fadeIn(0.5),cc.fadeOut(0.5)));
+            act.setTag(111);
+            this.ShanLayer.runAction(act);
             touchInstance.getinstance().setCanMove(true);
             this.schedule(this.minPOWER,0.1,50);
         }
@@ -156,8 +164,10 @@ export default class UIcontrol extends cc.Component {
         }
         this.nowPOWER--;
         this.POWER.progress = parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
+        this.ShanLayer.width = this.POWER.progress * this.POWER.totalLength;
         if(this.nowPOWER <= 0)
         {
+            this.ShanLayer.active = false;
             touchInstance.getinstance().setCanMove(false);
         }
     }
