@@ -3,6 +3,7 @@ import * as lib from '../lib/lib'
 import birthPointControl from './BirthPoint'
 import ShapeManager from './ShapeManager'
 import weaveControl from './weaveControl'
+import UIControl from './UIControl'
 
 const {ccclass, property} = cc._decorator;
 
@@ -21,6 +22,8 @@ export default class BirthControl extends cc.Component {
     @property({tooltip:"出生速度数组", type: [cc.Float]}) BirthSpeed: Array<number> = [];
     /** 出生点数组 */
     @property([birthPointControl]) birthPoints: Array<birthPointControl> = [];
+    //UI控制组件
+    @property(UIControl) UIcon: UIControl = null;
 
     //----- 属性声明 -----//
     //已运行时间
@@ -142,7 +145,10 @@ export default class BirthControl extends cc.Component {
         {
             if(this.time < 60)
             {
-                this.birthPoints[lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length)].createSpecialShape(0);
+                if(!this.UIcon.getHPIsFull())
+                {
+                    this.birthPoints[lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length)].createSpecialShape(0);
+                }
             }
             else
             {
@@ -153,7 +159,10 @@ export default class BirthControl extends cc.Component {
         {
             if(this.time <= 30)
             {
-                this.birthPoints[lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length)].createSpecialShape(0);
+                if(!this.UIcon.getHPIsFull())
+                {
+                    this.birthPoints[lib.RandomParameters.RandomParameters.getRandomInt(this.birthPoints.length)].createSpecialShape(0);
+                }
             }
             else if(this.time < 60)
             {

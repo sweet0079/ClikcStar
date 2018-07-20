@@ -16,12 +16,16 @@ export default class UIcontrol extends cc.Component {
     @property(cc.ProgressBar) HP: cc.ProgressBar = null;
     //能量条组件
     @property(cc.ProgressBar) POWER: cc.ProgressBar = null;
+    //时间条组件
+    @property(cc.ProgressBar) TIME: cc.ProgressBar = null;
     //gameover界面
     @property(cc.Node) OverLayer: cc.Node = null;
     //pause界面
     @property(cc.Node) PauseLayer: cc.Node = null;
     //shan界面
     @property(cc.Node) ShanLayer: cc.Node = null;
+    //red界面
+    @property(cc.Node) RedLayer: cc.Node = null;
     
     //----- 属性声明 -----//
     //记录当前分数
@@ -30,6 +34,8 @@ export default class UIcontrol extends cc.Component {
     nowHP: number = lib.defConfig.MAXHP;
     //记录当前能量
     nowPOWER: number = 0;
+    //记录当前时间剩余
+    nowTIME: number = 50;
     //----- 生命周期 -----//
 
     // onLoad () {}
@@ -39,6 +45,8 @@ export default class UIcontrol extends cc.Component {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.HideWarn,"hidewarn",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.addHP,"addHP",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.OverGame,"gameover",this);
+        this.schedule(this.minTIME,0.1,cc.macro.REPEAT_FOREVER,3);
+        this.schedule(this.minRed,0.02,cc.macro.REPEAT_FOREVER);
     }
 
     // update (dt) {}
@@ -48,6 +56,8 @@ export default class UIcontrol extends cc.Component {
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.HideWarn,"hidewarn",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.addHP,"addHP",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.OverGame,"gameover",this);
+        this.unschedule(this.minTIME);
+        this.unschedule(this.minRed);
     }
     //----- 按钮回调 -----//
     //重新开始
@@ -60,6 +70,8 @@ export default class UIcontrol extends cc.Component {
         this.initPOWER();
         touchInstance.getinstance().setCanMove(false);
         this.OverLayer.active = false;
+        this.ShanLayer.active = false;
+        this.resetTIME();
         this.unschedule(this.minPOWER);
         ShapeManager.getinstance().clean();
     }
@@ -74,10 +86,56 @@ export default class UIcontrol extends cc.Component {
         this.PauseLayer.active = false;
         cc.director.resume();
     }
-    //----- 公有方法 -----//
+    //----- 事件回调 -----//
+    checkMove(){
+        if(this.getPowerIsFull())
+        {
+            touchInstance.getinstance().setCanMove(true);
+            this.schedule(this.minPOWER,0.1,50);
+        }
+    }
+
     gameover(){
         this.hidewarn();
         this.OverLayer.active = true;
+    }
+
+    showarn(){
+        if(this.warning)
+        {
+            this.warning.active = true;
+            let act = cc.repeatForever(cc.sequence(cc.fadeIn(0.5),cc.delayTime(0.5),cc.fadeOut(0.5)));
+            this.warning.runAction(act);
+        }
+    }
+
+    hidewarn(){
+        if(this.warning)
+        {
+            this.warning.active = false;
+        }
+    }
+    //----- 公有方法 -----//
+    getHPIsFull(){
+        if(this.nowHP >= lib.defConfig.MAXHP)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    getPowerIsFull(){
+        if(this.nowPOWER >= lib.defConfig.MAXPOWER)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     addHP(){
@@ -85,6 +143,12 @@ export default class UIcontrol extends cc.Component {
         {
             this.nowHP++;
             this.HP.progress = parseFloat((this.nowHP / lib.defConfig.MAXHP).toString());
+            this.RedLayer.x = this.HP.progress * this.HP.totalLength - 50;
+            this.RedLayer.width -= (1 / lib.defConfig.MAXHP) * this.HP.totalLength;
+            if(this.RedLayer.width < 0)
+            {
+                this.RedLayer.width = 0;
+            }
         }
     }
 
@@ -94,8 +158,14 @@ export default class UIcontrol extends cc.Component {
     }
 
     minHP(){
+        if(this.nowHP == 0)
+        {
+            return;
+        }
         this.nowHP--;
         this.HP.progress = parseFloat((this.nowHP / lib.defConfig.MAXHP).toString());
+        this.RedLayer.x = this.HP.progress * this.HP.totalLength - 50;
+        this.RedLayer.width += (1 / lib.defConfig.MAXHP) * this.HP.totalLength;
         if(this.nowHP <= 0)
         {
             lib.msgEvent.getinstance().emit(lib.msgConfig.OverGame);
@@ -109,31 +179,25 @@ export default class UIcontrol extends cc.Component {
 
     addScore(score:number){
         this._addScore(score);
+        this.resetTIME();
         if(touchInstance.getinstance().getCanMove())
         {
             return;
         }
         let temp = score / 50;
         this.addPOWER(temp);
-        console.log(this.nowPOWER);
     }
 
-    showarn(){
-        if(this.warning)
-        {
-            this.warning.active = true;
-            let act = cc.repeatForever(cc.blink(0.3,1));
-            this.warning.runAction(act);
-        }
-    }
-
-    hidewarn(){
-        if(this.warning)
-        {
-            this.warning.active = false;
-        }
-    }
     //----- 私有方法 -----//
+    private minRed(){
+        if(this.RedLayer.width <= 0)
+        {
+            this.RedLayer.width = 0;
+            return;
+        }
+        this.RedLayer.width -= 1;
+    }
+
     private _addScore(score:number){
         this.score += score;
         this.Socrelabel.string = this.score.toString();
@@ -150,10 +214,7 @@ export default class UIcontrol extends cc.Component {
         {
             this.ShanLayer.active = true;
             let act = cc.repeatForever(cc.sequence(cc.fadeIn(0.5),cc.fadeOut(0.5)));
-            act.setTag(111);
             this.ShanLayer.runAction(act);
-            touchInstance.getinstance().setCanMove(true);
-            this.schedule(this.minPOWER,0.1,50);
         }
     }
 
@@ -169,6 +230,29 @@ export default class UIcontrol extends cc.Component {
         {
             this.ShanLayer.active = false;
             touchInstance.getinstance().setCanMove(false);
+        }
+    }
+
+    private resetTIME(){
+        this.nowTIME = lib.defConfig.MAXTIME;
+        this.TIME.progress = parseFloat((this.nowTIME / lib.defConfig.MAXTIME).toString());
+    }
+
+    private minTIME(){
+        if(this.nowTIME <= 0)
+        {
+            return;
+        }
+        if(this.warning.active == true)
+        {
+            return;
+        }
+        this.nowTIME--;
+        this.TIME.progress = parseFloat((this.nowTIME / lib.defConfig.MAXTIME).toString());
+        if(this.nowTIME <= 0)
+        {
+            this.minHP();
+            this.resetTIME();
         }
     }
 }

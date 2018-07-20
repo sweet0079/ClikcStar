@@ -7,4 +7,5 @@ export default {
     addHP:'addHP',
     OverGame:'OverGame',
     EndMove:'EndMove',
+    TryMove:'tryMove',
 }

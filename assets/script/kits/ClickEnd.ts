@@ -1,16 +1,19 @@
 /** 挂在形状的背景节点，用于监听触摸结束 */
 import * as lib from '../lib/lib'
 import touchInstance from "./touchInstance"
+import UIControl from './UIControl'
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class ClickEnd extends cc.Component {
     //----- 编辑器属性 -----//
-    //UI控制组件
+    //滑动时的碰撞点
     @property(cc.Node) touchPoint: cc.Node = null;
-    //UI控制组件
+    //点击的波纹预制体
     @property(cc.Prefab) clickPre: cc.Prefab = null;
+    //UI控制组件
+    @property(UIControl) UIcon: UIControl = null;
     //----- 属性声明 -----//
     //点击开始时间戳
     private time:number = 0;
@@ -86,6 +89,28 @@ export default class ClickEnd extends cc.Component {
         {
             this.touchPoint.x += event.getDeltaX();
             this.touchPoint.y += event.getDeltaY();
+        }
+        else
+        {
+            let deltDis = Math.sqrt(Math.pow(event.getDeltaX(),2) + Math.pow(event.getDeltaY(),2));
+            if(deltDis < 15)
+            {
+                console.log("小于10");
+                return;
+            }
+            if(this.UIcon.getPowerIsFull())
+            {
+                this.UIcon.checkMove();
+                if(this.startMove)
+                {
+                    return;
+                }
+                let touchx = event.getLocation().x - this.node.convertToWorldSpaceAR(cc.Vec2.ZERO).x;
+                let touchy = event.getLocation().y - this.node.convertToWorldSpaceAR(cc.Vec2.ZERO).y;
+                this.startMove = true;
+                this.touchPoint.setPosition(touchx,touchy);
+                this.touchPoint.active = true;
+            }
         }
     }
 
