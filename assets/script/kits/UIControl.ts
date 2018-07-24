@@ -26,6 +26,8 @@ export default class UIcontrol extends cc.Component {
     @property(cc.Node) ShanLayer: cc.Node = null;
     //red界面
     @property(cc.Node) RedLayer: cc.Node = null;
+    //倒计时的label组件
+    @property(cc.Label) Timelabel: cc.Label = null;
     
     //----- 属性声明 -----//
     //记录当前分数
@@ -45,7 +47,8 @@ export default class UIcontrol extends cc.Component {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.HideWarn,"hidewarn",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.addHP,"addHP",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.OverGame,"gameover",this);
-        this.schedule(this.minTIME,0.1,cc.macro.REPEAT_FOREVER,3);
+        // this.schedule(this.minTIME,0.1,cc.macro.REPEAT_FOREVER,3);
+        // this.schedule(this.minTIME,1,cc.macro.REPEAT_FOREVER,3);
         this.schedule(this.minRed,0.02,cc.macro.REPEAT_FOREVER);
     }
 
@@ -56,7 +59,7 @@ export default class UIcontrol extends cc.Component {
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.HideWarn,"hidewarn",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.addHP,"addHP",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.OverGame,"gameover",this);
-        this.unschedule(this.minTIME);
+        // this.unschedule(this.minTIME);
         this.unschedule(this.minRed);
     }
     //----- 按钮回调 -----//
@@ -188,6 +191,28 @@ export default class UIcontrol extends cc.Component {
         this.addPOWER(temp);
     }
 
+    minTIME(){
+        if(this.nowTIME <= 0)
+        {
+            return;
+        }
+        if(this.warning.active == true)
+        {
+            return;
+        }
+        this.nowTIME--;
+        if(this.nowTIME <= 3)
+        {
+            this.Timelabel.string = this.nowTIME.toString();
+            this.Timelabel.node.active = true;
+        }
+        if(this.nowTIME <= 0)
+        {
+            this.minHP();
+            this.resetTIME();
+        }
+    }
+
     //----- 私有方法 -----//
     private minRed(){
         if(this.RedLayer.width <= 0)
@@ -235,24 +260,25 @@ export default class UIcontrol extends cc.Component {
 
     private resetTIME(){
         this.nowTIME = lib.defConfig.MAXTIME;
-        this.TIME.progress = parseFloat((this.nowTIME / lib.defConfig.MAXTIME).toString());
+        this.Timelabel.node.active = false;
+        // this.TIME.progress = parseFloat((this.nowTIME / lib.defConfig.MAXTIME).toString());
     }
 
-    private minTIME(){
-        if(this.nowTIME <= 0)
-        {
-            return;
-        }
-        if(this.warning.active == true)
-        {
-            return;
-        }
-        this.nowTIME--;
-        this.TIME.progress = parseFloat((this.nowTIME / lib.defConfig.MAXTIME).toString());
-        if(this.nowTIME <= 0)
-        {
-            this.minHP();
-            this.resetTIME();
-        }
-    }
+    // private minTIME(){
+    //     if(this.nowTIME <= 0)
+    //     {
+    //         return;
+    //     }
+    //     if(this.warning.active == true)
+    //     {
+    //         return;
+    //     }
+    //     this.nowTIME--;
+    //     this.TIME.progress = parseFloat((this.nowTIME / lib.defConfig.MAXTIME).toString());
+    //     if(this.nowTIME <= 0)
+    //     {
+    //         this.minHP();
+    //         this.resetTIME();
+    //     }
+    // }
 }

@@ -122,6 +122,11 @@ export default class BirthControl extends cc.Component {
             this.time += 0.5;
             this.interval += 0.5;
             this.checkCreate();
+            if(this.time % 1 == 0
+            && this.time >= 3)
+            {
+                this.minTime();
+            }
         }
         else
         {
@@ -252,5 +257,9 @@ export default class BirthControl extends cc.Component {
         }
         //console.log(tempArr);
         return tempArr;
+    }
+
+    private minTime(){
+        this.UIcon.minTIME();
     }
 }
