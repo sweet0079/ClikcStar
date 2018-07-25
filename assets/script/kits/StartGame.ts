@@ -7,11 +7,39 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class StartGame extends cc.Component {
 
+    @property(cc.Sprite) display: cc.Sprite = null;
+    @property(cc.Node) gameLayer: cc.Node = null;
     // onLoad () {}
 
+    private tex:cc.Texture2D
+    private _isShow = false;
+
     start () {
-        this.showShareMenu();
-        this.getUserInfo();
+        window.sharedCanvas.width = 1080;
+        window.sharedCanvas.height = 1920;
+        this.tex = new cc.Texture2D();
+        lib.wxFun.showShareMenu();
+        // this.getUserInfo();
+        lib.wxFun.getUserInfo((res)=>{
+            console.log(res);
+            console.log("getUserInfo success");
+        },(res)=>{
+            console.log(res);
+            console.log("getUserInfo fail");
+            if(res.errMsg == "getUserInfo:ok")
+            {
+                let url = res.userInfo.avatarUrl;
+                lib.userInfo.getinstance().setuserAvatar(url);
+            }
+        },(res)=>{
+            console.log(res);
+            console.log("getUserInfo complete");
+            if(res.errMsg == "getUserInfo:ok")
+            {
+                let url = res.userInfo.avatarUrl;
+                lib.userInfo.getinstance().setuserAvatar(url);
+            }
+        });
         // let button = wx.createUserInfoButton({
         //     type: 'text',
         //     text: '获取用户信息',
@@ -33,68 +61,53 @@ export default class StartGame extends cc.Component {
         // })
     }
 
-    // update (dt) {}
+    update () {
+        this._updaetSubDomainCanvas();
+    }
     //----- 按钮回调 -----//
     startGame(){
         cc.director.loadScene("MainScene");
     }
 
-    //----- 私有方法 -----//
-    private getUserInfo(){
-        if(typeof wx !== 'undefined')
+    onhide(){
+        console.log("onhide");
+        // 发消息给子域
+        if(this._isShow)
         {
-            wx.login({
-                success: function () {
-                    wx.getUserInfo({
-                        openIdList:[],
-                        lang:"zh_CN",
-                        success: res => {
-                            console.log(res.data);
-                            console.log("getUserInfo fail");
-                        },
-                        fail: res => {
-                            console.log(res);
-                            console.log("getUserInfo fail");
-                            if(res.errMsg == "getUserInfo:ok")
-                            {
-                                let url = res.userInfo.avatarUrl;
-                                lib.userInfo.getinstance().setuserAvatar(url);
-                            }
-                        },
-                        complete: res => {
-                            console.log(res);
-                            console.log("getUserInfo complete");
-                            if(res.errMsg == "getUserInfo:ok")
-                            {
-                                let url = res.userInfo.avatarUrl;
-                                lib.userInfo.getinstance().setuserAvatar(url);
-                            }
-                        },
-                    });
-                }
-              })
+            this._isShow = !this._isShow;
+            let moveTo = cc.moveTo(0.5, 0, 0);
+            this.gameLayer.runAction(moveTo);
+            wx.postMessage({
+                message:'Hide' 
+            })
         }
     }
 
-    private showShareMenu() {
-        if(typeof wx !== 'undefined')
+    onClick () {
+        console.log("onclickShow");
+        // 发消息给子域
+        if(!this._isShow)
         {
-            return new Promise((resolve, reject) => {
-                wx.showShareMenu({
-                withShareTicket: true,
-                success: res => {
-                    console.log("showShareMenu true");
-                },
-                fail: res => {
-                    console.log("showShareMenu fail");
-                    console.log(res);
-                },
-                complete: res => {
-                    console.log("showShareMenu complete");
-                    console.log(res);
-                },
-                })
+            this._isShow = !this._isShow;
+            let moveTo = cc.moveTo(0.5, 0, -1850);
+            this.gameLayer.runAction(moveTo);
+            wx.postMessage({
+                message:'Show' 
             })
         }
+    }
+
+    //----- 私有方法 -----//
+    _updaetSubDomainCanvas() {
+        if (!this.tex) {
+            return;
+        }
+        // let openDataContext = wx.getOpenDataContext();
+        // let sharedCanvas = openDataContext.canvas;
+        // sharedCanvas.width = 1080;
+        // sharedCanvas.height = 1920;
+        this.tex.initWithElement(window.sharedCanvas);
+        this.tex.handleLoadedTexture();
+        this.display.spriteFrame = new cc.SpriteFrame(this.tex);
     }
 }

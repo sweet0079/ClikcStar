@@ -1745,9 +1745,6 @@
     "_fadeTime": 0.5,
     "_minSeg": 10,
     "_stroke": 50,
-    "_texture": {
-      "__uuid__": "edde9f67-37de-4ae4-9522-0818dc09acee"
-    },
     "_color": {
       "__type__": "cc.Color",
       "r": 255,

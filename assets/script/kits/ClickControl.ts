@@ -30,6 +30,7 @@ export default class ClickControl extends cc.Component {
     }
     // update (dt) {}
     //----- 私有方法 -----//
+
     private reStart(){
         this.ScoreArr = [];
     }

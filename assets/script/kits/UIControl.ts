@@ -99,6 +99,7 @@ export default class UIcontrol extends cc.Component {
     }
 
     gameover(){
+        lib.wxFun.setUserCloudStorage(this.score);
         this.hidewarn();
         this.OverLayer.active = true;
     }
