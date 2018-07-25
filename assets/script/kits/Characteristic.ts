@@ -111,7 +111,7 @@ export default class Characteristic extends cc.Component {
             this.flyControl.ShowNode.stopAllActions();
             this.flyControl.ShowNode.opacity = 255;
             this.node.runAction(cc.fadeIn(0.05));
-            this.flyControl.ShowNode.rotation = 0;
+            // this.flyControl.ShowNode.rotation = 0;
             this.node.getComponent(Dissipation).type = lib.defConfig.dissipate.none;
         }
     }

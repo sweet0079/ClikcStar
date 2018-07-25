@@ -8,12 +8,12 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class ClickEnd extends cc.Component {
     //----- 编辑器属性 -----//
-    //滑动时的碰撞点
-    @property(cc.Node) touchPoint: cc.Node = null;
     //点击的波纹预制体
     @property(cc.Prefab) clickPre: cc.Prefab = null;
     //UI控制组件
     @property(UIControl) UIcon: UIControl = null;
+    //touchPoint预制体
+    @property(cc.Prefab) touchPointPfb: cc.Prefab = null;
     //----- 属性声明 -----//
     //点击开始时间戳
     private time:number = 0;
@@ -21,6 +21,8 @@ export default class ClickEnd extends cc.Component {
     private _touchInstance:touchInstance = null;
     //开始滑动
     private startMove:boolean = false;
+    //活动碰撞点
+    private touchPoint: cc.Node = null;
     //----- 生命周期 -----//
 
     onLoad () {
@@ -54,7 +56,11 @@ export default class ClickEnd extends cc.Component {
     // private _clickEnd(){
     // }
     private _endMove(){
-        this.touchPoint.active = false;
+        if(this.touchPoint)
+        {
+            this.touchPoint.destroy();
+            this.touchPoint = null;
+        }
         this.startMove = false;
     }
 
@@ -68,8 +74,9 @@ export default class ClickEnd extends cc.Component {
                 return;
             }
             this.startMove = true;
+            this.touchPoint = cc.instantiate(this.touchPointPfb);
             this.touchPoint.setPosition(touchx,touchy);
-            this.touchPoint.active = true;
+            this.touchPoint.parent = this.node.parent;
         }
         else
         {
@@ -108,8 +115,9 @@ export default class ClickEnd extends cc.Component {
                 let touchx = event.getLocation().x - this.node.convertToWorldSpaceAR(cc.Vec2.ZERO).x;
                 let touchy = event.getLocation().y - this.node.convertToWorldSpaceAR(cc.Vec2.ZERO).y;
                 this.startMove = true;
+                this.touchPoint = cc.instantiate(this.touchPointPfb);
                 this.touchPoint.setPosition(touchx,touchy);
-                this.touchPoint.active = true;
+                this.touchPoint.parent = this.node.parent;
             }
         }
     }
@@ -117,7 +125,8 @@ export default class ClickEnd extends cc.Component {
     private _clickEnd(){
         if(this._touchInstance.getCanMove())
         {
-            this.touchPoint.active = false;
+            this.touchPoint.destroy();
+            this.touchPoint = null;
             this.startMove = false;
         }
     }

@@ -43,7 +43,7 @@ export default class ShapeControl extends cc.Component {
     }
     //----- 公有方法 -----//
     //播放点击爆裂动画
-    destroyAni(){
+    destroyAni(center:boolean = true){
         this.stopMoveAndAct();
         if(this.isSpecial)
         {
@@ -62,7 +62,11 @@ export default class ShapeControl extends cc.Component {
         let temp = lib.RandomParameters.RandomParameters.getRandomInt(lib.defConfig.DissAniNum);
         if(this.isSpecial)
         {
-            this.flyControl.ShowNode.getComponent(randomRotate).stopRot();
+            this.flyControl.ShowNode.rotation = 0;
+            if(this.flyControl.ShowNode.getComponent(randomRotate))
+            {
+                this.flyControl.ShowNode.getComponent(randomRotate).stopRot();
+            }
             temp = this.type;
             let round = this.node.getChildByName("round");
             round.active = false;
@@ -73,8 +77,27 @@ export default class ShapeControl extends cc.Component {
         //     let act = cc.moveTo(Clip.duration * Clip.speed,-263,810);
         //     this.node.runAction(act);
         // }
-        this.flyControl.ShowNode.getComponent(cc.Animation).play(Clip.name);
-
+        if(this.isSpecial)
+        {
+            this.flyControl.ShowNode.getComponent(cc.Animation).play(Clip.name);
+        }
+        else
+        {
+            let act;
+            if(center)
+            {
+                act = cc.scaleBy(0.1,1.5);
+            }
+            else
+            {
+                act = cc.scaleBy(0.1,0.5);
+            }
+            let seq = cc.sequence(act,cc.callFunc(()=>{
+                this.flyControl.ShowNode.scale = 0.6;
+                this.flyControl.ShowNode.getComponent(cc.Animation).play(Clip.name);
+            }));
+            this.flyControl.ShowNode.runAction(seq);
+        }
     }
 
     //随机颜色

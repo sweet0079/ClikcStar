@@ -9,14 +9,20 @@ export default class StartGame extends cc.Component {
 
     @property(cc.Sprite) display: cc.Sprite = null;
     @property(cc.Node) gameLayer: cc.Node = null;
+    @property(cc.Label) LoadingLabel: cc.Label = null;
+    @property(cc.Node) LoadLayer: cc.Node = null;
     // onLoad () {}
 
     private tex:cc.Texture2D
     private _isShow = false;
 
     start () {
-        window.sharedCanvas.width = 1080;
-        window.sharedCanvas.height = 1920;
+        this.schedule(this.loadingChange,1);
+        if(typeof window.sharedCanvas !== 'undefined')
+        {
+            window.sharedCanvas.width = 1080;
+            window.sharedCanvas.height = 1920;
+        }
         this.tex = new cc.Texture2D();
         lib.wxFun.showShareMenu();
         // this.getUserInfo();
@@ -66,6 +72,7 @@ export default class StartGame extends cc.Component {
     }
     //----- 按钮回调 -----//
     startGame(){
+        this.LoadLayer.active = true;
         cc.director.loadScene("MainScene");
     }
 
@@ -98,7 +105,21 @@ export default class StartGame extends cc.Component {
     }
 
     //----- 私有方法 -----//
-    _updaetSubDomainCanvas() {
+    private loadingChange(){
+        if(this.LoadingLabel.string == "loading...")
+        {
+            this.LoadingLabel.string = "loading.";
+        }
+        else if(this.LoadingLabel.string == "loading..")
+        {
+            this.LoadingLabel.string = "loading...";
+        }
+        else if(this.LoadingLabel.string == "loading.")
+        {
+            this.LoadingLabel.string = "loading..";
+        }
+    }
+    private _updaetSubDomainCanvas() {
         if (!this.tex) {
             return;
         }

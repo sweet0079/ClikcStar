@@ -22,12 +22,16 @@ export default class UIcontrol extends cc.Component {
     @property(cc.Node) OverLayer: cc.Node = null;
     //pause界面
     @property(cc.Node) PauseLayer: cc.Node = null;
-    //shan界面
+    //能量条闪
     @property(cc.Node) ShanLayer: cc.Node = null;
     //red界面
     @property(cc.Node) RedLayer: cc.Node = null;
     //倒计时的label组件
     @property(cc.Label) Timelabel: cc.Label = null;
+    //能量条倒计时屏幕边框
+    @property(cc.ProgressBar) ShanKuang: cc.ProgressBar = null;
+    //警告时的红色地圈
+    @property(cc.Prefab) RedRound: cc.Prefab = null;
     
     //----- 属性声明 -----//
     //记录当前分数
@@ -63,6 +67,11 @@ export default class UIcontrol extends cc.Component {
         this.unschedule(this.minRed);
     }
     //----- 按钮回调 -----//
+    //主页
+    homePage(){
+        cc.director.loadScene("startScene");
+    }
+
     //重新开始
     startGame(){
         lib.msgEvent.getinstance().emit(lib.msgConfig.ReStart);
@@ -94,7 +103,7 @@ export default class UIcontrol extends cc.Component {
         if(this.getPowerIsFull())
         {
             touchInstance.getinstance().setCanMove(true);
-            this.schedule(this.minPOWER,0.1,50);
+            this.schedule(this.minPOWER,0.01,500);
         }
     }
 
@@ -108,8 +117,20 @@ export default class UIcontrol extends cc.Component {
         if(this.warning)
         {
             this.warning.active = true;
-            let act = cc.repeatForever(cc.sequence(cc.fadeIn(0.5),cc.delayTime(0.5),cc.fadeOut(0.5)));
-            this.warning.runAction(act);
+            //let act = cc.repeatForever(cc.sequence(cc.fadeIn(0.5),cc.delayTime(0.5),cc.fadeOut(0.5)));
+            //this.warning.runAction(act);
+            let round = cc.instantiate(this.RedRound);
+            round.getComponent(cc.Animation).once('finished',()=>{
+                round.destroy();
+            },this)
+            this.warning.addChild(round);
+            this.schedule(()=>{
+                let round = cc.instantiate(this.RedRound);
+                round.getComponent(cc.Animation).once('finished',()=>{
+                    round.destroy();
+                },this)
+                this.warning.addChild(round);
+            },1,4);
         }
     }
 
@@ -159,6 +180,7 @@ export default class UIcontrol extends cc.Component {
     initHP(){
         this.nowHP = lib.defConfig.MAXHP;
         this.HP.progress = 1;
+        this.RedLayer.width = 0;
     }
 
     minHP(){
@@ -179,6 +201,7 @@ export default class UIcontrol extends cc.Component {
     initPOWER(){
         this.nowPOWER = 0;
         this.POWER.progress = 0;
+        this.ShanKuang.node.active = false;
     }
 
     addScore(score:number){
@@ -189,7 +212,7 @@ export default class UIcontrol extends cc.Component {
             return;
         }
         let temp = score / 50;
-        this.addPOWER(temp);
+        this.addPOWER(temp * 10);
     }
 
     minTIME(){
@@ -239,6 +262,9 @@ export default class UIcontrol extends cc.Component {
         if(this.nowPOWER == lib.defConfig.MAXPOWER)
         {
             this.ShanLayer.active = true;
+            this.ShanKuang.node.active = true;
+            this.ShanKuang.progress = 1;
+            this.ShanKuang.node.getChildByName("tips").active = true;
             let act = cc.repeatForever(cc.sequence(cc.fadeIn(0.5),cc.fadeOut(0.5)));
             this.ShanLayer.runAction(act);
         }
@@ -250,10 +276,13 @@ export default class UIcontrol extends cc.Component {
             return;
         }
         this.nowPOWER--;
+        this.ShanKuang.node.getChildByName("tips").active = false;
         this.POWER.progress = parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
+        this.ShanKuang.progress = parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
         this.ShanLayer.width = this.POWER.progress * this.POWER.totalLength;
         if(this.nowPOWER <= 0)
         {
+            this.ShanKuang.node.active = false;
             this.ShanLayer.active = false;
             touchInstance.getinstance().setCanMove(false);
         }

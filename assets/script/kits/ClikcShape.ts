@@ -45,10 +45,13 @@ export default class ClickShape extends cc.Component {
     //  start() {}
 
     // update (dt) {}
-    onEnable(){
-        this.flyControl.ShowNode.off(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
-            this.ClickSatr(event);
-        });
+    onDestroy(){
+        if(this.flyControl.ShowNode)
+        {
+            this.flyControl.ShowNode.off(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
+                this.ClickSatr(event);
+            });
+        }
     }
     // onDestroy(){
     //     this.flyControl.ShowNode.off(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
@@ -100,6 +103,7 @@ export default class ClickShape extends cc.Component {
             //     node: this.node,
             // }
             lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
+            this.shapeControl.destroyAni(true);
         }
         else
         {
@@ -110,9 +114,9 @@ export default class ClickShape extends cc.Component {
             //     node: this.node,
             // }
             lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
+            this.shapeControl.destroyAni(false);
         }
         this.clickLock = true;
         this.shapeManager.delShape(this.node);
-        this.shapeControl.destroyAni();
     }
 }

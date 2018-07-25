@@ -4,9 +4,13 @@ interface wx {
     getUserInfo:wx.getUserInfo
     login:wx.login
     setUserCloudStorage:wx.setUserCloudStorage
+    postMessage:wx.postMessage
 }
 
 declare namespace wx {
+    interface postMessage{
+        (para:postMessageAug):void
+    }
     interface setUserCloudStorage{
         (para:setUserCloudStorageAug):void
     }
@@ -18,6 +22,9 @@ declare namespace wx {
     }
     interface showShareMenu {
         (para:showShareMenuAug):void
+    }
+    interface postMessageAug{
+        message:string
     }
     interface loginAug{
         success: _li.errCallBack
