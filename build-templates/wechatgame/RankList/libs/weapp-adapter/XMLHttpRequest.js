@@ -3,8 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _class, _temp;
 
 var _EventTarget2 = require('./EventTarget.js');
 
@@ -39,7 +42,7 @@ function _changeReadyState(readyState) {
   _triggerEvent.call(this, 'readystatechange');
 }
 
-var XMLHttpRequest = function (_EventTarget) {
+var XMLHttpRequest = (_temp = _class = function (_EventTarget) {
   _inherits(XMLHttpRequest, _EventTarget);
 
   // TODO 没法模拟 HEADERS_RECEIVED 和 LOADING 两个状态
@@ -200,11 +203,6 @@ var XMLHttpRequest = function (_EventTarget) {
   }]);
 
   return XMLHttpRequest;
-}(_EventTarget3.default);
-
-XMLHttpRequest.UNSEND = 0;
-XMLHttpRequest.OPENED = 1;
-XMLHttpRequest.HEADERS_RECEIVED = 2;
-XMLHttpRequest.LOADING = 3;
-XMLHttpRequest.DONE = 4;
+}(_EventTarget3.default), _class.UNSEND = 0, _class.OPENED = 1, _class.HEADERS_RECEIVED = 2, _class.LOADING = 3, _class.DONE = 4, _temp);
 exports.default = XMLHttpRequest;
+module.exports = exports['default'];

@@ -9,3 +9,4 @@ var location = {
 };
 
 exports.default = location;
+module.exports = exports['default'];

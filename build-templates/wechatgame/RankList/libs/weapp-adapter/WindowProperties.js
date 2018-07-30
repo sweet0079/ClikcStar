@@ -21,12 +21,9 @@ var screen = exports.screen = {
   availTop: 0
 };
 
-var _performance = null;
-if (!wx.getGroupCloudStorage && !wx.getFriendCloudStorage) {
-  _performance = wx.getPerformance();
-}
+var performance = wx.getPerformance ? wx.getPerformance() : {};
+performance.now = Date.now;
 
-var performance = exports.performance = _performance;
 var ontouchstart = exports.ontouchstart = null;
 var ontouchmove = exports.ontouchmove = null;
 var ontouchend = exports.ontouchend = null;

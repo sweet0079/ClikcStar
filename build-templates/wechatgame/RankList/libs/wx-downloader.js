@@ -32,7 +32,7 @@ var non_text_format = [
 const REGEX = /^\w+:\/\/.*/;
 
 // has sub domain
-var isSubdomain = wx.getGroupCloudStorage && wx.getFriendCloudStorage;
+var isSubdomain = !wx.getFileSystemManager;
 
 var fs = isSubdomain ? {} : wx.getFileSystemManager();
 
@@ -66,6 +66,11 @@ WXDownloader.prototype.handle = function (item, callback) {
     }
 
     if (isSubdomain) {
+        if (REGEX.test(item.url)) {
+            callback(null, null);
+            return;
+        }
+
         item.url = this.SUBCONTEXT_ROOT + '/' + item.url;
 
         if (item.type && non_text_format.indexOf(item.type) !== -1) {
@@ -238,7 +243,7 @@ function downloadRemoteFile (item, callback) {
     // filter protocol url (E.g: https:// or http:// or ftp://)
     if (REGEX.test(relatUrl)) {
         callback(null, null);
-        return
+        return;
     }
 
     var remoteUrl = wxDownloader.REMOTE_SERVER_ROOT + '/' + relatUrl;

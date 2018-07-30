@@ -73,3 +73,4 @@ function Canvas() {
 
   return canvas;
 }
+module.exports = exports['default'];

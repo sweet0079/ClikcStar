@@ -32,3 +32,4 @@ var localStorage = {
 };
 
 exports.default = localStorage;
+module.exports = exports["default"];

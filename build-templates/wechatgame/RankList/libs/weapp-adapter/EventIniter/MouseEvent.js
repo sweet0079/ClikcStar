@@ -11,3 +11,4 @@ var MouseEvent = function MouseEvent() {
 };
 
 exports.default = MouseEvent;
+module.exports = exports["default"];

@@ -2,6 +2,7 @@
 import * as lib from '../lib/lib'
 import ShapeManager from './ShapeManager'
 import touchInstance from "./touchInstance"
+import HPBarCon from "./HPBarControl"
 
 const {ccclass, property} = cc._decorator;
 
@@ -13,19 +14,19 @@ export default class UIcontrol extends cc.Component {
     //warning节点组件
     @property(cc.Node) warning: cc.Node = null;
     //血条组件
-    @property(cc.ProgressBar) HP: cc.ProgressBar = null;
-    //能量条组件
-    @property(cc.ProgressBar) POWER: cc.ProgressBar = null;
+    @property(HPBarCon) HPBar: HPBarCon = null;
+    // //能量条组件
+    // @property(cc.ProgressBar) POWER: cc.ProgressBar = null;
     //时间条组件
     @property(cc.ProgressBar) TIME: cc.ProgressBar = null;
     //gameover界面
     @property(cc.Node) OverLayer: cc.Node = null;
     //pause界面
     @property(cc.Node) PauseLayer: cc.Node = null;
-    //能量条闪
-    @property(cc.Node) ShanLayer: cc.Node = null;
+    // //能量条闪
+    // @property(cc.Node) ShanLayer: cc.Node = null;
     //red界面
-    @property(cc.Node) RedLayer: cc.Node = null;
+    // @property(cc.Node) RedLayer: cc.Node = null;
     //倒计时的label组件
     @property(cc.Label) Timelabel: cc.Label = null;
     //能量条倒计时屏幕边框
@@ -53,7 +54,6 @@ export default class UIcontrol extends cc.Component {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.OverGame,"gameover",this);
         // this.schedule(this.minTIME,0.1,cc.macro.REPEAT_FOREVER,3);
         // this.schedule(this.minTIME,1,cc.macro.REPEAT_FOREVER,3);
-        this.schedule(this.minRed,0.02,cc.macro.REPEAT_FOREVER);
     }
 
     // update (dt) {}
@@ -64,7 +64,6 @@ export default class UIcontrol extends cc.Component {
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.addHP,"addHP",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.OverGame,"gameover",this);
         // this.unschedule(this.minTIME);
-        this.unschedule(this.minRed);
     }
     //----- 按钮回调 -----//
     //主页
@@ -84,7 +83,7 @@ export default class UIcontrol extends cc.Component {
         this.initPOWER();
         touchInstance.getinstance().setCanMove(false);
         this.OverLayer.active = false;
-        this.ShanLayer.active = false;
+        // this.ShanLayer.active = false;
         this.resetTIME();
         this.unschedule(this.minPOWER);
         ShapeManager.getinstance().clean();
@@ -178,20 +177,22 @@ export default class UIcontrol extends cc.Component {
         if(this.nowHP < lib.defConfig.MAXHP)
         {
             this.nowHP++;
-            this.HP.progress = parseFloat((this.nowHP / lib.defConfig.MAXHP).toString());
-            this.RedLayer.x = this.HP.progress * this.HP.totalLength - 50;
-            this.RedLayer.width -= (1 / lib.defConfig.MAXHP) * this.HP.totalLength;
-            if(this.RedLayer.width < 0)
-            {
-                this.RedLayer.width = 0;
-            }
+            this.HPBar.addHp(this.nowHP);
+            // this.HP.progress = parseFloat((this.nowHP / lib.defConfig.MAXHP).toString());
+            // this.RedLayer.x = this.HP.progress * this.HP.totalLength - 50;
+            // // this.RedLayer.width -= (1 / lib.defConfig.MAXHP) * this.HP.totalLength;
+            // if(this.RedLayer.width < 0)
+            // {
+            //     this.RedLayer.width = 0;
+            // }
         }
     }
 
     initHP(){
         this.nowHP = lib.defConfig.MAXHP;
-        this.HP.progress = 1;
-        this.RedLayer.width = 0;
+        this.HPBar.initHPBar();
+        // this.HP.progress = 1;
+        // this.RedLayer.width = 0;
     }
 
     minHP(){
@@ -201,9 +202,10 @@ export default class UIcontrol extends cc.Component {
         }
         lib.msgEvent.getinstance().emit(lib.msgConfig.micMinHP);
         this.nowHP--;
-        this.HP.progress = parseFloat((this.nowHP / lib.defConfig.MAXHP).toString());
-        this.RedLayer.x = this.HP.progress * this.HP.totalLength - 50;
-        this.RedLayer.width += (1 / lib.defConfig.MAXHP) * this.HP.totalLength;
+        this.HPBar.minHp(this.nowHP);
+        // this.HP.progress = parseFloat((this.nowHP / lib.defConfig.MAXHP).toString());
+        // this.RedLayer.x = this.HP.progress * this.HP.totalLength - 50;
+        // this.RedLayer.width += (1 / lib.defConfig.MAXHP) * this.HP.totalLength;
         if(this.nowHP <= 0)
         {
             lib.msgEvent.getinstance().emit(lib.msgConfig.OverGame);
@@ -212,8 +214,9 @@ export default class UIcontrol extends cc.Component {
 
     initPOWER(){
         this.nowPOWER = 0;
-        this.POWER.progress = 0;
-        this.ShanKuang.active = false;
+        // this.POWER.progress = 0;
+        this.ShanKuang.getChildByName("dingkuang1").height = 0;
+        this.ShanKuang.getChildByName("dingkuang2").height = 0;
     }
 
     addScore(score:number){
@@ -241,6 +244,7 @@ export default class UIcontrol extends cc.Component {
         {
             this.Timelabel.string = this.nowTIME.toString();
             this.Timelabel.node.active = true;
+            this.Timelabel.node.parent.getComponent(cc.Animation).play();
         }
         if(this.nowTIME <= 0)
         {
@@ -250,18 +254,6 @@ export default class UIcontrol extends cc.Component {
     }
 
     //----- 私有方法 -----//
-    private setShanKuangAct(flag:boolean){
-        this.ShanKuang.active = flag;
-    }
-    private minRed(){
-        if(this.RedLayer.width <= 0)
-        {
-            this.RedLayer.width = 0;
-            return;
-        }
-        this.RedLayer.width -= 1;
-    }
-
     private _addScore(score:number){
         this.score += score;
         this.Socrelabel.string = this.score.toString();
@@ -273,17 +265,20 @@ export default class UIcontrol extends cc.Component {
         {
             this.nowPOWER = lib.defConfig.MAXPOWER;
         }
-        this.POWER.progress = parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
+        // this.POWER.progress = parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
+        // if(this.nowPOWER == lib.defConfig.MAXPOWER)
+        // {
+        // this.ShanLayer.active = true;
+        // this.ShanKuang.active = true;
+        this.ShanKuang.getChildByName("dingkuang1").height = 1920 * parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
+        this.ShanKuang.getChildByName("dingkuang2").height = 1920 * parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
         if(this.nowPOWER == lib.defConfig.MAXPOWER)
         {
-            this.ShanLayer.active = true;
-            this.ShanKuang.active = true;
-            this.ShanKuang.getChildByName("dingkuang1").height = 1920;
-            this.ShanKuang.getChildByName("dingkuang2").height = 1920;
             this.ShanKuang.getChildByName("tips").active = true;
-            let act = cc.repeatForever(cc.sequence(cc.fadeIn(0.5),cc.fadeOut(0.5)));
-            this.ShanLayer.runAction(act);
         }
+            // let act = cc.repeatForever(cc.sequence(cc.fadeIn(0.5),cc.fadeOut(0.5)));
+            // this.ShanLayer.runAction(act);
+        // }
     }
 
     private minPOWER(){
@@ -293,14 +288,14 @@ export default class UIcontrol extends cc.Component {
         }
         this.nowPOWER--;
         this.ShanKuang.getChildByName("tips").active = false;
-        this.POWER.progress = parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
+        // this.POWER.progress = parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
         this.ShanKuang.getChildByName("dingkuang1").height = 1920 * parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
         this.ShanKuang.getChildByName("dingkuang2").height = 1920 * parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
-        this.ShanLayer.width = this.POWER.progress * this.POWER.totalLength;
+        // this.ShanLayer.width = this.POWER.progress * this.POWER.totalLength;
         if(this.nowPOWER <= 0)
         {
-            this.ShanKuang.active = false;
-            this.ShanLayer.active = false;
+            // this.ShanKuang.active = false;
+            // this.ShanLayer.active = false;
             touchInstance.getinstance().setCanMove(false);
         }
     }

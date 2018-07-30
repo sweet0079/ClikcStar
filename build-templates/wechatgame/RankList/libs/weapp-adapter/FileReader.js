@@ -25,3 +25,4 @@ var FileReader = function () {
 }();
 
 exports.default = FileReader;
+module.exports = exports["default"];

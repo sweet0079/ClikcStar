@@ -41,3 +41,4 @@ if (wx.onNetworkStatusChange) {
 }
 
 exports.default = navigator;
+module.exports = exports['default'];

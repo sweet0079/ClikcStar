@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.default = undefined;
 
 var _HTMLMediaElement2 = require('./HTMLMediaElement');
 
@@ -30,3 +31,4 @@ var HTMLVideoElement = function (_HTMLMediaElement) {
 
 exports.default = HTMLVideoElement;
 ;
+module.exports = exports['default'];

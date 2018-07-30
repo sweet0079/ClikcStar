@@ -71,6 +71,7 @@ export default class StartGame extends cc.Component {
         // button.onTap((res) => {
         //     console.log(res)    
         // })
+        this.setBtnSpf();
     }
 
     update () {
@@ -116,7 +117,6 @@ export default class StartGame extends cc.Component {
     }
 
     clickMic(){
-        console.log(this.audioplayer.getBGvolume());
         if(this.audioplayer.getBGvolume() == 0)
         {
             this.micBtn.getComponent(cc.Sprite).spriteFrame = this.micBtnSpf[0];
@@ -130,7 +130,6 @@ export default class StartGame extends cc.Component {
     }
 
     clickSound(){
-        console.log(this.audioplayer.getPeovolume());
         if(this.audioplayer.getPeovolume() == 0)
         {
             this.soundBtn.getComponent(cc.Sprite).spriteFrame = this.soundBtnSpf[0];
@@ -144,6 +143,24 @@ export default class StartGame extends cc.Component {
     }
 
     //----- 私有方法 -----//
+    private setBtnSpf(){
+        if(this.audioplayer.getBGvolume() == 0)
+        {
+            this.micBtn.getComponent(cc.Sprite).spriteFrame = this.micBtnSpf[1];
+        }
+        else
+        {
+            this.micBtn.getComponent(cc.Sprite).spriteFrame = this.micBtnSpf[0];
+        }
+        if(this.audioplayer.getPeovolume() == 0)
+        {
+            this.soundBtn.getComponent(cc.Sprite).spriteFrame = this.soundBtnSpf[1];
+        }
+        else
+        {
+            this.soundBtn.getComponent(cc.Sprite).spriteFrame = this.soundBtnSpf[0];
+        }
+    }
     private loadingChange(){
         if(this.LoadingLabel.string == "loading...")
         {
@@ -159,13 +176,18 @@ export default class StartGame extends cc.Component {
         }
     }
     private _updaetSubDomainCanvas() {
-        if (!this.tex) {
-            return;
-        }
-        // let openDataContext = wx.getOpenDataContext();
-        // let sharedCanvas = openDataContext.canvas;
-        // sharedCanvas.width = 1080;
-        // sharedCanvas.height = 1920;
+    //     if (!this.tex) {
+    //         return;
+    //     }
+    //     // let openDataContext = wx.getOpenDataContext();
+    //     // let sharedCanvas = openDataContext.canvas;
+    //     // sharedCanvas.width = 1080;
+    //     // sharedCanvas.height = 1920;
+    //     this.tex.initWithElement(window.sharedCanvas);
+    //     this.tex.handleLoadedTexture();
+    //     this.display.spriteFrame = new cc.SpriteFrame(this.tex);
+    // }
+    if (window.sharedCanvas != undefined) {
         this.tex.initWithElement(window.sharedCanvas);
         this.tex.handleLoadedTexture();
         this.display.spriteFrame = new cc.SpriteFrame(this.tex);

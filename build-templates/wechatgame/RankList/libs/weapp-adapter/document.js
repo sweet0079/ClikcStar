@@ -144,3 +144,4 @@ var document = {
 };
 
 exports.default = document;
+module.exports = exports['default'];
