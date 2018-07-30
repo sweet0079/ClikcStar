@@ -82,6 +82,14 @@ export default class ClickControl extends cc.Component {
         // if(this.ScoreArr.length == 0)
         // {
             this.ScoreArr.push(clickscore);
+            if(clickscore == 100)
+            {
+               lib.msgEvent.getinstance().emit(lib.msgConfig.micClickStart);
+            }
+            else if(clickscore == 50)
+            {
+                lib.msgEvent.getinstance().emit(lib.msgConfig.micClickShape);
+            }
         // }
         // else
         // {

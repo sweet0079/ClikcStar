@@ -69,11 +69,13 @@ export default class UIcontrol extends cc.Component {
     //----- 按钮回调 -----//
     //主页
     homePage(){
+        lib.msgEvent.getinstance().emit(lib.msgConfig.micbutton);
         cc.director.loadScene("startScene");
     }
 
     //重新开始
     startGame(){
+        lib.msgEvent.getinstance().emit(lib.msgConfig.micbutton);
         lib.msgEvent.getinstance().emit(lib.msgConfig.ReStart);
         this.score = 0;
         this.Socrelabel.string = this.score.toString();
@@ -90,11 +92,13 @@ export default class UIcontrol extends cc.Component {
 
     //暂停
     pause(){
+        lib.msgEvent.getinstance().emit(lib.msgConfig.micbutton);
         this.PauseLayer.active = true;
         cc.director.pause();
     }
 
     continue(){
+        lib.msgEvent.getinstance().emit(lib.msgConfig.micbutton);
         this.PauseLayer.active = false;
         cc.director.resume();
     }
@@ -108,11 +112,14 @@ export default class UIcontrol extends cc.Component {
     }
 
     gameover(){
-        wx.postMessage({
-            message:'Submit' ,
-            MAIN_MENU_NUM: "score",
-            score:this.score,
-        })
+        if(typeof wx !== 'undefined')
+        {
+            wx.postMessage({
+                message:'Submit' ,
+                MAIN_MENU_NUM: "score",
+                score:this.score,
+            })
+        }
         this.hidewarn();
         this.OverLayer.active = true;
     }
@@ -192,6 +199,7 @@ export default class UIcontrol extends cc.Component {
         {
             return;
         }
+        lib.msgEvent.getinstance().emit(lib.msgConfig.micMinHP);
         this.nowHP--;
         this.HP.progress = parseFloat((this.nowHP / lib.defConfig.MAXHP).toString());
         this.RedLayer.x = this.HP.progress * this.HP.totalLength - 50;

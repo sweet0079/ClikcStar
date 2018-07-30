@@ -11,6 +11,12 @@ export default class StartGame extends cc.Component {
     @property(cc.Node) gameLayer: cc.Node = null;
     @property(cc.Label) LoadingLabel: cc.Label = null;
     @property(cc.Node) LoadLayer: cc.Node = null;
+    @property(lib.ccAudioPlayer) audioplayer: lib.ccAudioPlayer = null;
+    @property(cc.Node) micBtn: cc.Node = null;
+    @property(cc.Node) soundBtn: cc.Node = null;
+    @property([cc.SpriteFrame]) micBtnSpf: Array<cc.SpriteFrame> = [];
+    @property([cc.SpriteFrame]) soundBtnSpf: Array<cc.SpriteFrame> = [];
+    
     // onLoad () {}
 
     private tex:cc.Texture2D
@@ -72,12 +78,14 @@ export default class StartGame extends cc.Component {
     }
     //----- 按钮回调 -----//
     startGame(){
+        lib.msgEvent.getinstance().emit(lib.msgConfig.micStartBtn);
         this.LoadLayer.active = true;
         cc.director.loadScene("MainScene");
     }
 
     onhide(){
         console.log("onhide");
+        lib.msgEvent.getinstance().emit(lib.msgConfig.micbutton);
         // 发消息给子域
         if(this._isShow)
         {
@@ -93,6 +101,7 @@ export default class StartGame extends cc.Component {
 
     onClick () {
         console.log("onclickShow");
+        lib.msgEvent.getinstance().emit(lib.msgConfig.micbutton);
         // 发消息给子域
         if(!this._isShow)
         {
@@ -103,6 +112,34 @@ export default class StartGame extends cc.Component {
                 message:'Show' ,
                 MAIN_MENU_NUM: "score",
             })
+        }
+    }
+
+    clickMic(){
+        console.log(this.audioplayer.getBGvolume());
+        if(this.audioplayer.getBGvolume() == 0)
+        {
+            this.micBtn.getComponent(cc.Sprite).spriteFrame = this.micBtnSpf[0];
+            this.audioplayer.setBGvolume(1);
+        }
+        else
+        {
+            this.micBtn.getComponent(cc.Sprite).spriteFrame = this.micBtnSpf[1];
+            this.audioplayer.setBGvolume(0); 
+        }
+    }
+
+    clickSound(){
+        console.log(this.audioplayer.getPeovolume());
+        if(this.audioplayer.getPeovolume() == 0)
+        {
+            this.soundBtn.getComponent(cc.Sprite).spriteFrame = this.soundBtnSpf[0];
+            this.audioplayer.setPeovolume(1);
+        }
+        else
+        {
+            this.soundBtn.getComponent(cc.Sprite).spriteFrame = this.soundBtnSpf[1];
+            this.audioplayer.setPeovolume(0); 
         }
     }
 

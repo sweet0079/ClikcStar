@@ -10,6 +10,8 @@ export { RandomParameters as RandomParameters }
 import userInfo from './userInfo'
 export { userInfo as userInfo }
 
-
 import  * as wxFun from './wxFun'
 export { wxFun as wxFun }
+
+import  ccAudioPlayer from './ccAudioPlayer'
+export { ccAudioPlayer as ccAudioPlayer }

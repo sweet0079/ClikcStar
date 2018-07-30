@@ -63,6 +63,9 @@
     "_components": [
       {
         "__id__": 3
+      },
+      {
+        "__id__": 166
       }
     ],
     "_prefab": null,
@@ -6514,5 +6517,14 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": null
+  },
+  {
+    "__type__": "78843BKeRlPO6BMaH2RcfKf",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true
   }
 ]

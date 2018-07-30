@@ -54,6 +54,7 @@ export default class ShapeControl extends cc.Component {
             else if(this.type == 1)
             {
                 lib.msgEvent.getinstance().emit(lib.msgConfig.OverGame);
+                lib.msgEvent.getinstance().emit(lib.msgConfig.micBomb);
             }
         }
         this.flyControl.ShowNode.getComponent(cc.Animation).once('finished',()=>{
