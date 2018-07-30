@@ -29,7 +29,7 @@ export default class UIcontrol extends cc.Component {
     //倒计时的label组件
     @property(cc.Label) Timelabel: cc.Label = null;
     //能量条倒计时屏幕边框
-    @property(cc.ProgressBar) ShanKuang: cc.ProgressBar = null;
+    @property(cc.Node) ShanKuang: cc.Node = null;
     //警告时的红色地圈
     @property(cc.Prefab) RedRound: cc.Prefab = null;
     
@@ -41,7 +41,7 @@ export default class UIcontrol extends cc.Component {
     //记录当前能量
     nowPOWER: number = 0;
     //记录当前时间剩余
-    nowTIME: number = 50;
+    nowTIME: number = lib.defConfig.MAXTIME;
     //----- 生命周期 -----//
 
     // onLoad () {}
@@ -108,7 +108,11 @@ export default class UIcontrol extends cc.Component {
     }
 
     gameover(){
-        lib.wxFun.setUserCloudStorage(this.score);
+        wx.postMessage({
+            message:'Submit' ,
+            MAIN_MENU_NUM: "score",
+            score:this.score,
+        })
         this.hidewarn();
         this.OverLayer.active = true;
     }
@@ -201,7 +205,7 @@ export default class UIcontrol extends cc.Component {
     initPOWER(){
         this.nowPOWER = 0;
         this.POWER.progress = 0;
-        this.ShanKuang.node.active = false;
+        this.ShanKuang.active = false;
     }
 
     addScore(score:number){
@@ -238,6 +242,9 @@ export default class UIcontrol extends cc.Component {
     }
 
     //----- 私有方法 -----//
+    private setShanKuangAct(flag:boolean){
+        this.ShanKuang.active = flag;
+    }
     private minRed(){
         if(this.RedLayer.width <= 0)
         {
@@ -262,9 +269,10 @@ export default class UIcontrol extends cc.Component {
         if(this.nowPOWER == lib.defConfig.MAXPOWER)
         {
             this.ShanLayer.active = true;
-            this.ShanKuang.node.active = true;
-            this.ShanKuang.progress = 1;
-            this.ShanKuang.node.getChildByName("tips").active = true;
+            this.ShanKuang.active = true;
+            this.ShanKuang.getChildByName("dingkuang1").height = 1920;
+            this.ShanKuang.getChildByName("dingkuang2").height = 1920;
+            this.ShanKuang.getChildByName("tips").active = true;
             let act = cc.repeatForever(cc.sequence(cc.fadeIn(0.5),cc.fadeOut(0.5)));
             this.ShanLayer.runAction(act);
         }
@@ -276,13 +284,14 @@ export default class UIcontrol extends cc.Component {
             return;
         }
         this.nowPOWER--;
-        this.ShanKuang.node.getChildByName("tips").active = false;
+        this.ShanKuang.getChildByName("tips").active = false;
         this.POWER.progress = parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
-        this.ShanKuang.progress = parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
+        this.ShanKuang.getChildByName("dingkuang1").height = 1920 * parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
+        this.ShanKuang.getChildByName("dingkuang2").height = 1920 * parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
         this.ShanLayer.width = this.POWER.progress * this.POWER.totalLength;
         if(this.nowPOWER <= 0)
         {
-            this.ShanKuang.node.active = false;
+            this.ShanKuang.active = false;
             this.ShanLayer.active = false;
             touchInstance.getinstance().setCanMove(false);
         }

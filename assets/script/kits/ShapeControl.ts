@@ -87,6 +87,7 @@ export default class ShapeControl extends cc.Component {
             if(center)
             {
                 act = cc.scaleBy(0.1,1.5);
+                this.flyControl.ShowNode.getChildByName("star1").active = true;
             }
             else
             {
@@ -149,6 +150,7 @@ export default class ShapeControl extends cc.Component {
                 // });
                 this.setClickJudgeFun(this._trianglegetIsClickShape);
                 calNode.children[0].setPositionY(-20);
+                calNode.children[1].setPositionY(-20);
             }
             else if(this.type == lib.defConfig.shape.diamond)
             {

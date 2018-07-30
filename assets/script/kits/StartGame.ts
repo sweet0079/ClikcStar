@@ -85,7 +85,8 @@ export default class StartGame extends cc.Component {
             let moveTo = cc.moveTo(0.5, 0, 0);
             this.gameLayer.runAction(moveTo);
             wx.postMessage({
-                message:'Hide' 
+                message:'Hide',
+                MAIN_MENU_NUM: "score",
             })
         }
     }
@@ -99,7 +100,8 @@ export default class StartGame extends cc.Component {
             let moveTo = cc.moveTo(0.5, 0, -1850);
             this.gameLayer.runAction(moveTo);
             wx.postMessage({
-                message:'Show' 
+                message:'Show' ,
+                MAIN_MENU_NUM: "score",
             })
         }
     }

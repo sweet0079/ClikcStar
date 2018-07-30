@@ -173,7 +173,7 @@
       "__id__": 30
     },
     "ShanKuang": {
-      "__id__": 164
+      "__id__": 157
     },
     "RedRound": {
       "__uuid__": "f07e4c97-095a-4373-bd88-a095e308d0df"
@@ -1152,7 +1152,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "cc3396d5-07d9-4893-a7c6-fc3809f74ac9"
+      "__uuid__": "9a6eed1f-3760-4be0-bf95-c4632273673f"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -3929,8 +3929,8 @@
       "width": 1080,
       "height": 1920
     },
-    "_fitWidth": false,
-    "_fitHeight": true
+    "_fitWidth": true,
+    "_fitHeight": false
   },
   {
     "__type__": "cc.Node",
@@ -5102,7 +5102,7 @@
       "__id__": 5
     },
     "component": "UIControl",
-    "handler": "startGame",
+    "handler": "homePage",
     "customEventData": ""
   },
   {
@@ -6189,16 +6189,16 @@
       },
       {
         "__id__": 161
+      },
+      {
+        "__id__": 163
       }
     ],
     "_tag": -1,
     "_active": false,
     "_components": [
       {
-        "__id__": 163
-      },
-      {
-        "__id__": 164
+        "__id__": 165
       }
     ],
     "_prefab": null,
@@ -6335,7 +6335,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "dingkuang",
+    "_name": "dingkuang1",
     "_objFlags": 0,
     "_parent": {
       "__id__": 157
@@ -6361,12 +6361,12 @@
     "_cascadeOpacityEnabled": true,
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
+      "x": 0,
       "y": 0.5
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1080,
+      "width": 43,
       "height": 1920
     },
     "_rotationX": 0,
@@ -6375,7 +6375,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
+      "x": -540,
       "y": 0
     },
     "_skewX": 0,
@@ -6394,10 +6394,88 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "f1dd0104-153a-40e6-a275-638355475039"
+      "__uuid__": "d1c6f529-8a3c-4065-9e50-24aafa5321c1"
     },
-    "_type": 3,
-    "_sizeMode": 1,
+    "_type": 0,
+    "_sizeMode": 0,
+    "_fillType": 2,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_fillStart": 0.33,
+    "_fillRange": 1,
+    "_isTrimmedMode": true,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_atlas": null
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "dingkuang2",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 157
+    },
+    "_children": [],
+    "_tag": -1,
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 164
+      }
+    ],
+    "_prefab": null,
+    "_id": "c1iTOIkj9OmIs84oLVz/q+",
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0.5
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 43,
+      "height": 1920
+    },
+    "_rotationX": 180,
+    "_rotationY": 180,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 540,
+      "y": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_opacityModifyRGB": false,
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.Sprite",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 163
+    },
+    "_enabled": true,
+    "_spriteFrame": {
+      "__uuid__": "d1c6f529-8a3c-4065-9e50-24aafa5321c1"
+    },
+    "_type": 0,
+    "_sizeMode": 0,
     "_fillType": 2,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -6436,21 +6514,5 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": null
-  },
-  {
-    "__type__": "cc.ProgressBar",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 157
-    },
-    "_enabled": true,
-    "_N$totalLength": 1,
-    "_N$barSprite": {
-      "__id__": 162
-    },
-    "_N$mode": 2,
-    "_N$progress": 1,
-    "_N$reverse": false
   }
 ]
