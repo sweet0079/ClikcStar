@@ -88,6 +88,7 @@ export default class ClickEnd extends cc.Component {
             clickAni.getComponent(cc.Animation).play();
             clickAni.setPosition(touchx,touchy);
             this.node.parent.addChild(clickAni);
+            lib.msgEvent.getinstance().emit(lib.msgConfig.ShowScore,cc.v2(touchx,touchy));
         }
     }
 

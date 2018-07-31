@@ -13,11 +13,16 @@ export default class ClickControl extends cc.Component {
     @property([cc.SpriteFrame]) ZiSpf: Array<cc.SpriteFrame> = [];
     //字体父节点
     @property(cc.Node) Ziparent: cc.Node = null;
+    //数字预制体
+    @property(cc.Prefab) scorePfb: cc.Prefab = null;
     //----- 属性声明 -----//
     private ScoreArr :Array<number> = [];
     //连击数
     private ComboNum: number = 0;
-    
+    //下一个要展示的分数
+    private ShowScore: number = 0;
+    //下一个要展示的分数位置
+    private ShowScorePos: cc.Vec2 = cc.v2(0,0);
     //----- 生命周期 -----//
 
     // onLoad () {}
@@ -26,6 +31,7 @@ export default class ClickControl extends cc.Component {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.clickStart,"add",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.Settlement,"settlement",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ReStart,"reStart",this);
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.ShowScore,"showScore",this);
     }
 
     onDestroy(){
@@ -34,6 +40,11 @@ export default class ClickControl extends cc.Component {
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.ReStart,"reStart",this);
     }
     // update (dt) {}
+    //----- 事件回调 -----//
+    private showScore(pos:cc.Vec2){
+        this.ShowScorePos = pos;
+        this.createScore();
+    }
     //----- 私有方法 -----//
     private createZiSprite(spf:cc.SpriteFrame){
         let node = new cc.Node('Good');
@@ -47,6 +58,22 @@ export default class ClickControl extends cc.Component {
             node.destroy();
         }));
         node.runAction(seq);
+    }
+
+    private createScore(){
+        if(this.ShowScore == 0)
+        {
+            return;
+        }
+        let sco = cc.instantiate(this.scorePfb);
+        sco.getComponent(cc.Label).string = this.ShowScore.toString();
+        sco.setPosition(this.ShowScorePos);
+        sco.parent = this.Ziparent;
+        let ani = sco.getComponent(cc.Animation);
+        ani.once('finished',()=>{
+            sco.destroy();
+        },this);
+        ani.play();
     }
 
     private showGood(){
@@ -115,6 +142,7 @@ export default class ClickControl extends cc.Component {
             this.ComboNum = 0;
             //console.log("扣血");
             this.UIcon.minHP();
+            this.ShowScore = 0;
             return;
         }
         else if(this.ScoreArr.length == 1)
@@ -122,6 +150,7 @@ export default class ClickControl extends cc.Component {
             this.ComboNum++;
             //console.log("length == 1" + " score =" + this.ScoreArr[0]);
             this.UIcon.addScore(this.ScoreArr[0]);
+            this.ShowScore = this.ScoreArr[0];
         }
         else
         {
@@ -135,6 +164,8 @@ export default class ClickControl extends cc.Component {
             score *= 2;
             //console.log("length == " + this.ScoreArr.length + " score =" + score);
             this.UIcon.addScore(score);
+            this.ShowScore = score;
+            lib.msgEvent.getinstance().emit(lib.msgConfig.micclickCombo);
         }
         this.ScoreArr = [];
     }

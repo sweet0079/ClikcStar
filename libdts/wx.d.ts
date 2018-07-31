@@ -9,9 +9,13 @@ interface wx {
     getFriendCloudStorage:wx.getUserCloudStorage
     onMessage:_li.errCallBack
     createImage:norCallBack
+    onShareAppMessage:_li.errCallBack
 }
 
 declare namespace wx {
+    interface onShareAppMessage{
+        (para:onShareAppMessageAug):void
+    }
     interface getUserCloudStorage{
         (para:getUserCloudStorageAug):void
     }
@@ -29,6 +33,10 @@ declare namespace wx {
     }
     interface showShareMenu {
         (para:showShareMenuAug):void
+    }
+    interface onShareAppMessageAug{
+        title: string
+        imageUrl: string
     }
     interface getUserCloudStorageAug{
         keyList: Array<string>

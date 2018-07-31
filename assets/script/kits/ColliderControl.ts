@@ -31,6 +31,7 @@ export default class ColliderControl extends cc.Component {
         ShapeManager.getinstance().delShape(this.node);
         this.node.parent.getComponent(ShapeControl).destroyAni();
         lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement);
+        lib.msgEvent.getinstance().emit(lib.msgConfig.ShowScore,cc.v2(this.node.parent.getPositionX(),this.node.parent.getPositionY()));
         this.hasDes = true;
     }
 }

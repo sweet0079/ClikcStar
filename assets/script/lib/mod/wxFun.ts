@@ -20,6 +20,19 @@ export let showShareMenu = function () {
     }
 }
 
+export let onShareAppMessage = function (titlestr:string,imgurl:string) {
+    if(typeof wx !== 'undefined')
+    {
+        console.log("onShareAppMessage");
+        wx.onShareAppMessage(function () {
+            // 用户点击了“转发”按钮
+            return {
+                title:titlestr,
+                imageUrl:imgurl,
+            }
+          })
+    }
+}
 
 export let getUserInfo = function (success:Function,fail:Function,complete:Function){
     if(typeof wx !== 'undefined')

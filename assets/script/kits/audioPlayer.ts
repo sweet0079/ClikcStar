@@ -13,6 +13,7 @@ export default class NewClass extends lib.ccAudioPlayer  {
     private startBtn = 'res/raw-assets/mic/Stars_ui_start.mp3';
     private button = 'res/raw-assets/mic/Stars_ui_menu.mp3';
 
+    private clickCombo = 'res/raw-assets/mic/Stars_combo.mp3';
     private clickStart = 'res/raw-assets/mic/Stars_bingo.mp3';
     private clickShape = 'res/raw-assets/mic/Stars_shapes_on.mp3';
     private clickBG = 'res/raw-assets/mic/Stars_shapes_off.mp3';
@@ -45,6 +46,9 @@ export default class NewClass extends lib.ccAudioPlayer  {
     msgclickStart(){
         this.play(5, this.clickStart, false);
     }
+    msgclickCombo(){
+        this.play(6, this.clickCombo, false);
+    }
     //----- 按键回调 -----//
     //----- 生命周期 -----//
 
@@ -61,7 +65,8 @@ export default class NewClass extends lib.ccAudioPlayer  {
         msgEvent.addEvent(lib.msgConfig.micBomb, 'msgclickbomb', this);
         msgEvent.addEvent(lib.msgConfig.micMinHP, 'msgclickBG', this);    
         msgEvent.addEvent(lib.msgConfig.micClickStart, 'msgclickStart', this);   
-        msgEvent.addEvent(lib.msgConfig.micClickShape, 'msgclickShape', this);       
+        msgEvent.addEvent(lib.msgConfig.micClickShape, 'msgclickShape', this);      
+        msgEvent.addEvent(lib.msgConfig.micclickCombo, 'msgclickCombo', this);   
     }
     start() {
         super.start();
@@ -76,7 +81,8 @@ export default class NewClass extends lib.ccAudioPlayer  {
         msgEvent.removeEvent(lib.msgConfig.micBomb, 'msgclickbomb', this);
         msgEvent.removeEvent(lib.msgConfig.micMinHP, 'msgclickBG', this);   
         msgEvent.removeEvent(lib.msgConfig.micClickStart, 'msgclickStart', this);   
-        msgEvent.removeEvent(lib.msgConfig.micClickShape, 'msgclickShape', this);       
+        msgEvent.removeEvent(lib.msgConfig.micClickShape, 'msgclickShape', this);    
+        msgEvent.removeEvent(lib.msgConfig.micclickCombo, 'msgclickCombo', this);       
         super.onDestroy();
     }
 }

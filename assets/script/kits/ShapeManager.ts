@@ -60,4 +60,16 @@ export default class ShapeManager {
         this.shapeArr = [];
         this.specialArr = [];
     }
+
+    desAllShape(){
+        for(let i = 0; i < this.shapeArr.length; i++)
+        {
+            this.shapeArr[i].destroy();
+        }
+        for(let i = 0; i < this.specialArr.length; i++)
+        {
+            this.specialArr[i].destroy();
+        }
+        this.clean();
+    }
 }

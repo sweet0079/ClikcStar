@@ -33,6 +33,8 @@ export default class UIcontrol extends cc.Component {
     @property(cc.Node) ShanKuang: cc.Node = null;
     //警告时的红色地圈
     @property(cc.Prefab) RedRound: cc.Prefab = null;
+    //掉血时的红屏框
+    @property(cc.Node) RedKuang: cc.Node = null;
     
     //----- 属性声明 -----//
     //记录当前分数
@@ -43,6 +45,9 @@ export default class UIcontrol extends cc.Component {
     nowPOWER: number = 0;
     //记录当前时间剩余
     nowTIME: number = lib.defConfig.MAXTIME;
+
+    act1:cc.Action = cc.repeatForever(cc.sequence(cc.fadeIn(0.2),cc.fadeOut(0.2)));
+    act2:cc.Action = cc.repeatForever(cc.sequence(cc.fadeIn(0.2),cc.fadeOut(0.2)));
     //----- 生命周期 -----//
 
     // onLoad () {}
@@ -51,7 +56,6 @@ export default class UIcontrol extends cc.Component {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ShowWarn,"showarn",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.HideWarn,"hidewarn",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.addHP,"addHP",this);
-        lib.msgEvent.getinstance().addEvent(lib.msgConfig.OverGame,"gameover",this);
         // this.schedule(this.minTIME,0.1,cc.macro.REPEAT_FOREVER,3);
         // this.schedule(this.minTIME,1,cc.macro.REPEAT_FOREVER,3);
     }
@@ -62,7 +66,6 @@ export default class UIcontrol extends cc.Component {
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.ShowWarn,"showarn",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.HideWarn,"hidewarn",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.addHP,"addHP",this);
-        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.OverGame,"gameover",this);
         // this.unschedule(this.minTIME);
     }
     //----- 按钮回调 -----//
@@ -110,7 +113,7 @@ export default class UIcontrol extends cc.Component {
         }
     }
 
-    gameover(){
+    gameover(labelType:number){
         if(typeof wx !== 'undefined')
         {
             wx.postMessage({
@@ -120,6 +123,14 @@ export default class UIcontrol extends cc.Component {
             })
         }
         this.hidewarn();
+        if(labelType == 1)
+        {
+            this.OverLayer.getChildByName("Label").getComponent(cc.Label).string = "触发炸弹,小心!";
+        }
+        else
+        {
+            this.OverLayer.getChildByName("Label").getComponent(cc.Label).string = "电量耗尽,注意!";
+        }
         this.OverLayer.active = true;
     }
 
@@ -206,6 +217,9 @@ export default class UIcontrol extends cc.Component {
         // this.HP.progress = parseFloat((this.nowHP / lib.defConfig.MAXHP).toString());
         // this.RedLayer.x = this.HP.progress * this.HP.totalLength - 50;
         // this.RedLayer.width += (1 / lib.defConfig.MAXHP) * this.HP.totalLength;
+        this.RedKuang.active = true;
+        let act = cc.sequence(cc.fadeIn(0.35),cc.fadeOut(0.35));
+        this.RedKuang.runAction(act);
         if(this.nowHP <= 0)
         {
             lib.msgEvent.getinstance().emit(lib.msgConfig.OverGame);
@@ -217,6 +231,10 @@ export default class UIcontrol extends cc.Component {
         // this.POWER.progress = 0;
         this.ShanKuang.getChildByName("dingkuang1").height = 0;
         this.ShanKuang.getChildByName("dingkuang2").height = 0;
+        this.ShanKuang.getChildByName("dingkuang1").stopAllActions();
+        this.ShanKuang.getChildByName("dingkuang1").opacity = 255;
+        this.ShanKuang.getChildByName("dingkuang2").stopAllActions();
+        this.ShanKuang.getChildByName("dingkuang2").opacity = 255;
     }
 
     addScore(score:number){
@@ -257,6 +275,9 @@ export default class UIcontrol extends cc.Component {
     private _addScore(score:number){
         this.score += score;
         this.Socrelabel.string = this.score.toString();
+        let subscore = this.Socrelabel.node.getChildByName("subscore");
+        subscore.getComponent(cc.Label).string = this.score.toString();
+        subscore.getComponent(cc.Animation).play();
     }
 
     private addPOWER(num:number){
@@ -274,7 +295,13 @@ export default class UIcontrol extends cc.Component {
         this.ShanKuang.getChildByName("dingkuang2").height = 1920 * parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
         if(this.nowPOWER == lib.defConfig.MAXPOWER)
         {
+            if(this.ShanKuang.getChildByName("tips").active)
+            {
+                return;
+            }
             this.ShanKuang.getChildByName("tips").active = true;
+            this.ShanKuang.getChildByName("dingkuang1").runAction(this.act1);
+            this.ShanKuang.getChildByName("dingkuang2").runAction(this.act2);
         }
             // let act = cc.repeatForever(cc.sequence(cc.fadeIn(0.5),cc.fadeOut(0.5)));
             // this.ShanLayer.runAction(act);
@@ -296,6 +323,10 @@ export default class UIcontrol extends cc.Component {
         {
             // this.ShanKuang.active = false;
             // this.ShanLayer.active = false;
+            this.ShanKuang.getChildByName("dingkuang1").stopAction(this.act1);
+            this.ShanKuang.getChildByName("dingkuang1").opacity = 255;
+            this.ShanKuang.getChildByName("dingkuang2").stopAction(this.act2);
+            this.ShanKuang.getChildByName("dingkuang2").opacity = 255;
             touchInstance.getinstance().setCanMove(false);
         }
     }

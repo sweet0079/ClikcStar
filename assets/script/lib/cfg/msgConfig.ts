@@ -8,6 +8,8 @@ export default {
     OverGame:'OverGame',
     EndMove:'EndMove',
     TryMove:'tryMove',
+    ShowScore:'showScore',
+    Bomb:'bomb',
 
     //音效
     micStartBtn: 'msgStartBtn',
@@ -16,4 +18,5 @@ export default {
     micMinHP: 'clickBG',
     micClickShape: 'clickShape',
     micClickStart: 'clickStart',
+    micclickCombo: 'clickCombo',
 }

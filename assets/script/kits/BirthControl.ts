@@ -48,12 +48,14 @@ export default class BirthControl extends cc.Component {
         this._weaveControl = this.node.getComponent(weaveControl);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ReStart,"reStart",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.OverGame,"gameover",this);
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.Bomb,"bombCallBack",this);
         this.startClock();
     }
 
     onDestroy(){
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.ReStart,"reStart",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.OverGame,"gameover",this);
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.Bomb,"bombCallBack",this);
     }
     //----- 公有方法 -----//
     getbirthPoints(){
@@ -94,9 +96,17 @@ export default class BirthControl extends cc.Component {
     }
     // update (dt) {}
     //----- 事件回调 -----//
+    private bombCallBack(){
+        this.unschedule(this.clockFun);
+        this._weaveControl.unscheduleAllCallbacks();
+        this.scheduleOnce(()=>{
+            this.UIcon.gameover(1);
+        },1);
+    }
     private gameover(){
         this.unschedule(this.clockFun);
         this._weaveControl.unscheduleAllCallbacks();
+        this.UIcon.gameover(0);
     }
 
     //重新开始游戏回调

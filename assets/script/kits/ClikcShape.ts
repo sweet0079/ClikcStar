@@ -97,22 +97,22 @@ export default class ClickShape extends cc.Component {
         && Math.abs(touchy) < this.highScoreWidth / 2 * this.node.scaleY * this.flyControl.ShowNode.scaleY)
         {
             //console.log("high score");
-            let score: number = 100;
             // let click:_kits.ClickControl.click = {
             //     score: score,
             //     node: this.node,
             // }
+            let score: number = 100;
             lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
             this.shapeControl.destroyAni(true);
         }
         else
         {
             //console.log("low score");
-            let score: number = 50;
             // let click:_kits.ClickControl.click = {
             //     score: score,
             //     node: this.node,
             // }
+            let score: number = 50;
             lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
             this.shapeControl.destroyAni(false);
         }

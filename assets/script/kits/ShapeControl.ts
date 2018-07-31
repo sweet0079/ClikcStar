@@ -32,6 +32,7 @@ export default class ShapeControl extends cc.Component {
     start () {
         this.flyControl = this.node.getComponent(FlyingShape);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ReStart,"reStart",this);
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.Bomb,"bombCallBack",this);
         //this.setShape(2);
     }
 
@@ -40,6 +41,7 @@ export default class ShapeControl extends cc.Component {
     onDestroy(){
         ShapeManager.getinstance().delShape(this.node);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.ReStart,"reStart",this);
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.Bomb,"bombCallBack",this);
     }
     //----- 公有方法 -----//
     //播放点击爆裂动画
@@ -53,7 +55,7 @@ export default class ShapeControl extends cc.Component {
             }
             else if(this.type == 1)
             {
-                lib.msgEvent.getinstance().emit(lib.msgConfig.OverGame);
+                lib.msgEvent.getinstance().emit(lib.msgConfig.Bomb);
                 lib.msgEvent.getinstance().emit(lib.msgConfig.micBomb);
             }
         }
@@ -184,15 +186,66 @@ export default class ShapeControl extends cc.Component {
     }
     
     //----- 事件回调 -----//
+    //点击炸弹事件回调
+    private bombCallBack(){
+        lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,50);
+        ShapeManager.getinstance().delShape(this.node);
+        this._destroyAni();
+    }
     //重新开始事件回调
     private reStart(){
         this.node.destroy();
     }
 
     //----- 私有方法 -----//
+    //私有的播放点击动画，不发送任何消息
+    private _destroyAni(center = true){
+        this.stopMoveAndAct();
+        this.flyControl.ShowNode.getComponent(cc.Animation).once('finished',()=>{
+            this.node.destroy();
+        },this);
+        let temp = lib.RandomParameters.RandomParameters.getRandomInt(lib.defConfig.DissAniNum);
+        if(this.isSpecial)
+        {
+            this.flyControl.ShowNode.rotation = 0;
+            if(this.flyControl.ShowNode.getComponent(randomRotate))
+            {
+                this.flyControl.ShowNode.getComponent(randomRotate).stopRot();
+            }
+            temp = this.type;
+            let round = this.node.getChildByName("round");
+            round.active = false;
+        }
+        let Clip = this.flyControl.ShowNode.getComponent(cc.Animation).getClips()[temp];
+        if(this.isSpecial)
+        {
+            this.flyControl.ShowNode.getComponent(cc.Animation).play(Clip.name);
+        }
+        else
+        {
+            let act;
+            if(center)
+            {
+                act = cc.scaleBy(0.1,1.5);
+                this.flyControl.ShowNode.getChildByName("star1").active = true;
+            }
+            else
+            {
+                act = cc.scaleBy(0.1,0.5);
+            }
+            let seq = cc.sequence(act,cc.callFunc(()=>{
+                this.flyControl.ShowNode.scale = 0.6;
+                this.flyControl.ShowNode.getComponent(cc.Animation).play(Clip.name);
+            }));
+            this.flyControl.ShowNode.runAction(seq);
+        }
+    }
     //停止形状所有的移动和动作事件
     private stopMoveAndAct(){
-        this.flyControl.stopMove();
+        if(this.flyControl)
+        {
+            this.flyControl.stopMove();
+        }
         this.node.getComponent(characteristic).stopAct();
     }
 

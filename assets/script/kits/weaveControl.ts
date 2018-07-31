@@ -180,7 +180,7 @@ export default class weaveControl extends cc.Component {
     //绝对反弹主方法
     private AbsoluteReb(){
         //根据套路持续时间设置
-        this._birthControl.setweaveTime(5 + lib.defConfig.WeaveEndTime);
+        this._birthControl.setweaveTime(3 + lib.defConfig.WeaveEndTime);
 
         //获取随机bool值
         let fpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的飞行轨迹
@@ -250,7 +250,7 @@ export default class weaveControl extends cc.Component {
             pointArr = [5,7,9];
         }
         //根据套路持续时间设置
-        this._birthControl.setweaveTime(5 + lib.defConfig.WeaveEndTime);
+        this._birthControl.setweaveTime(3 + lib.defConfig.WeaveEndTime);
 
         //获取随机bool值
         let fpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的飞行轨迹
