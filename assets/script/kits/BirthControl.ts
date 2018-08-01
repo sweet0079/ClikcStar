@@ -49,13 +49,24 @@ export default class BirthControl extends cc.Component {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ReStart,"reStart",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.OverGame,"gameover",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.Bomb,"bombCallBack",this);
-        this.startClock();
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.startClock,"startClock",this);
+        if(cc.sys.localStorage.getItem('FirstPlay', 'undefined') == "true")
+        {
+            this.startClock();
+        }
+        else
+        {
+            cc.sys.localStorage.setItem('FirstPlay', 'true');
+            console.log(cc.sys.localStorage.getItem('FirstPlay', 'undefined'));
+            this.NoviceGuidance();
+        }
     }
 
     onDestroy(){
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.ReStart,"reStart",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.OverGame,"gameover",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.Bomb,"bombCallBack",this);
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.startClock,"startClock",this);
     }
     //----- 公有方法 -----//
     getbirthPoints(){
@@ -125,6 +136,14 @@ export default class BirthControl extends cc.Component {
     }
 
     //----- 私有方法 -----//
+    private NoviceGuidance(){
+        this._weaveControl.createNormalShape();
+        this.UIcon.showNoviceGuidance();
+        this.scheduleOnce(()=>{
+            ShapeManager.getinstance().pauseAllShape();
+            this.UIcon.showNoviceGuidanceMask1();
+        },1)
+    }
     //根据时间增长，创建形状、提高难度
     private clockFun(){
         if(!this.weaveFlag)

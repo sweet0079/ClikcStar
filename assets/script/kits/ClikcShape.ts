@@ -102,8 +102,12 @@ export default class ClickShape extends cc.Component {
             //     node: this.node,
             // }
             let score: number = 100;
-            lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
+            if(this.shapeControl.isSpecial)
+            {
+                score = 0;
+            }
             this.shapeControl.destroyAni(true);
+            lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
         }
         else
         {
@@ -113,8 +117,12 @@ export default class ClickShape extends cc.Component {
             //     node: this.node,
             // }
             let score: number = 50;
-            lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
+            if(this.shapeControl.isSpecial)
+            {
+                score = 0;
+            }
             this.shapeControl.destroyAni(false);
+            lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
         }
         this.clickLock = true;
         this.shapeManager.delShape(this.node);

@@ -21,14 +21,30 @@ export default class weaveControl extends cc.Component {
     //----- 生命周期 -----//
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+        this._birthControl = this.node.getComponent(birthControl);
+    }
 
     start () {
-        this._birthControl = this.node.getComponent(birthControl);
     }
 
     // update (dt) {} 
     //----- 公有方法 -----//
+    //创建新手引导的形状
+    createNormalShape(){
+        //获取随机参数数值
+        let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
+        dpare.type = lib.defConfig.dissipate.none;
+        let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
+        cpare.type = lib.defConfig.character.none;
+        let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+        let fpare1 = this._birthControl.birthPoints[18].getRandomFlyParameters();
+        fpare1.Speed = 200;
+        fpare1.Angle = 0;
+        this._birthControl.birthPoints[18].createAppointShape(fpare1,dpare,cpare,spare);
+
+        this._birthControl.birthPoints[16].createSpecialShape(1,fpare1,dpare,cpare);
+    }
     //创建闪烁的特殊形状
     createBlinkSpecial(num){
         let i = lib.RandomParameters.RandomParameters.getRandomInt(this.BlinkXArr.length);

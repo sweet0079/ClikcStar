@@ -10,6 +10,7 @@ export default {
     TryMove:'tryMove',
     ShowScore:'showScore',
     Bomb:'bomb',
+    startClock:'startClock',
 
     //音效
     micStartBtn: 'msgStartBtn',

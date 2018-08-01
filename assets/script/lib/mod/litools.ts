@@ -19,7 +19,6 @@ export const IsWeChat = function () {
 //     let iswechatpc = ua.toLowerCase().match(/MicroMessenger\/(\d+\.\d+\.\d+)/) || ua.toLowerCase().match(/MicroMessenger\/(\d+\.\d+)/);
 //     return iswechatpc ? iswechatpc[1] : null;
 // }
-
 export const IsPc = function () {
     let ua = navigator.userAgent;
     let ispc = /macintosh|window/.test(ua.toLowerCase());

@@ -35,6 +35,8 @@ export default class UIcontrol extends cc.Component {
     @property(cc.Prefab) RedRound: cc.Prefab = null;
     //掉血时的红屏框
     @property(cc.Node) RedKuang: cc.Node = null;
+    //新手引导节点
+    @property(cc.Node) NoviceGuidance: cc.Node = null;
     
     //----- 属性声明 -----//
     //记录当前分数
@@ -69,6 +71,19 @@ export default class UIcontrol extends cc.Component {
         // this.unschedule(this.minTIME);
     }
     //----- 按钮回调 -----//
+    //新手引导点击
+    NoviceGuidanceClick(){
+        if(this.NoviceGuidance.getChildByName("mask1").active == true)
+        {
+            this.showNoviceGuidanceMask2();
+        }
+        else if(this.NoviceGuidance.getChildByName("mask2").active == true)
+        {
+            ShapeManager.getinstance().continueAllShape();
+            this.NoviceGuidance.active = false;
+            lib.msgEvent.getinstance().emit(lib.msgConfig.startClock);
+        }
+    }
     //主页
     homePage(){
         lib.msgEvent.getinstance().emit(lib.msgConfig.micbutton);
@@ -105,6 +120,20 @@ export default class UIcontrol extends cc.Component {
         cc.director.resume();
     }
     //----- 事件回调 -----//
+    //展示新手引导UI
+    showNoviceGuidance(){
+        this.NoviceGuidance.active = true;
+    }
+    //展示新手引导UI的第一个界面
+    showNoviceGuidanceMask1(){
+        this.NoviceGuidance.getChildByName("mask1").active = true;
+        this.NoviceGuidance.getChildByName("mask2").active = false;
+    }
+    //展示新手引导UI的第二个界面
+    showNoviceGuidanceMask2(){
+        this.NoviceGuidance.getChildByName("mask1").active = false;
+        this.NoviceGuidance.getChildByName("mask2").active = true;
+    }
     checkMove(){
         if(this.getPowerIsFull())
         {
@@ -235,6 +264,7 @@ export default class UIcontrol extends cc.Component {
         this.ShanKuang.getChildByName("dingkuang1").opacity = 255;
         this.ShanKuang.getChildByName("dingkuang2").stopAllActions();
         this.ShanKuang.getChildByName("dingkuang2").opacity = 255;
+        this.ShanKuang.getChildByName("tips").active = false;
     }
 
     addScore(score:number){

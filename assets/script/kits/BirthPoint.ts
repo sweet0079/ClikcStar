@@ -89,18 +89,30 @@ export default class BirthPoint extends cc.Component {
     }
 
     //生成指定特殊形状
-    createSpecialShape(num:number){
+    createSpecialShape(num:number,para?:_kits.FlyingShape.parameters,Dpara?:_kits.Disspation.parameters,ctype?:_kits.Characteristic.parameters){
         if(ShapeManager.getinstance().getSpecialNum() > 3)
         {
             return;
         }
         let parameters = this.getRandomFlyParameters();
+        if(para)
+        {
+            parameters = para;
+        }
         let Ctype:_kits.Characteristic.parameters = {
             type: lib.defConfig.character.none,
             divisionDistance: 0,
         }
+        if(ctype)
+        {
+            Ctype = ctype;
+        }
         let Dparameters:_kits.Disspation.parameters = {
             type: lib.defConfig.dissipate.none,
+        }
+        if(Dpara)
+        {
+            Dparameters = Dpara;
         }
         let Sparameters:_kits.ShapeControl.parameters = {
             type: num,

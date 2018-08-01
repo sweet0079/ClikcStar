@@ -27,7 +27,12 @@ export default class ColliderControl extends cc.Component {
         {
             return;
         }
-        lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,100);
+        let score: number = 100;
+        if(this.node.parent.getComponent(ShapeControl).isSpecial)
+        {
+            score = 0;
+        }
+        lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
         ShapeManager.getinstance().delShape(this.node);
         this.node.parent.getComponent(ShapeControl).destroyAni();
         lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement);

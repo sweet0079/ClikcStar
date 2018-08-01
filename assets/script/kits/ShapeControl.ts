@@ -4,6 +4,7 @@ import FlyingShape from './FlyingShape'
 import characteristic from './Characteristic'
 import ShapeManager from './ShapeManager'
 import randomRotate from './randomRotate'
+import dispationControl from './Disspation'
 
 const {ccclass, property} = cc._decorator;
 
@@ -19,6 +20,8 @@ export default class ShapeControl extends cc.Component {
     
 
     //----- 属性声明 -----//
+    //消散控制器
+    private dissControl: dispationControl = null;
     //飞行轨迹控制器
     private flyControl: FlyingShape = null;
     //已滞留时间
@@ -31,6 +34,7 @@ export default class ShapeControl extends cc.Component {
 
     start () {
         this.flyControl = this.node.getComponent(FlyingShape);
+        this.dissControl = this.node.getComponent(dispationControl);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.ReStart,"reStart",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.Bomb,"bombCallBack",this);
         //this.setShape(2);
@@ -188,8 +192,20 @@ export default class ShapeControl extends cc.Component {
     //----- 事件回调 -----//
     //点击炸弹事件回调
     private bombCallBack(){
-        lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,50);
+        if(this.type == 1 && this.isSpecial)
+        {
+            this._destroyAni();
+            return;
+        }
+        let score: number = 50;
+        if(this.isSpecial || !this.dissControl.getAdmission())
+        {
+            score = 0;
+        }
+        lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
         ShapeManager.getinstance().delShape(this.node);
+        lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement);
+        lib.msgEvent.getinstance().emit(lib.msgConfig.ShowScore,cc.v2(this.node.getPositionX(),this.node.getPositionY()));
         this._destroyAni();
     }
     //重新开始事件回调

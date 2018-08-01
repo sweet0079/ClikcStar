@@ -1,4 +1,6 @@
 /** 形状管理器脚本 */
+import FlyingShape from './FlyingShape'
+
 export default class ShapeManager {
     static instance: ShapeManager
     /** 获取单例 */
@@ -71,5 +73,27 @@ export default class ShapeManager {
             this.specialArr[i].destroy();
         }
         this.clean();
+    }
+
+    pauseAllShape(){
+        for(let i = 0; i < this.shapeArr.length; i++)
+        {
+            this.shapeArr[i].getComponent(FlyingShape).setStopFlag(true);
+        }
+        for(let i = 0; i < this.specialArr.length; i++)
+        {
+            this.specialArr[i].getComponent(FlyingShape).setStopFlag(true);
+        }
+    }
+
+    continueAllShape(){
+        for(let i = 0; i < this.shapeArr.length; i++)
+        {
+            this.shapeArr[i].getComponent(FlyingShape).setStopFlag(false);
+        }
+        for(let i = 0; i < this.specialArr.length; i++)
+        {
+            this.specialArr[i].getComponent(FlyingShape).setStopFlag(false);
+        }
     }
 }

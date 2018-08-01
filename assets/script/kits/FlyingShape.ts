@@ -81,6 +81,10 @@ export default class FlyingShape extends cc.Component {
     }
 
     update (dt) {
+        if(this.stopFlag)
+        {
+            return;
+        }
         //如果已经触发离开屏幕方法
         if(this.dissControl.getLeave()
         && !(this.dissControl.type == lib.defConfig.dissipate.none
@@ -157,6 +161,11 @@ export default class FlyingShape extends cc.Component {
         }
     }
     //----- 公有方法 -----//
+    //设置停止标识符
+    setStopFlag(Flag:boolean)
+    {
+        this.stopFlag = Flag;
+    }
     //停止移动
     stopMove(){
         this.Speed = 0;
