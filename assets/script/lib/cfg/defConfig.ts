@@ -153,8 +153,42 @@ export const Tricks = cc.Enum({
     AbsoluteReb: -1,
     //阶梯
     ladder: -1,
+    //错位
+    overlapping: -1,
+    //S型
+    Stype: -1,
     // 枚举的长度
     length: -1,
+});
+/** 套路大类型枚举 */
+export const BlinkArr = cc.Enum({
+    //全部
+    all: [[true,true,true],
+          [true,true,true],
+          [true,true,true],
+          [true,true,true],
+          [true,true,true]],
+    WenZiS:[[true,true,true],
+            [true,false,false],
+            [false,true,false],
+            [false,false,true],
+            [true,true,true]],
+    WenZiT:[[true,true,true],
+            [false,true,false],
+            [false,true,false],
+            [false,true,false],
+            [false,true,false]],
+    WenZiA:[[false,true,false],
+            [true,false,true],
+            [true,true,true],
+            [true,false,true],
+            [true,false,true]],
+    WenZiR:[[true,true,true],
+            [true,false,true],
+            [true,true,true],
+            [true,true,false],
+            [true,false,true]],
+    length:5,
 });
 //套路开始前warning持续时间
 export const WarningTime = 3;

@@ -138,6 +138,9 @@
     },
     "scorePfb": {
       "__uuid__": "8ffdc7ce-96f1-4016-bfe8-12db03c70944"
+    },
+    "comboPfb": {
+      "__uuid__": "f42b2222-772e-41a7-a07b-ed497070cebb"
     }
   },
   {
@@ -3986,11 +3989,11 @@
       270
     ],
     "BlinkYArr": [
-      -640,
-      -320,
-      0,
+      640,
       320,
-      640
+      0,
+      -320,
+      -640
     ]
   },
   {
@@ -4046,7 +4049,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 47.73,
+      "width": 300,
       "height": 57.58
     },
     "_rotationX": 0,
@@ -4103,7 +4106,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 47.73,
+      "width": 300,
       "height": 57.58
     },
     "_rotationX": 0,
@@ -4144,7 +4147,7 @@
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "微软雅黑",
-    "_N$overflow": 0
+    "_N$overflow": 2
   },
   {
     "__type__": "cc.Animation",
@@ -4197,7 +4200,7 @@
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "微软雅黑",
-    "_N$overflow": 0
+    "_N$overflow": 2
   },
   {
     "__type__": "cc.Node",
@@ -6857,7 +6860,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "b3b5417c-4363-4902-a5c7-561a0daf95ac"
+      "__uuid__": "f92fbb2b-2b7c-4f79-b829-4629460e2ad8"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -6935,7 +6938,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "b3b5417c-4363-4902-a5c7-561a0daf95ac"
+      "__uuid__": "f92fbb2b-2b7c-4f79-b829-4629460e2ad8"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -7013,7 +7016,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "cab57c6d-fa32-427f-b3da-5fdcd985def7"
+      "__uuid__": "ee116685-3efc-41aa-85f4-cc3111886a80"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -7091,7 +7094,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "cab57c6d-fa32-427f-b3da-5fdcd985def7"
+      "__uuid__": "ee116685-3efc-41aa-85f4-cc3111886a80"
     },
     "_type": 0,
     "_sizeMode": 1,

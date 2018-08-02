@@ -108,11 +108,17 @@ export default class weaveControl extends cc.Component {
                 case lib.defConfig.Tricks.ladder:
                     this.ladder();
                     break;
+                case lib.defConfig.Tricks.overlapping:
+                    this.overlapping();
+                    break;
+                case lib.defConfig.Tricks.Stype:
+                    this.Stype();
+                    break;
                 default:
                     break;
             }            
-            //let startPoint = parseInt((cc.random0To1() * (this._birthControl.birthPoints.length)).toString());
-            // this.ladder();
+            // let startPoint = parseInt((cc.random0To1() * (this._birthControl.birthPoints.length)).toString());
+            // this.overlapping();
         }
         if(this._birthControl.getweaveRunTime() == lib.defConfig.WarningTime + this._birthControl.getweaveTime())
         {
@@ -121,10 +127,171 @@ export default class weaveControl extends cc.Component {
         }
     }
     //----- 私有方法 -----//
+    //S型主方法
+    private Stype(){
+        let istop = lib.RandomParameters.RandomParameters.getRandomBool();
+        //根据套路持续时间设置
+        this._birthControl.setweaveTime(6 + lib.defConfig.WeaveEndTime);
+
+        //获取随机bool值
+        let fpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的飞行轨迹
+        let dpareFlag: boolean = true;//是否固定相同的消散
+        let cpareFlag: boolean = true;//是否固定相同的特性
+        let spareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的形状
+        let speed = this._birthControl.birthPoints[1].getRandomFlyParameters().Speed;
+        
+        //获取随机参数数值
+        let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
+        let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
+        let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+
+        for(let i = 0 ; i < 18; i++)
+        {
+            let index = 0;
+            let temp = i % 6;
+            if(temp == 0 || temp == 1 || temp == 2)
+            {
+                if(istop)
+                {
+                    index = temp + 1; 
+                }
+                else
+                {
+                    index = temp + 11; 
+                }
+            }
+            else if(temp == 3)
+            {
+                if(istop)
+                {
+                    index = 3;
+                }
+                else
+                {
+                    index = 13;
+                }
+            }
+            else if(temp == 4)
+            {
+                if(istop)
+                {
+                    index = 2;
+                }
+                else
+                {
+                    index = 12;
+                }
+            }
+            else if(temp == 5)
+            {
+                if(istop)
+                {
+                    index = 1;
+                }
+                else
+                {
+                    index = 11;
+                }
+            }
+            this.scheduleOnce(()=>{
+                let fpare = this._birthControl.birthPoints[index].getRandomFlyParameters();
+                fpare.Angle = 0;
+                fpare.Speed = speed;
+                if(!dpareFlag)
+                {
+                    dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
+                }
+                if(!cpareFlag)
+                {
+                    cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
+                }
+                if(!spareFlag)
+                {
+                    spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+                }
+                this._birthControl.birthPoints[index].createAppointShape(fpare,dpare,cpare,spare);
+            },i * 0.5);
+        }
+    }
+    //错位主方法
+    private overlapping(){
+
+        let temp = lib.RandomParameters.RandomParameters.getRandomInt(2);
+        //根据套路持续时间设置
+        this._birthControl.setweaveTime(4 + lib.defConfig.WeaveEndTime);
+
+        //获取随机bool值
+        let fpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的飞行轨迹
+        let dpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的消散
+        let cpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的特性
+        let spareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的形状
+        
+        //获取随机参数数值
+        let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
+        dpare.type = lib.defConfig.dissipate.rebound;
+        let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
+        let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+
+        for(let i = 0 ; i < 3; i++)
+        {
+            this.scheduleOnce(()=>{
+                for(let i = 0; i < this._birthControl.birthPoints.length; i++)
+                {
+                    if(this._birthControl.birthPoints[i].birthpos == lib.defConfig.birthpoint.left)
+                    {
+                        if(temp)
+                        { 
+                            if(i % 2 == 1)
+                            {
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            if(i % 2 == 0)
+                            {
+                                continue;
+                            }
+                        }
+                        let fpare = this._birthControl.birthPoints[i].getRandomFlyParameters();
+                        // if(fpareFlag)
+                        // {
+                        fpare.Speed = 445;
+                        // }
+                        fpare.Angle = 0;
+                        this._birthControl.birthPoints[i].createAppointShape(fpare,dpare,cpare,spare);
+                    }
+                    else if(this._birthControl.birthPoints[i].birthpos == lib.defConfig.birthpoint.right)
+                    {
+                        if(temp)
+                        { 
+                            if(i % 2 == 0)
+                            {
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            if(i % 2 == 1)
+                            {
+                                continue;
+                            }
+                        }
+                        let fpare = this._birthControl.birthPoints[i].getRandomFlyParameters();
+                        // if(fpareFlag)
+                        // {
+                        fpare.Speed = 445;
+                        // }
+                        fpare.Angle = 0;
+                        this._birthControl.birthPoints[i].createAppointShape(fpare,dpare,cpare,spare);
+                    }
+                }
+            },i * 2);
+        }
+    }
     //阶梯主方法
     private ladder(){
-        // let temp = lib.RandomParameters.RandomParameters.getRandomInt(4);
-        let temp = 2;
+        let temp = lib.RandomParameters.RandomParameters.getRandomInt(4);
 
         //根据套路持续时间设置
         this._birthControl.setweaveTime(4 + lib.defConfig.WeaveEndTime);
@@ -296,8 +463,10 @@ export default class weaveControl extends cc.Component {
 
     //闪烁主方法
     private blink(){
+        let tempNum = lib.RandomParameters.RandomParameters.getRandomInt(lib.defConfig.BlinkArr.length);
+        let arr = [];
         //根据套路持续时间设置
-        this._birthControl.setweaveTime(5 + lib.defConfig.WeaveEndTime);
+        this._birthControl.setweaveTime(3 + lib.defConfig.WeaveEndTime);
 
         //获取随机bool值
         let fpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的飞行轨迹
@@ -305,14 +474,43 @@ export default class weaveControl extends cc.Component {
         let cpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的特性
         let spareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的形状
         let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
-
-        for(let i = 0; i < this.BlinkXArr.length; i++)
+        switch(tempNum)
         {
-            for(let j = 0; j < this.BlinkYArr.length; j++)
+            case 0: 
+                arr = lib.defConfig.BlinkArr.all;
+                break;
+            case 1: 
+                arr = lib.defConfig.BlinkArr.WenZiS;
+                spareFlag = true;
+                break;
+            case 2: 
+                arr = lib.defConfig.BlinkArr.WenZiT;
+                spareFlag = true;
+                break;
+            case 3: 
+                arr = lib.defConfig.BlinkArr.WenZiA;
+                spareFlag = true;
+                break;
+            case 4: 
+                arr = lib.defConfig.BlinkArr.WenZiR;
+                spareFlag = true;
+                break;
+            default:
+                arr = lib.defConfig.BlinkArr.all;
+                break;
+        }
+
+        for(let j = 0; j < this.BlinkYArr.length; j++)
+        {
+            if(!spareFlag)
             {
-                if(!spareFlag)
+                spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+            }
+            for(let i = 0; i < this.BlinkXArr.length; i++)
+            {
+                if(!arr[j][i])
                 {
-                    spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+                    continue;
                 }
                 let shape = cc.instantiate(this.blinkShapePre);
                 shape.setPosition(this.BlinkXArr[i],this.BlinkYArr[j]);
@@ -325,7 +523,7 @@ export default class weaveControl extends cc.Component {
     //交叉主方法
     private across(){
         //根据套路持续时间设置
-        this._birthControl.setweaveTime(2.5 + lib.defConfig.WeaveEndTime);
+        this._birthControl.setweaveTime(1 + lib.defConfig.WeaveEndTime);
 
         //获取随机bool值
         let fpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的飞行轨迹
@@ -381,7 +579,7 @@ export default class weaveControl extends cc.Component {
     private focusDiv(){
         let temp = lib.RandomParameters.RandomParameters.getRandomInt(2);
         //根据套路持续时间设置
-        this._birthControl.setweaveTime(6 + lib.defConfig.WeaveEndTime);
+        this._birthControl.setweaveTime(4 + lib.defConfig.WeaveEndTime);
 
         //获取随机bool值
         let fpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的飞行轨迹
@@ -435,7 +633,7 @@ export default class weaveControl extends cc.Component {
     {
         let temp = lib.RandomParameters.RandomParameters.getRandomInt(2);
         //根据套路持续时间设置
-        this._birthControl.setweaveTime(6 + lib.defConfig.WeaveEndTime);
+        this._birthControl.setweaveTime(4 + lib.defConfig.WeaveEndTime);
 
         //获取随机bool值
         let fpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的飞行轨迹
@@ -542,7 +740,7 @@ export default class weaveControl extends cc.Component {
     //齐射主方法
     private volley(){
         //根据套路持续时间设置
-        this._birthControl.setweaveTime(3 + lib.defConfig.WeaveEndTime);
+        this._birthControl.setweaveTime(2 + lib.defConfig.WeaveEndTime);
 
         //获取随机bool值
         let fpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的飞行轨迹
@@ -582,7 +780,7 @@ export default class weaveControl extends cc.Component {
     //联合主方法
     private union(){
         //根据套路持续时间设置
-        this._birthControl.setweaveTime(7 + lib.defConfig.WeaveEndTime);
+        this._birthControl.setweaveTime(3 + lib.defConfig.WeaveEndTime);
 
         //获取随机bool值
         let fpareFlag: boolean = false;//是否固定相同的飞行轨迹
@@ -689,7 +887,7 @@ export default class weaveControl extends cc.Component {
             pointArr = [5,7,9];
         }
         //根据套路持续时间设置
-        this._birthControl.setweaveTime(5 + lib.defConfig.WeaveEndTime);
+        this._birthControl.setweaveTime(4 + lib.defConfig.WeaveEndTime);
 
         //获取随机bool值
         let fpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的飞行轨迹

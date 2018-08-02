@@ -15,6 +15,8 @@ export default class ClickControl extends cc.Component {
     @property(cc.Node) Ziparent: cc.Node = null;
     //数字预制体
     @property(cc.Prefab) scorePfb: cc.Prefab = null;
+    //combo预制体
+    @property(cc.Prefab) comboPfb: cc.Prefab = null;
     //----- 属性声明 -----//
     private ScoreArr :Array<number> = [];
     //连击数
@@ -47,6 +49,19 @@ export default class ClickControl extends cc.Component {
         this.createScore();
     }
     //----- 私有方法 -----//
+    private ShowCombo(){
+        if(this.ComboNum < 3)
+        {
+            return;
+        }
+        let node = cc.instantiate(this.comboPfb);
+        node.getChildByName("number").getComponent(cc.Label).string = this.ComboNum.toString();
+        let ani = node.addComponent(cc.Animation);
+        ani.on('finished',()=>{
+            node.destroy();
+        },this);
+        node.parent = this.Ziparent;
+    }
     private createZiSprite(spf:cc.SpriteFrame){
         let node = new cc.Node('Good');
         let sp = node.addComponent(cc.Sprite);
@@ -137,6 +152,7 @@ export default class ClickControl extends cc.Component {
     }
 
     private settlement(){
+        this.ShowCombo();
         this.showGood();
         if(this.ScoreArr.length == 0)
         {
