@@ -1,4 +1,4 @@
-export let showShareMenu = function () {
+export let showShareMenu = function (success?:Function,fail?:Function,complete?:Function) {
     if(typeof wx !== 'undefined')
     {
         return new Promise((resolve, reject) => {
@@ -6,17 +6,40 @@ export let showShareMenu = function () {
             withShareTicket: true,
             success: res => {
                 console.log("showShareMenu true");
+                if(success)
+                {
+                    success(res);
+                }
             },
             fail: res => {
                 console.log("showShareMenu fail");
                 console.log(res);
+                if(fail)
+                {
+                    fail(res);
+                }
             },
             complete: res => {
                 console.log("showShareMenu complete");
                 console.log(res);
+                if(complete)
+                {
+                    complete(res);
+                }
             },
             })
         })
+    }
+}
+
+export let shareAppMessage = function (titlestr:string,imgurl:string) {
+    if(typeof wx !== 'undefined')
+    {
+        console.log("shareAppMessage");
+        wx.shareAppMessage({
+                title:titlestr,
+                imageUrl:imgurl,
+          })
     }
 }
 

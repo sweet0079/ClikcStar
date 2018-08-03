@@ -52,7 +52,7 @@ export default class StartGame extends cc.Component {
                 lib.userInfo.getinstance().setuserAvatar(url);
             }
         });
-        lib.wxFun.onShareAppMessage("兄弟们,是时候证明自己单身30年的手速了。","res/raw-assets/pic/UI/play/BG.jpg");
+        lib.wxFun.onShareAppMessage("好想要天上的星星!好，现在就给你摘!","res/raw-assets/pic/jietu.png");
         // let button = wx.createUserInfoButton({
         //     type: 'text',
         //     text: '获取用户信息',

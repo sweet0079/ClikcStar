@@ -101,9 +101,9 @@ export default class ClickEnd extends cc.Component {
         else
         {
             let deltDis = Math.sqrt(Math.pow(event.getDeltaX(),2) + Math.pow(event.getDeltaY(),2));
-            if(deltDis < 17)
+            if(deltDis < 50)
             {
-                console.log("小于17");
+                console.log("小于50");
                 return;
             }
             if(this.UIcon.getPowerIsFull())

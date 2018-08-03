@@ -11,6 +11,7 @@ export default {
     ShowScore:'showScore',
     Bomb:'bomb',
     startClock:'startClock',
+    Resurrection: 'resurrection',
 
     //音效
     micStartBtn: 'msgStartBtn',

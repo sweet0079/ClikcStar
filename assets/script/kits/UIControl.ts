@@ -47,6 +47,8 @@ export default class UIcontrol extends cc.Component {
     nowPOWER: number = 0;
     //记录当前时间剩余
     nowTIME: number = lib.defConfig.MAXTIME;
+    //首次死亡
+    firstDie: boolean = false;
 
     act1:cc.Action = cc.repeatForever(cc.sequence(cc.fadeIn(0.2),cc.fadeOut(0.2)));
     act2:cc.Action = cc.repeatForever(cc.sequence(cc.fadeIn(0.2),cc.fadeOut(0.2)));
@@ -71,6 +73,29 @@ export default class UIcontrol extends cc.Component {
         // this.unschedule(this.minTIME);
     }
     //----- 按钮回调 -----//
+    clickShare(){
+        lib.wxFun.shareAppMessage("好想要天上的星星!好，现在就给你摘!","res/raw-assets/pic/jietu.png");
+        if(!this.firstDie)
+        {
+            lib.msgEvent.getinstance().emit(lib.msgConfig.Resurrection);
+            this.OverLayer.active = false;
+            this.pause();
+            this.firstDie = true;
+        }
+        else
+        {
+            this.score *= 2;
+            if(typeof wx !== 'undefined')
+            {
+                wx.postMessage({
+                    message:'Submit' ,
+                    MAIN_MENU_NUM: "score",
+                    score:this.score,
+                })
+            }
+            cc.director.loadScene("startScene");
+        }
+    }
     //新手引导点击
     NoviceGuidanceClick(){
         if(this.NoviceGuidance.getChildByName("mask1").active == true)
@@ -160,6 +185,16 @@ export default class UIcontrol extends cc.Component {
         {
             this.OverLayer.getChildByName("Label").getComponent(cc.Label).string = "电量耗尽,注意!";
         }
+        if(this.firstDie)
+        {
+            this.OverLayer.getChildByName("Share").getChildByName("label2").active = true;
+            this.OverLayer.getChildByName("Share").getChildByName("label1").active = false;
+        }
+        else
+        {
+            this.OverLayer.getChildByName("Share").getChildByName("label1").active = true;
+            this.OverLayer.getChildByName("Share").getChildByName("label2").active = false;
+        }
         this.OverLayer.active = true;
     }
 
@@ -218,6 +253,9 @@ export default class UIcontrol extends cc.Component {
         {
             this.nowHP++;
             this.HPBar.addHp(this.nowHP);
+            this.RedKuang.stopActionByTag(1000);
+            this.RedKuang.opacity = 0;
+            this.RedKuang.active = false;
             // this.HP.progress = parseFloat((this.nowHP / lib.defConfig.MAXHP).toString());
             // this.RedLayer.x = this.HP.progress * this.HP.totalLength - 50;
             // // this.RedLayer.width -= (1 / lib.defConfig.MAXHP) * this.HP.totalLength;
@@ -248,7 +286,16 @@ export default class UIcontrol extends cc.Component {
         // this.RedLayer.width += (1 / lib.defConfig.MAXHP) * this.HP.totalLength;
         this.RedKuang.active = true;
         let act = cc.sequence(cc.fadeIn(0.35),cc.fadeOut(0.35));
-        this.RedKuang.runAction(act);
+        if(this.nowHP == 1)
+        {
+            act = cc.fadeIn(0.35);
+            act.setTag(1000);
+            this.RedKuang.runAction(act);
+        } 
+        else
+        {
+            this.RedKuang.runAction(act);
+        }
         if(this.nowHP <= 0)
         {
             lib.msgEvent.getinstance().emit(lib.msgConfig.OverGame);

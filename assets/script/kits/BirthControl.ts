@@ -50,6 +50,7 @@ export default class BirthControl extends cc.Component {
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.OverGame,"gameover",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.Bomb,"bombCallBack",this);
         lib.msgEvent.getinstance().addEvent(lib.msgConfig.startClock,"startClock",this);
+        lib.msgEvent.getinstance().addEvent(lib.msgConfig.Resurrection,"Resurrection",this);
         if(cc.sys.localStorage.getItem('FirstPlay', 'undefined') == "true")
         {
             this.startClock();
@@ -57,7 +58,6 @@ export default class BirthControl extends cc.Component {
         else
         {
             cc.sys.localStorage.setItem('FirstPlay', 'true');
-            console.log(cc.sys.localStorage.getItem('FirstPlay', 'undefined'));
             this.NoviceGuidance();
         }
     }
@@ -67,6 +67,7 @@ export default class BirthControl extends cc.Component {
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.OverGame,"gameover",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.Bomb,"bombCallBack",this);
         lib.msgEvent.getinstance().removeEvent(lib.msgConfig.startClock,"startClock",this);
+        lib.msgEvent.getinstance().removeEvent(lib.msgConfig.Resurrection,"Resurrection",this);
     }
     //----- 公有方法 -----//
     getbirthPoints(){
@@ -107,6 +108,10 @@ export default class BirthControl extends cc.Component {
     }
     // update (dt) {}
     //----- 事件回调 -----//
+    private Resurrection(){
+        this.schedule(this.clockFun,0.5);
+        this.UIcon.initHP();
+    }
     private bombCallBack(){
         this.unschedule(this.clockFun);
         this._weaveControl.unscheduleAllCallbacks();

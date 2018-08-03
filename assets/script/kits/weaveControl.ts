@@ -118,7 +118,7 @@ export default class weaveControl extends cc.Component {
                     break;
             }            
             // let startPoint = parseInt((cc.random0To1() * (this._birthControl.birthPoints.length)).toString());
-            // this.overlapping();
+            // this.Fantastic4();
         }
         if(this._birthControl.getweaveRunTime() == lib.defConfig.WarningTime + this._birthControl.getweaveTime())
         {
@@ -127,6 +127,107 @@ export default class weaveControl extends cc.Component {
         }
     }
     //----- 私有方法 -----//
+    //Fantastic4主方法
+    private Fantastic4(){
+        //根据套路持续时间设置
+        this._birthControl.setweaveTime(13 + lib.defConfig.WeaveEndTime);
+        //获取随机bool值
+        let fpareFlag: boolean = true;//是否固定相同的飞行轨迹
+        let dpareFlag: boolean = true;//是否固定相同的消散
+        let cpareFlag: boolean = true;//是否固定相同的特性
+        let spareFlag: boolean = true;//是否固定相同的形状
+        //获取随机参数数值
+        let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
+        dpare.type = lib.defConfig.dissipate.none;
+        let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
+        cpare.type = lib.defConfig.character.none;
+        let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+        let speed = this._birthControl.birthPoints[1].getRandomFlyParameters().Speed;
+        let fpare = this._birthControl.birthPoints[1].getRandomFlyParameters();
+        fpare.Angle = 0;
+        fpare.Speed = speed * 1.2;
+        
+        let leftPointArr = [];
+        let rightPointArr = [];
+        let TopPointArr = [];
+        let BottomPointArr = [];
+        for(let i = 0 ; i < this._birthControl.birthPoints.length; i++)
+        {
+            if(this._birthControl.birthPoints[i].birthpos == lib.defConfig.birthpoint.left)
+            {
+                leftPointArr.push(i);
+            }
+            else if(this._birthControl.birthPoints[i].birthpos == lib.defConfig.birthpoint.right)
+            {
+                rightPointArr.push(i);
+            }
+            else if(this._birthControl.birthPoints[i].birthpos == lib.defConfig.birthpoint.top)
+            {
+                TopPointArr.push(i);
+            }
+            else if(this._birthControl.birthPoints[i].birthpos == lib.defConfig.birthpoint.bottom)
+            {
+                BottomPointArr.push(i);
+            }
+        }
+
+        //左边出
+        for(let j = 0 ; j < 2; j++)
+        {
+            this.scheduleOnce(()=>{
+                this._birthControl.birthPoints[leftPointArr[1]].createAppointShape(fpare,dpare,cpare,spare);
+                this._birthControl.birthPoints[leftPointArr[3]].createAppointShape(fpare,dpare,cpare,spare);
+            },j * 1.3);
+        }
+        this.scheduleOnce(()=>{
+            this._birthControl.birthPoints[leftPointArr[2]].createAppointShape(fpare,dpare,cpare,spare);
+        },0.65);
+
+        //上边出
+        this.scheduleOnce(()=>{
+            for(let j = 0 ; j < 2; j++)
+            {
+                this.scheduleOnce(()=>{
+                    this._birthControl.birthPoints[TopPointArr[1]].createAppointShape(fpare,dpare,cpare,spare);
+                    this._birthControl.birthPoints[TopPointArr[1]].createAppointShape(fpare,dpare,cpare,spare);
+                },j * 1.3);
+            }
+            this.scheduleOnce(()=>{
+                this._birthControl.birthPoints[TopPointArr[0]].createAppointShape(fpare,dpare,cpare,spare);
+                this._birthControl.birthPoints[TopPointArr[1]].createAppointShape(fpare,dpare,cpare,spare);
+                this._birthControl.birthPoints[TopPointArr[2]].createAppointShape(fpare,dpare,cpare,spare);
+            },0.65);
+        },4);
+
+        //右边出
+        this.scheduleOnce(()=>{
+            for(let j = 0 ; j < 2; j++)
+            {
+                this.scheduleOnce(()=>{
+                    this._birthControl.birthPoints[rightPointArr[1]].createAppointShape(fpare,dpare,cpare,spare);
+                    this._birthControl.birthPoints[rightPointArr[2]].createAppointShape(fpare,dpare,cpare,spare);
+                    this._birthControl.birthPoints[rightPointArr[3]].createAppointShape(fpare,dpare,cpare,spare);
+                },j * 1.3);
+            }
+            this.scheduleOnce(()=>{
+                this._birthControl.birthPoints[rightPointArr[1]].createAppointShape(fpare,dpare,cpare,spare);
+                this._birthControl.birthPoints[rightPointArr[3]].createAppointShape(fpare,dpare,cpare,spare);
+            },0.65);
+        },8);
+
+        //下边出
+        this.scheduleOnce(()=>{
+            for(let j = 0 ; j < 3; j++)
+            {
+                this.scheduleOnce(()=>{
+                    this._birthControl.birthPoints[BottomPointArr[0]].createAppointShape(fpare,dpare,cpare,spare);
+                    this._birthControl.birthPoints[BottomPointArr[1]].createAppointShape(fpare,dpare,cpare,spare);
+                    this._birthControl.birthPoints[BottomPointArr[2]].createAppointShape(fpare,dpare,cpare,spare);
+                },j * 0.75);
+            }
+        },12);
+
+    }
     //S型主方法
     private Stype(){
         let istop = lib.RandomParameters.RandomParameters.getRandomBool();

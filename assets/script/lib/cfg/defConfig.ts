@@ -157,6 +157,8 @@ export const Tricks = cc.Enum({
     overlapping: -1,
     //S型
     Stype: -1,
+    //Fantastic4
+    Fantastic4: -1,
     // 枚举的长度
     length: -1,
 });

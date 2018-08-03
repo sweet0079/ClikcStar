@@ -10,11 +10,12 @@ interface wx {
     onMessage:_li.errCallBack
     createImage:norCallBack
     onShareAppMessage:_li.errCallBack
+    shareAppMessage:ShareAppMessage
 }
 
 declare namespace wx {
-    interface onShareAppMessage{
-        (para:onShareAppMessageAug):void
+    interface ShareAppMessage{
+        (para:ShareAppMessageAug):void
     }
     interface getUserCloudStorage{
         (para:getUserCloudStorageAug):void
@@ -34,7 +35,7 @@ declare namespace wx {
     interface showShareMenu {
         (para:showShareMenuAug):void
     }
-    interface onShareAppMessageAug{
+    interface ShareAppMessageAug{
         title: string
         imageUrl: string
     }

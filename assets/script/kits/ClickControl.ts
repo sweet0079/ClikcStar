@@ -56,11 +56,12 @@ export default class ClickControl extends cc.Component {
         }
         let node = cc.instantiate(this.comboPfb);
         node.getChildByName("number").getComponent(cc.Label).string = this.ComboNum.toString();
-        let ani = node.addComponent(cc.Animation);
+        let ani = node.getComponent(cc.Animation);
         ani.on('finished',()=>{
             node.destroy();
         },this);
         node.parent = this.Ziparent;
+        ani.play();
     }
     private createZiSprite(spf:cc.SpriteFrame){
         let node = new cc.Node('Good');
@@ -84,6 +85,7 @@ export default class ClickControl extends cc.Component {
         let sco = cc.instantiate(this.scorePfb);
         sco.getComponent(cc.Label).string = this.ShowScore.toString();
         sco.setPosition(this.ShowScorePos);
+        sco.y += 75;
         sco.parent = this.Ziparent;
         let ani = sco.getComponent(cc.Animation);
         ani.once('finished',()=>{
@@ -152,8 +154,6 @@ export default class ClickControl extends cc.Component {
     }
 
     private settlement(){
-        this.ShowCombo();
-        this.showGood();
         if(this.ScoreArr.length == 0)
         {
             this.ComboNum = 0;
@@ -185,5 +185,7 @@ export default class ClickControl extends cc.Component {
             lib.msgEvent.getinstance().emit(lib.msgConfig.micclickCombo);
         }
         this.ScoreArr = [];
+        this.ShowCombo();
+        this.showGood();
     }
 }

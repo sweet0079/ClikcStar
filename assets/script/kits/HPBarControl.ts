@@ -38,16 +38,24 @@ export default class HPBarControl extends cc.Component {
     //输入当前血量
     minHp(num){
         this.node.children[num].getComponent(cc.Animation).play();
-        for(let i = num + 1 ; i < this.node.childrenCount; i++)
-        {
-            this.node.children[i].active = false;
-        }
+        this.ReActiveHp(num);
     }
 
     //输入当前血量
     addHp(num){
         this.node.children[num - 1].active = true;
         this.node.children[num - 1].runAction(cc.scaleTo(0.2,1));
+        this.ReActiveHp(num - 1);
     }
     //----- 私有方法 -----//
+    private ReActiveHp(num){
+        for(let i = 0; i < num; i++)
+        {
+            this.node.children[i].active = true;
+        }
+        for(let i = num + 1; i < this.node.childrenCount; i++)
+        {
+            this.node.children[i].active = false;
+        }
+    }
 }
