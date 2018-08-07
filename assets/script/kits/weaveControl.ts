@@ -4,6 +4,7 @@ const {ccclass, property} = cc._decorator;
 import * as lib from '../lib/lib'
 import birthControl from './BirthControl'
 import shapeControl from './ShapeControl'
+import { _kits } from '../../../libdts/kits';
 
 @ccclass
 export default class weaveControl extends cc.Component {
@@ -18,6 +19,10 @@ export default class weaveControl extends cc.Component {
     //----- 属性声明 -----//
     //出生点总控制组件
     private _birthControl:birthControl = null;
+    //套路类型
+    private _weavetype: number = 0;
+    //套路细节类型
+    private _tempNum: number = 0;
     //----- 生命周期 -----//
     // LIFE-CYCLE CALLBACKS:
 
@@ -60,16 +65,19 @@ export default class weaveControl extends cc.Component {
     }
     //套路开始主方法
     Weave(){
+        let weavetype = parseInt((cc.random0To1() * (lib.defConfig.Tricks.length)).toString());
+        let tempNum = lib.RandomParameters.RandomParameters.getRandomInt(lib.defConfig.BlinkArr.length);
         if(this._birthControl.getweaveRunTime() == 0)
         {
-            lib.msgEvent.getinstance().emit(lib.msgConfig.ShowWarn);
+            this._weavetype = weavetype;
+            this._tempNum = tempNum;
+            lib.msgEvent.getinstance().emit(lib.msgConfig.ShowWarn,this.getComingShapeNum(this._weavetype,this._tempNum));
         }
         this._birthControl.setweaveRunTime(this._birthControl.getweaveRunTime() + 0.5);
         if(this._birthControl.getweaveRunTime() == lib.defConfig.WarningTime)
         {
             lib.msgEvent.getinstance().emit(lib.msgConfig.HideWarn);
-            let weavetype = parseInt((cc.random0To1() * (lib.defConfig.Tricks.length)).toString());
-            switch(weavetype)
+            switch(this._weavetype)
             {
                 case lib.defConfig.Tricks.volley:
                     this.volley();
@@ -84,8 +92,11 @@ export default class weaveControl extends cc.Component {
                 case lib.defConfig.Tricks.symmetry:
                     this.symmetry();
                     break;
-                case lib.defConfig.Tricks.Waterfall:
-                    this.Waterfall();
+                case lib.defConfig.Tricks.Waterfall15:
+                    this.Waterfall15();
+                    break;
+                case lib.defConfig.Tricks.Waterfall25:
+                    this.Waterfall25();
                     break;
                 case lib.defConfig.Tricks.focus:
                     this.focus();
@@ -97,7 +108,7 @@ export default class weaveControl extends cc.Component {
                     this.across();
                     break;
                 case lib.defConfig.Tricks.blink:
-                    this.blink();
+                    this.blink(this._tempNum);
                     break;
                 case lib.defConfig.Tricks.transform:
                     this.transform();
@@ -114,11 +125,14 @@ export default class weaveControl extends cc.Component {
                 case lib.defConfig.Tricks.Stype:
                     this.Stype();
                     break;
-                default:
+                case lib.defConfig.Tricks.Fantastic4:
+                    this.Fantastic4();
+                    break;
+            default:
                     break;
             }            
-            // let startPoint = parseInt((cc.random0To1() * (this._birthControl.birthPoints.length)).toString());
-            // this.Fantastic4();
+            // // let startPoint = parseInt((cc.random0To1() * (this._birthControl.birthPoints.length)).toString());
+            // this.ladder();
         }
         if(this._birthControl.getweaveRunTime() == lib.defConfig.WarningTime + this._birthControl.getweaveTime())
         {
@@ -409,7 +423,7 @@ export default class weaveControl extends cc.Component {
         let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
         let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
 
-        for(let i = 0 ; i < 5; i++)
+        for(let i = 0 ; i < 15; i++)
         {
             this.scheduleOnce(()=>{
                 if(temp == 0)
@@ -563,8 +577,7 @@ export default class weaveControl extends cc.Component {
     }
 
     //闪烁主方法
-    private blink(){
-        let tempNum = lib.RandomParameters.RandomParameters.getRandomInt(lib.defConfig.BlinkArr.length);
+    private blink(tempNum:number){
         let arr = [];
         //根据套路持续时间设置
         this._birthControl.setweaveTime(3 + lib.defConfig.WeaveEndTime);
@@ -781,27 +794,72 @@ export default class weaveControl extends cc.Component {
         }
     }
 
-    //飞瀑主方法
-    private Waterfall(){
+    //20个形状的飞瀑主方法
+    private Waterfall25(){
         //根据套路持续时间设置
         this._birthControl.setweaveTime(3 + lib.defConfig.WeaveEndTime);
 
         //获取随机方向
         let dir = 0;
-        let temp = parseInt((cc.random0To1() * 4).toString());
+        let temp = parseInt((cc.random0To1() * 2).toString());
         switch(temp)
         {
             case 0:
                 dir = lib.defConfig.birthpoint.left;
                 break;
             case 1:
-                dir = lib.defConfig.birthpoint.top;
-                break;
-            case 2:
                 dir = lib.defConfig.birthpoint.right;
                 break;
-            case 3:
+            default:
+                break;
+        }
+
+        //获取随机bool值
+        let fpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的飞行轨迹
+        let dpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的消散
+        let cpareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的特性
+        let spareFlag: boolean = lib.RandomParameters.RandomParameters.getRandomBool();//是否固定相同的形状
+        
+        //获取随机参数数值
+        let angle = 0;
+        let speed = this._birthControl.birthPoints[1].getRandomFlyParameters().Speed;
+        let dpare = lib.RandomParameters.RandomParameters.getRandomDisParameters();
+        let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
+        let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+        //找到对应边生成形状
+        for(let i = 0; i < this._birthControl.birthPoints.length; i++)
+        {
+            if(this._birthControl.birthPoints[i].birthpos == dir)
+            {
+                let fpare = this._birthControl.birthPoints[i].getRandomFlyParameters();
+                fpare.Angle = angle;
+                fpare.Speed = speed;
+                let index = i;
+                for(let j = 0; j < 5; j++)
+                {
+                    this.scheduleOnce(()=>{
+                        this._birthControl.birthPoints[index].createAppointShape(fpare,dpare,cpare,spare);
+                    },j * 0.5);
+                }
+            }
+        }
+    }
+
+    //15个形状的飞瀑主方法
+    private Waterfall15(){
+        //根据套路持续时间设置
+        this._birthControl.setweaveTime(3 + lib.defConfig.WeaveEndTime);
+
+        //获取随机方向
+        let dir = 0;
+        let temp = parseInt((cc.random0To1() * 2).toString());
+        switch(temp)
+        {
+            case 0:
                 dir = lib.defConfig.birthpoint.bottom;
+                break;
+            case 1:
+                dir = lib.defConfig.birthpoint.top;
                 break;
             default:
                 break;
@@ -1006,7 +1064,7 @@ export default class weaveControl extends cc.Component {
         for(let i = 0 ; i < 3; i++)
         {
             this.scheduleOnce(()=>{
-                for(let j =0 ; j < pointArr.length; j++)
+                for(let j = 0 ; j < pointArr.length; j++)
                 {
                     let angle = fpare.Angle;
                     this._birthControl.birthPoints[pointArr[j]].createAppointShape(fpare,dpare,cpare,spare);
@@ -1038,5 +1096,85 @@ export default class weaveControl extends cc.Component {
                 }
             },i);
         }
+    }
+
+    //返回每个套路的形状个数
+    getComingShapeNum(num:number,tempNum:number)
+    {
+        let answer = 0;
+        switch(num)
+        {
+            case lib.defConfig.Tricks.volley:
+                answer = 20;
+                break
+            case lib.defConfig.Tricks.order:
+                answer = 20;
+                break;
+            case lib.defConfig.Tricks.union:
+                answer = 15;
+                break;
+            case lib.defConfig.Tricks.symmetry:
+                answer = 18;
+                break;
+            case lib.defConfig.Tricks.Waterfall15:
+                answer = 15;
+                break;
+            case lib.defConfig.Tricks.Waterfall25:
+                answer = 25;
+                break;
+            case lib.defConfig.Tricks.focus:
+                answer = 10;
+                break;
+            case lib.defConfig.Tricks.focusDiv:
+                answer = 30;
+                break;
+            case lib.defConfig.Tricks.across:
+                answer = 20;
+                break;
+            case lib.defConfig.Tricks.blink:
+                switch(tempNum)
+                {
+                    case 0: 
+                        answer = 15;
+                        break;
+                    case 1: 
+                        answer = 9;
+                        break;
+                    case 2: 
+                        answer = 7;
+                        break;
+                    case 3: 
+                        answer = 9;
+                        break;
+                    case 4: 
+                        answer = 12;
+                        break;
+                    default:
+                        answer = 15;
+                        break;
+                }
+                break;
+            case lib.defConfig.Tricks.transform:
+                answer = 18;
+                break;
+            case lib.defConfig.Tricks.AbsoluteReb:
+                answer = 20;
+                break;
+            case lib.defConfig.Tricks.ladder:
+                answer = 15;
+                break;
+            case lib.defConfig.Tricks.overlapping:
+                answer = 15;
+                break;
+            case lib.defConfig.Tricks.Stype:
+                answer = 18;
+                break;
+            case lib.defConfig.Tricks.Fantastic4:
+                answer = 29;
+                break;
+            default:
+                break;
+        }  
+        return answer; 
     }
 }

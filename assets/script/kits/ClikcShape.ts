@@ -5,6 +5,7 @@ import ClickEndControl from './ClickEnd'
 import ShapeControl from './ShapeControl'
 import ShapeManager from './ShapeManager'
 import touchInstance from "./touchInstance"
+import { _kits } from '../../../libdts/kits';
 
 const {ccclass, property} = cc._decorator;
 
@@ -106,8 +107,13 @@ export default class ClickShape extends cc.Component {
             {
                 score = 0;
             }
+            let shapInfo:_kits.ClickShape.ScoreInfo = {
+                score: score,
+                shape: this.shapeControl.gettype()[0],
+                isSpecial: this.shapeControl.isSpecial,
+            }
             this.shapeControl.destroyAni(true);
-            lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
+            lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,shapInfo);
         }
         else
         {
@@ -121,8 +127,13 @@ export default class ClickShape extends cc.Component {
             {
                 score = 0;
             }
+            let shapInfo:_kits.ClickShape.ScoreInfo = {
+                score: score,
+                shape: this.shapeControl.gettype()[0],
+                isSpecial: this.shapeControl.isSpecial,
+            }
             this.shapeControl.destroyAni(false);
-            lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
+            lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,shapInfo);
         }
         this.clickLock = true;
         this.shapeManager.delShape(this.node);

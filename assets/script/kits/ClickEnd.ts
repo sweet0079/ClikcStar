@@ -31,16 +31,16 @@ export default class ClickEnd extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_START,(event:cc.Event.EventTouch)=>{
             this._clickStart(event);
         },this);
-        this.node.on(cc.Node.EventType.TOUCH_MOVE,(event:cc.Event.EventTouch)=>{
-            this._clickMove(event);
-        },this);
-        this.node.on(cc.Node.EventType.TOUCH_END,(event:cc.Event.EventTouch)=>{
-            this._clickEnd();
-        },this);
+        // this.node.on(cc.Node.EventType.TOUCH_MOVE,(event:cc.Event.EventTouch)=>{
+        //     this._clickMove(event);
+        // },this);
+        // this.node.on(cc.Node.EventType.TOUCH_END,(event:cc.Event.EventTouch)=>{
+        //     this._clickEnd();
+        // },this);
 
-        this.node.on(cc.Node.EventType.TOUCH_CANCEL,(event:cc.Event.EventTouch)=>{
-            this._clickEnd();
-        },this);
+        // this.node.on(cc.Node.EventType.TOUCH_CANCEL,(event:cc.Event.EventTouch)=>{
+        //     this._clickEnd();
+        // },this);
     }
 
     // start () {

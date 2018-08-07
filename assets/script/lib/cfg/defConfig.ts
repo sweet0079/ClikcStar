@@ -137,8 +137,10 @@ export const Tricks = cc.Enum({
     union: -1,
     //有序
     order: -1,
-    //飞瀑
-    Waterfall: -1,
+    //15个形状飞瀑
+    Waterfall15: -1,
+    //25个形状飞瀑
+    Waterfall25: -1,
     //集中
     focus: -1,
     //集中分裂

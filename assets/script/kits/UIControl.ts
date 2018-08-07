@@ -179,11 +179,11 @@ export default class UIcontrol extends cc.Component {
         this.hidewarn();
         if(labelType == 1)
         {
-            this.OverLayer.getChildByName("Label").getComponent(cc.Label).string = "触发炸弹,小心!";
+            this.OverLayer.getChildByName("LabelPanel").getChildByName("Label").getComponent(cc.Label).string = "触发炸弹,小心!";
         }
         else
         {
-            this.OverLayer.getChildByName("Label").getComponent(cc.Label).string = "电量耗尽,注意!";
+            this.OverLayer.getChildByName("LabelPanel").getChildByName("Label").getComponent(cc.Label).string = "电量耗尽,注意!";
         }
         if(this.firstDie)
         {
@@ -195,13 +195,15 @@ export default class UIcontrol extends cc.Component {
             this.OverLayer.getChildByName("Share").getChildByName("label1").active = true;
             this.OverLayer.getChildByName("Share").getChildByName("label2").active = false;
         }
+        this.OverLayer.getChildByName("defen").getChildByName("score").getComponent(cc.Label).string = this.score.toString();
         this.OverLayer.active = true;
     }
 
-    showarn(){
+    showarn(num:number){
         if(this.warning)
         {
             this.warning.active = true;
+            this.warning.getChildByName("warningLabel").getComponent(cc.Label).string = num + "个星星正在来袭";
             //let act = cc.repeatForever(cc.sequence(cc.fadeIn(0.5),cc.delayTime(0.5),cc.fadeOut(0.5)));
             //this.warning.runAction(act);
             let round = cc.instantiate(this.RedRound);

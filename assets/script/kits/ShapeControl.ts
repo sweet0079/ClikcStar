@@ -5,6 +5,7 @@ import characteristic from './Characteristic'
 import ShapeManager from './ShapeManager'
 import randomRotate from './randomRotate'
 import dispationControl from './Disspation'
+import { _kits } from '../../../libdts/kits';
 
 const {ccclass, property} = cc._decorator;
 
@@ -202,7 +203,12 @@ export default class ShapeControl extends cc.Component {
         {
             score = 0;
         }
-        lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,score);
+        let shapInfo:_kits.ClickShape.ScoreInfo = {
+            score: score,
+            shape: this.gettype()[0],
+            isSpecial: this.isSpecial,
+        }
+        lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,shapInfo);
         ShapeManager.getinstance().delShape(this.node);
         lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement);
         lib.msgEvent.getinstance().emit(lib.msgConfig.ShowScore,cc.v2(this.node.getPositionX(),this.node.getPositionY()));
