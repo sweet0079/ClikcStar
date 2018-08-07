@@ -2,7 +2,6 @@
 import * as lib from '../lib/lib'
 import UIControl from './UIControl'
 import { _kits } from '../../../libdts/kits';
-import { shape } from '../lib/cfg/defConfig';
 
 const {ccclass, property} = cc._decorator;
 
@@ -22,7 +21,9 @@ export default class ClickControl extends cc.Component {
     //----- 属性声明 -----//
     private ScoreArr :Array<_kits.ClickShape.ScoreInfo> = [];
     //连击数
-    private ComboNum: number = 1;
+    private ComboNum: number = 0;
+    //上一个点击的增加了多少combo
+    private LastAddCombo: number = 0;
     //上一个点击的形状
     private LastShape: Array<number> = [];
     //下一个要展示的分数
@@ -53,6 +54,26 @@ export default class ClickControl extends cc.Component {
         this.createScore();
     }
     //----- 私有方法 -----//
+    //根据combo，计算获得的能量
+    private CalAddPower(ScoreInfoArr:Array<_kits.ClickShape.ScoreInfo>){
+        let basepower = ScoreInfoArr.length * 10;
+        let ExPower = 0;
+        if(this.LastAddCombo == 1)
+        {
+            ExPower = this.ComboNum * 5 - 5;
+        }
+        else
+        {
+            let maxExPower = this.ComboNum * 5 - 5;
+            let minExPower = (this.ComboNum - this.LastAddCombo) * 5;
+            ExPower = (maxExPower + minExPower) * this.LastAddCombo / 2;
+        }
+        console.log("this.ComboNum = " + this.ComboNum);
+        console.log("this.LastAddCombo = " + this.LastAddCombo);
+        console.log("basepower + ExPower = " + (basepower + ExPower));
+        return basepower + ExPower;
+    }
+
     //根据点击计算combo，如果连续多重点击取最高combo数形状
     private CheckCombo(ScoreInfoArr:Array<_kits.ClickShape.ScoreInfo>){
         //将对象数组整理为形状数组
@@ -79,6 +100,7 @@ export default class ClickControl extends cc.Component {
             if(ShapeArr.length == 1)
             {
                 this.LastShape = ShapeArr;
+                this.LastAddCombo = 0;
             }
             else
             {
@@ -87,47 +109,15 @@ export default class ClickControl extends cc.Component {
                 {
                 return a - b
                 });
-                let maxCombo = 0;
-                let maxIndex = [];
-                let temp = 1;
-                for(let i = 0 ; i < ShapeArr.length - 1; i++)
-                {
-                    if(ShapeArr[i] == ShapeArr[i + 1])
-                    {
-                        temp++;
-                        if(i == ShapeArr.length - 2)
-                        {
-                            if(temp > maxCombo)
-                            {
-                                maxCombo = temp;
-                                maxIndex = [ShapeArr[i]];
-                            }
-                            else if(temp == maxCombo)
-                            {
-                                maxIndex.push(ShapeArr[i]);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if(temp > maxCombo)
-                        {
-                            maxCombo = temp;
-                            maxIndex = [ShapeArr[i]];
-                        }
-                        else if(temp == maxCombo)
-                        {
-                            maxIndex.push(ShapeArr[i]);
-                        }
-                        temp = 1;
-                    }
-                }
+                let maxCombo = this.findMaxIndex(ShapeArr).maxCombo;
+                let maxIndex:Array<number> = this.findMaxIndex(ShapeArr).maxIndex;
                 if(maxCombo == 1)
                 {
                     maxIndex.push(ShapeArr[ShapeArr.length - 1]);
                 }
                 this.LastShape = maxIndex;
                 this.ComboNum = maxCombo;
+                this.LastAddCombo = maxCombo;
             }
         }
         else
@@ -166,6 +156,22 @@ export default class ClickControl extends cc.Component {
             {
                 this.LastShape = maxIndex;
                 this.ComboNum += maxCombo;
+                this.LastAddCombo = maxCombo;
+                let ScoremaxCombo = this.findMaxIndex(ShapeArr).maxCombo;
+                let ScoremaxIndex:Array<number> = this.findMaxIndex(ShapeArr).maxIndex;
+                if(ScoremaxCombo > this.ComboNum)
+                {
+                    this.ComboNum = ScoremaxCombo;
+                    this.LastShape = ScoremaxIndex;
+                    this.LastAddCombo = ScoremaxCombo;
+                }
+                else if(ScoremaxCombo == this.ComboNum)
+                {
+                    for(let i = 0; i < ScoremaxIndex.length ; i++)
+                    {
+                        this.LastShape.push(ScoremaxIndex[i]);
+                    }
+                }
             }
         }
         console.log("after this.ComboNum = " + this.ComboNum);
@@ -248,6 +254,7 @@ export default class ClickControl extends cc.Component {
         this.ComboNum = 1;
         this.ScoreArr = [];
         this.LastShape = [];
+        this.LastAddCombo = 0;
     }
 
     private add(ScoreInfo:_kits.ClickShape.ScoreInfo){
@@ -313,8 +320,49 @@ export default class ClickControl extends cc.Component {
             this.ShowScore = score;
             lib.msgEvent.getinstance().emit(lib.msgConfig.micclickCombo);
         }
+        this.CalAddPower(this.ScoreArr);
         this.ScoreArr = [];
         this.ShowCombo();
         this.showGood();
+    }
+
+    //找出数组中数量最多的元素(已排序过的数组)
+    private findMaxIndex(Arr:Array<number>){
+        let maxCombo:number = 0;
+        let maxIndex:Array<number> = [];
+        let temp:number = 1;
+        for(let i = 0 ; i < Arr.length - 1; i++)
+        {
+            if(Arr[i] == Arr[i + 1])
+            {
+                temp++;
+                if(i == Arr.length - 2)
+                {
+                    if(temp > maxCombo)
+                    {
+                        maxCombo = temp;
+                        maxIndex = [Arr[i]];
+                    }
+                    else if(temp == maxCombo)
+                    {
+                        maxIndex.push(Arr[i]);
+                    }
+                }
+            }
+            else
+            {
+                if(temp > maxCombo)
+                {
+                    maxCombo = temp;
+                    maxIndex = [Arr[i]];
+                }
+                else if(temp == maxCombo)
+                {
+                    maxIndex.push(Arr[i]);
+                }
+                temp = 1;
+            }
+        }
+        return {maxCombo,maxIndex};
     }
 }

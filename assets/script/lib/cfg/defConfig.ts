@@ -210,6 +210,8 @@ export const DesignPlayHeight = 1620;
 export const MAXHP = 6;
 //power上限
 export const MAXPOWER = 500;
+//power梯度
+export const POWERLap = 5;
 //time上限
 export const MAXTIME = 7;
 //角度和弧度的转化系数
