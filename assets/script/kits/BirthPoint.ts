@@ -5,6 +5,7 @@ import characteristic from './Characteristic'
 import disspation from './Disspation'
 import shapeControl from './ShapeControl'
 import ShapeManager from './ShapeManager'
+import { _kits } from '../../../libdts/kits';
 
 const {ccclass, property} = cc._decorator;
 

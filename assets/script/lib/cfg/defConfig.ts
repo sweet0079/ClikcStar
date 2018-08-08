@@ -103,29 +103,29 @@ export const shape = cc.Enum({
     // 三角形
     triangle: 2,
     // 五角星
-    star: 6,
+    star: 3,
     // 圆形
     circular: 1,
     // 平行四边形
-    parallelogram: 8,
+    // parallelogram: 8,
     // 方形
     square: 0,
     // 梯形
-    trapezoid: 4,
+    // trapezoid: 4,
     // // 椭圆
     // ellipse: 6,
     // 菱形
-    diamond: 3,
+    // diamond: 3,
     // // 长方形
     // rectangle: 3,
     // // 半月
     // halfmoon: 9,
     // 十字形
-    cross: 7,
+    cross: 4,
     // 六边形
-    Hexagon: 5,
+    // Hexagon: 5,
     // 枚举的长度
-    length: 9,
+    length: 5,
 });
 /** 套路大类型枚举 */
 export const Tricks = cc.Enum({

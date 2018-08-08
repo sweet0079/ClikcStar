@@ -1,7 +1,8 @@
 /** 挂在UI层，控制UI显示方面的脚本 */
 import * as lib from '../lib/lib'
 import ShapeManager from './ShapeManager'
-import touchInstance from "./touchInstance"
+import powerFullcontrol from './PowerFullCon'
+// import touchInstance from "./touchInstance"
 import HPBarCon from "./HPBarControl"
 
 const {ccclass, property} = cc._decorator;
@@ -37,6 +38,9 @@ export default class UIcontrol extends cc.Component {
     @property(cc.Node) RedKuang: cc.Node = null;
     //新手引导节点
     @property(cc.Node) NoviceGuidance: cc.Node = null;
+    //能量满了之后触发各种特效的控制器
+    @property(powerFullcontrol) powerFull: powerFullcontrol = null;
+
     
     //----- 属性声明 -----//
     //记录当前分数
@@ -50,8 +54,8 @@ export default class UIcontrol extends cc.Component {
     //首次死亡
     firstDie: boolean = false;
 
-    act1:cc.Action = cc.repeatForever(cc.sequence(cc.fadeIn(0.2),cc.fadeOut(0.2)));
-    act2:cc.Action = cc.repeatForever(cc.sequence(cc.fadeIn(0.2),cc.fadeOut(0.2)));
+    act1:cc.Action = cc.sequence(cc.moveTo(0.25,0,0),cc.moveTo(0.25,-540,0));
+    act2:cc.Action = cc.sequence(cc.moveTo(0.25,0,0),cc.moveTo(0.25,540,0));
     //----- 生命周期 -----//
 
     // onLoad () {}
@@ -124,7 +128,7 @@ export default class UIcontrol extends cc.Component {
         this.hidewarn();
         this.initHP();
         this.initPOWER();
-        touchInstance.getinstance().setCanMove(false);
+        // touchInstance.getinstance().setCanMove(false);
         this.OverLayer.active = false;
         // this.ShanLayer.active = false;
         this.resetTIME();
@@ -162,7 +166,7 @@ export default class UIcontrol extends cc.Component {
     checkMove(){
         if(this.getPowerIsFull())
         {
-            touchInstance.getinstance().setCanMove(true);
+            // touchInstance.getinstance().setCanMove(true);
             this.schedule(this.minPOWER,0.01,500);
         }
     }
@@ -319,12 +323,11 @@ export default class UIcontrol extends cc.Component {
     addScore(score:number){
         this._addScore(score);
         this.resetTIME();
-        if(touchInstance.getinstance().getCanMove())
-        {
-            return;
-        }
-        let temp = score / 50;
-        this.addPOWER(temp * 10);
+        // if(touchInstance.getinstance().getCanMove())
+        // {
+        //     return;
+        // }
+        // let temp = score / 50;
     }
 
     minTIME(){
@@ -350,16 +353,13 @@ export default class UIcontrol extends cc.Component {
         }
     }
 
-    //----- 私有方法 -----//
-    private _addScore(score:number){
-        this.score += score;
-        this.Socrelabel.string = this.score.toString();
-        let subscore = this.Socrelabel.node.getChildByName("subscore");
-        subscore.getComponent(cc.Label).string = this.score.toString();
-        subscore.getComponent(cc.Animation).play();
-    }
-
-    private addPOWER(num:number){
+    addPOWER(num:number){
+        console.log("addPOWER");
+        if(this.ShanKuang.getChildByName("tips").active)
+        {
+            console.log("return");
+            return;
+        }
         this.nowPOWER += num;
         if(this.nowPOWER >= lib.defConfig.MAXPOWER)
         {
@@ -374,17 +374,31 @@ export default class UIcontrol extends cc.Component {
         this.ShanKuang.getChildByName("dingkuang2").height = 1920 * parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
         if(this.nowPOWER == lib.defConfig.MAXPOWER)
         {
-            if(this.ShanKuang.getChildByName("tips").active)
-            {
-                return;
-            }
-            this.ShanKuang.getChildByName("tips").active = true;
-            this.ShanKuang.getChildByName("dingkuang1").runAction(this.act1);
-            this.ShanKuang.getChildByName("dingkuang2").runAction(this.act2);
+            console.log("this.nowPOWER == lib.defConfig.MAXPOWER");
+            this.PowerFullAni();
+            this.powerFull.CreateSpecial();
         }
             // let act = cc.repeatForever(cc.sequence(cc.fadeIn(0.5),cc.fadeOut(0.5)));
             // this.ShanLayer.runAction(act);
         // }
+    }
+
+    //----- 私有方法 -----//
+    private PowerFullAni(){
+        console.log("PowerFullAni");
+        this.ShanKuang.getChildByName("tips").active = true;
+        let dingkuang1 = this.ShanKuang.getChildByName("dingkuang1");
+        let dingkuang2 = this.ShanKuang.getChildByName("dingkuang2");
+        dingkuang1.runAction(this.act1);
+        dingkuang2.runAction(this.act2);
+        this.schedule(this.minPOWER,0.02,50,0.5);
+    }
+    private _addScore(score:number){
+        this.score += score;
+        this.Socrelabel.string = this.score.toString();
+        let subscore = this.Socrelabel.node.getChildByName("subscore");
+        subscore.getComponent(cc.Label).string = this.score.toString();
+        subscore.getComponent(cc.Animation).play();
     }
 
     private minPOWER(){
@@ -392,7 +406,7 @@ export default class UIcontrol extends cc.Component {
         {
             return;
         }
-        this.nowPOWER--;
+        this.nowPOWER -= 10;
         this.ShanKuang.getChildByName("tips").active = false;
         // this.POWER.progress = parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
         this.ShanKuang.getChildByName("dingkuang1").height = 1920 * parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
@@ -406,7 +420,7 @@ export default class UIcontrol extends cc.Component {
             this.ShanKuang.getChildByName("dingkuang1").opacity = 255;
             this.ShanKuang.getChildByName("dingkuang2").stopAction(this.act2);
             this.ShanKuang.getChildByName("dingkuang2").opacity = 255;
-            touchInstance.getinstance().setCanMove(false);
+            // touchInstance.getinstance().setCanMove(false);
         }
     }
 

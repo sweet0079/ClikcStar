@@ -1,5 +1,6 @@
 /** 形状管理器脚本 */
 import FlyingShape from './FlyingShape'
+import ShapeControl from './ShapeControl'
 
 export default class ShapeManager {
     static instance: ShapeManager
@@ -22,24 +23,29 @@ export default class ShapeManager {
     private shapeArr: Array<cc.Node>;
     private specialArr: Array<cc.Node>;
 
+    //获取普通形状数量
     getNum(){
         return this.shapeArr.length;
     }
 
+    //获取特殊形状数量
     getSpecialNum(){
         return this.specialArr.length;
     }
 
+    //添加一个特殊形状
     addSpecial(special:cc.Node){
         this.specialArr.push(special);
         // console.log("addspecial");
     }
     
+    //增加
     addShape(shape:cc.Node){
         this.shapeArr.push(shape);
         // console.log("add");
     }
 
+    //删除传入的节点
     delShape(shape:cc.Node){
         let index = this.shapeArr.indexOf(shape);
         if (index > -1) {
@@ -58,16 +64,33 @@ export default class ShapeManager {
         }
     }
 
+    //清空
     clean(){
         this.shapeArr = [];
         this.specialArr = [];
     }
 
-    desAllShape(){
+    //爆炸所有普通形状
+    desNormalShape(){
+        for(let i = 0; i < this.shapeArr.length; i++)
+        {
+            this.shapeArr[i].getComponent(ShapeControl).bombCallBack();
+        }
+        this.shapeArr = [];
+    }
+
+    //删除所有普通形状
+    delNormalShape(){
         for(let i = 0; i < this.shapeArr.length; i++)
         {
             this.shapeArr[i].destroy();
         }
+        this.shapeArr = [];
+    }
+
+    //删除所有形状
+    delAllShape(){
+        this.delNormalShape();
         for(let i = 0; i < this.specialArr.length; i++)
         {
             this.specialArr[i].destroy();
@@ -75,6 +98,7 @@ export default class ShapeManager {
         this.clean();
     }
 
+    //暂停所有形状
     pauseAllShape(){
         for(let i = 0; i < this.shapeArr.length; i++)
         {
@@ -86,6 +110,7 @@ export default class ShapeManager {
         }
     }
 
+    //继续所有形状
     continueAllShape(){
         for(let i = 0; i < this.shapeArr.length; i++)
         {

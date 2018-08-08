@@ -1,6 +1,7 @@
 /** 用于统一控制所有触摸事件 */
 import * as lib from '../lib/lib'
 import UIControl from './UIControl'
+import birthControl from './BirthControl'
 import { _kits } from '../../../libdts/kits';
 
 const {ccclass, property} = cc._decorator;
@@ -18,6 +19,8 @@ export default class ClickControl extends cc.Component {
     @property(cc.Prefab) scorePfb: cc.Prefab = null;
     //combo预制体
     @property(cc.Prefab) comboPfb: cc.Prefab = null;
+    //birthLayout节点
+    @property(birthControl) birthLayout: birthControl = null;
     //----- 属性声明 -----//
     private ScoreArr :Array<_kits.ClickShape.ScoreInfo> = [];
     //连击数
@@ -57,6 +60,10 @@ export default class ClickControl extends cc.Component {
     //根据combo，计算获得的能量
     private CalAddPower(ScoreInfoArr:Array<_kits.ClickShape.ScoreInfo>){
         let basepower = ScoreInfoArr.length * 10;
+        if(this.birthLayout.getweaveFlag())
+        {
+            return basepower;
+        }
         let ExPower = 0;
         if(this.LastAddCombo == 1)
         {
@@ -68,14 +75,18 @@ export default class ClickControl extends cc.Component {
             let minExPower = (this.ComboNum - this.LastAddCombo) * 5;
             ExPower = (maxExPower + minExPower) * this.LastAddCombo / 2;
         }
-        console.log("this.ComboNum = " + this.ComboNum);
-        console.log("this.LastAddCombo = " + this.LastAddCombo);
-        console.log("basepower + ExPower = " + (basepower + ExPower));
+        // console.log("this.ComboNum = " + this.ComboNum);
+        // console.log("this.LastAddCombo = " + this.LastAddCombo);
+        // console.log("basepower + ExPower = " + (basepower + ExPower));
         return basepower + ExPower;
     }
 
     //根据点击计算combo，如果连续多重点击取最高combo数形状
     private CheckCombo(ScoreInfoArr:Array<_kits.ClickShape.ScoreInfo>){
+        if(this.birthLayout.getweaveFlag())
+        {
+            return;
+        }
         //将对象数组整理为形状数组
         let ShapeArr = [];
         for(let i = 0 ; i < ScoreInfoArr.length ; i++)
@@ -90,10 +101,10 @@ export default class ClickControl extends cc.Component {
         {
             return; 
         }
-        console.log("CheckCombo");
-        console.log(this.LastShape);
-        console.log(ShapeArr);
-        console.log("before this.ComboNum = " + this.ComboNum);
+        // console.log("CheckCombo");
+        // console.log(this.LastShape);
+        // console.log(ShapeArr);
+        // console.log("before this.ComboNum = " + this.ComboNum);
         //如果没有上次点击数组，将单次点击的形状数组排序后找出数量最多的形状
         if(this.LastShape.length == 0)
         {
@@ -174,10 +185,15 @@ export default class ClickControl extends cc.Component {
                 }
             }
         }
-        console.log("after this.ComboNum = " + this.ComboNum);
+        // console.log("after this.ComboNum = " + this.ComboNum);
     }
 
+    //显示combo数
     private ShowCombo(){
+        if(this.birthLayout.getweaveFlag())
+        {
+            return;
+        }
         if(this.ComboNum < 3)
         {
             return;
@@ -192,6 +208,7 @@ export default class ClickControl extends cc.Component {
         ani.play();
     }
 
+    //创建good字样
     private createZiSprite(spf:cc.SpriteFrame){
         let node = new cc.Node('Good');
         let sp = node.addComponent(cc.Sprite);
@@ -206,6 +223,7 @@ export default class ClickControl extends cc.Component {
         node.runAction(seq);
     }
 
+    //创建分数字样
     private createScore(){
         if(this.ShowScore)
         {
@@ -226,6 +244,7 @@ export default class ClickControl extends cc.Component {
         }
     }
 
+    //显示good字样
     private showGood(){
         if(this.ComboNum == 15)
         {
@@ -250,6 +269,7 @@ export default class ClickControl extends cc.Component {
         }
     }
 
+    //重新开始
     private reStart(){
         this.ComboNum = 1;
         this.ScoreArr = [];
@@ -320,7 +340,7 @@ export default class ClickControl extends cc.Component {
             this.ShowScore = score;
             lib.msgEvent.getinstance().emit(lib.msgConfig.micclickCombo);
         }
-        this.CalAddPower(this.ScoreArr);
+        this.UIcon.addPOWER(this.CalAddPower(this.ScoreArr));
         this.ScoreArr = [];
         this.ShowCombo();
         this.showGood();

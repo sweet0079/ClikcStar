@@ -83,6 +83,10 @@ export default class BirthControl extends cc.Component {
     {
         this.weaveFlag = flag;
     }
+    getweaveFlag()
+    {
+        return this.weaveFlag;
+    }
     addtime(){
         this.time += 0.5;
     }

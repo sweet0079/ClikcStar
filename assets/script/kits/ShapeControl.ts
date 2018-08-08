@@ -160,10 +160,10 @@ export default class ShapeControl extends cc.Component {
                 calNode.children[0].setPositionY(-20);
                 calNode.children[1].setPositionY(-20);
             }
-            else if(this.type == lib.defConfig.shape.diamond)
-            {
-                this.setClickJudgeFun(this._diamondgetIsClickShape);
-            }
+            // else if(this.type == lib.defConfig.shape.diamond)
+            // {
+            //     this.setClickJudgeFun(this._diamondgetIsClickShape);
+            // }
             else if(this.type == lib.defConfig.shape.circular)
             {
                 // this.setClickJudgeFun((x,y) => {
@@ -192,7 +192,7 @@ export default class ShapeControl extends cc.Component {
     
     //----- 事件回调 -----//
     //点击炸弹事件回调
-    private bombCallBack(){
+    bombCallBack(){
         if(this.type == 1 && this.isSpecial)
         {
             this._destroyAni();
@@ -209,7 +209,7 @@ export default class ShapeControl extends cc.Component {
             isSpecial: this.isSpecial,
         }
         lib.msgEvent.getinstance().emit(lib.msgConfig.clickStart,shapInfo);
-        ShapeManager.getinstance().delShape(this.node);
+        // ShapeManager.getinstance().delShape(this.node);
         lib.msgEvent.getinstance().emit(lib.msgConfig.Settlement);
         lib.msgEvent.getinstance().emit(lib.msgConfig.ShowScore,cc.v2(this.node.getPositionX(),this.node.getPositionY()));
         this._destroyAni();

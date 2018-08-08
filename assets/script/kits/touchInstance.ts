@@ -21,15 +21,15 @@ export default class touchInstance {
 
     private canMove: boolean;
 
-    getCanMove(){
-        return this.canMove;
-    }
+    // getCanMove(){
+    //     return this.canMove;
+    // }
 
-    setCanMove(flag:boolean){
-        this.canMove = flag;
-        if(!flag)
-        {
-            lib.msgEvent.getinstance().emit(lib.msgConfig.EndMove);
-        }
-    }
+    // setCanMove(flag:boolean){
+    //     this.canMove = flag;
+    //     if(!flag)
+    //     {
+    //         lib.msgEvent.getinstance().emit(lib.msgConfig.EndMove);
+    //     }
+    // }
 }

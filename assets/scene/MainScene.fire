@@ -65,6 +65,9 @@
         "__id__": 3
       },
       {
+        "__id__": 217
+      },
+      {
         "__id__": 216
       }
     ],
@@ -141,6 +144,9 @@
     },
     "comboPfb": {
       "__uuid__": "f42b2222-772e-41a7-a07b-ed497070cebb"
+    },
+    "birthLayout": {
+      "__id__": 99
     }
   },
   {
@@ -183,6 +189,9 @@
     },
     "NoviceGuidance": {
       "__id__": 196
+    },
+    "powerFull": {
+      "__id__": 216
     }
   },
   {
@@ -1762,9 +1771,6 @@
     },
     "UIcon": {
       "__id__": 4
-    },
-    "touchPointPfb": {
-      "__uuid__": "08e79219-aefe-4ca6-adb3-84e297ff696b"
     }
   },
   {
@@ -3865,10 +3871,10 @@
       "__id__": 33
     },
     "_enabled": true,
-    "WeaveComeTime": 20,
+    "WeaveComeTime": 25,
     "SpecialComeTime": 13,
     "BirthInterval": [
-      2.5,
+      2,
       2,
       2,
       1.5,
@@ -8358,6 +8364,15 @@
     "_N$spriteFrame": null,
     "_N$alphaThreshold": 1,
     "_N$inverted": true
+  },
+  {
+    "__type__": "d847d0WiONDZrd3HoW+mCrT",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true
   },
   {
     "__type__": "78843BKeRlPO6BMaH2RcfKf",
