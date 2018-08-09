@@ -3,6 +3,7 @@ import * as lib from '../lib/lib'
 import UIControl from './UIControl'
 import birthControl from './BirthControl'
 import { _kits } from '../../../libdts/kits';
+import ShapeManager from './ShapeManager';
 
 const {ccclass, property} = cc._decorator;
 
@@ -321,8 +322,13 @@ export default class ClickControl extends cc.Component {
             // this.ComboNum++;
             this.CheckCombo(this.ScoreArr);
             //console.log("length == 1" + " score =" + this.ScoreArr[0]);
-            this.UIcon.addScore(this.ScoreArr[0].score);
-            this.ShowScore = this.ScoreArr[0].score;
+            let score = this.ScoreArr[0].score;
+            if(ShapeManager.getinstance().getDoubleScore())
+            {
+                score *= 2;
+            }
+            this.UIcon.addScore(score);
+            this.ShowScore = score;
         }
         else
         {
@@ -335,6 +341,10 @@ export default class ClickControl extends cc.Component {
                 //console.log("i == " + i + "  score ==" + this.ScoreArr[i]);
             }
             score *= 2;
+            if(ShapeManager.getinstance().getDoubleScore())
+            {
+                score *= 2;
+            }
             //console.log("length == " + this.ScoreArr.length + " score =" + score);
             this.UIcon.addScore(score);
             this.ShowScore = score;

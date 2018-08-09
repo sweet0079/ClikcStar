@@ -1,4 +1,5 @@
 /** 形状管理器脚本 */
+import * as lib from '../lib/lib'
 import FlyingShape from './FlyingShape'
 import ShapeControl from './ShapeControl'
 
@@ -17,11 +18,35 @@ export default class ShapeManager {
     private constructor() {
         this.shapeArr = [];
         this.specialArr = [];
+        this._frozen = false;
+        this._doubleScore = false;
         ShapeManager.instance = this;
     }
 
     private shapeArr: Array<cc.Node>;
     private specialArr: Array<cc.Node>;
+    private _frozen:boolean;
+    private _doubleScore:boolean;
+
+    //开启冰冻
+    getDoubleScore(){
+        return this._doubleScore;
+    }
+
+    //开启冰冻
+    setDoubleScore(Flag:boolean){
+        this._doubleScore = Flag;
+    }
+
+    //开启冰冻
+    getFrozen(){
+        return this._frozen;
+    }
+
+    //开启冰冻
+    setFrozen(Flag:boolean){
+        this._frozen = Flag;
+    }
 
     //获取普通形状数量
     getNum(){
@@ -68,6 +93,15 @@ export default class ShapeManager {
     clean(){
         this.shapeArr = [];
         this.specialArr = [];
+    }
+
+    assimilationNoreShape(){
+        let temp = lib.RandomParameters.RandomParameters.getRandomInt(5);
+        for(let i = 0; i < this.shapeArr.length; i++)
+        {
+            this.shapeArr[i].getComponent(ShapeControl).setShape(temp);
+        }
+
     }
 
     //爆炸所有普通形状

@@ -406,7 +406,7 @@ export default class weaveControl extends cc.Component {
     }
     //阶梯主方法
     private ladder(){
-        let temp = lib.RandomParameters.RandomParameters.getRandomInt(4);
+        let temp = lib.RandomParameters.RandomParameters.getRandomInt(2);
 
         //根据套路持续时间设置
         this._birthControl.setweaveTime(4 + lib.defConfig.WeaveEndTime);
@@ -423,7 +423,7 @@ export default class weaveControl extends cc.Component {
         let cpare = lib.RandomParameters.RandomParameters.getRandomChaParameters();
         let spare = lib.RandomParameters.RandomParameters.getRandomShaParameters();
 
-        for(let i = 0 ; i < 15; i++)
+        for(let i = 0 ; i < 10; i++)
         {
             this.scheduleOnce(()=>{
                 if(temp == 0)
@@ -436,6 +436,14 @@ export default class weaveControl extends cc.Component {
                     let fpare1 = this._birthControl.birthPoints[0].getRandomFlyParameters();
                     fpare1.Angle = this._birthControl.birthPoints[0].getAngleToPoint(lib.defConfig.DesignPlayWidth / 2,600);
                     this._birthControl.birthPoints[0].createAppointShape(fpare1,dpare,cpare,spare1);
+                    let spare3 = spare;
+                    if(!spareFlag)
+                    {
+                        spare3 = lib.RandomParameters.RandomParameters.getRandomShaParameters();
+                    }
+                    let fpare3 = this._birthControl.birthPoints[14].getRandomFlyParameters();
+                    fpare3.Angle = this._birthControl.birthPoints[14].getAngleToPoint(lib.defConfig.DesignPlayWidth / 2,-600);
+                    this._birthControl.birthPoints[14].createAppointShape(fpare3,dpare,cpare,spare3);
                 }
                 else if(temp == 1)
                 {
@@ -447,20 +455,6 @@ export default class weaveControl extends cc.Component {
                     let fpare2 = this._birthControl.birthPoints[4].getRandomFlyParameters();
                     fpare2.Angle = this._birthControl.birthPoints[4].getAngleToPoint(-lib.defConfig.DesignPlayWidth / 2,600);
                     this._birthControl.birthPoints[4].createAppointShape(fpare2,dpare,cpare,spare2); 
-                }
-                else if(temp == 2)
-                {
-                    let spare3 = spare;
-                    if(!spareFlag)
-                    {
-                        spare3 = lib.RandomParameters.RandomParameters.getRandomShaParameters();
-                    }
-                    let fpare3 = this._birthControl.birthPoints[14].getRandomFlyParameters();
-                    fpare3.Angle = this._birthControl.birthPoints[14].getAngleToPoint(lib.defConfig.DesignPlayWidth / 2,-600);
-                    this._birthControl.birthPoints[14].createAppointShape(fpare3,dpare,cpare,spare3);
-                }
-                else if(temp == 3)
-                {
                     let spare4 = spare;
                     if(!spareFlag)
                     {
@@ -1161,7 +1155,7 @@ export default class weaveControl extends cc.Component {
                 answer = 20;
                 break;
             case lib.defConfig.Tricks.ladder:
-                answer = 15;
+                answer = 20;
                 break;
             case lib.defConfig.Tricks.overlapping:
                 answer = 15;

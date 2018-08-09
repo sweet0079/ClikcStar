@@ -4,6 +4,7 @@ import ShapeManager from './ShapeManager'
 import powerFullcontrol from './PowerFullCon'
 // import touchInstance from "./touchInstance"
 import HPBarCon from "./HPBarControl"
+import EffectCon from "./EffectControl"
 
 const {ccclass, property} = cc._decorator;
 
@@ -18,8 +19,6 @@ export default class UIcontrol extends cc.Component {
     @property(HPBarCon) HPBar: HPBarCon = null;
     // //能量条组件
     // @property(cc.ProgressBar) POWER: cc.ProgressBar = null;
-    //时间条组件
-    @property(cc.ProgressBar) TIME: cc.ProgressBar = null;
     //gameover界面
     @property(cc.Node) OverLayer: cc.Node = null;
     //pause界面
@@ -40,6 +39,8 @@ export default class UIcontrol extends cc.Component {
     @property(cc.Node) NoviceGuidance: cc.Node = null;
     //能量满了之后触发各种特效的控制器
     @property(powerFullcontrol) powerFull: powerFullcontrol = null;
+    //特效表现的节点
+    @property(EffectCon) EffectNode: EffectCon = null;
 
     
     //----- 属性声明 -----//
@@ -232,6 +233,20 @@ export default class UIcontrol extends cc.Component {
         }
     }
     //----- 公有方法 -----//
+    //双倍分数特效
+    doubleScore(){
+        this.EffectNode.ShowDoubelScoreAni();
+    }
+    //治疗特效
+    health(){
+        for(let i = 0 ; i < 6 ; i++)
+        {
+            this.addHP();
+        }
+        this.EffectNode.ShowHealthAni();
+        this.HPBar.blink();
+    }
+
     getHPIsFull(){
         if(this.nowHP >= lib.defConfig.MAXHP)
         {
@@ -385,7 +400,6 @@ export default class UIcontrol extends cc.Component {
 
     //----- 私有方法 -----//
     private PowerFullAni(){
-        console.log("PowerFullAni");
         this.ShanKuang.getChildByName("tips").active = true;
         let dingkuang1 = this.ShanKuang.getChildByName("dingkuang1");
         let dingkuang2 = this.ShanKuang.getChildByName("dingkuang2");
@@ -407,7 +421,6 @@ export default class UIcontrol extends cc.Component {
             return;
         }
         this.nowPOWER -= 10;
-        this.ShanKuang.getChildByName("tips").active = false;
         // this.POWER.progress = parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
         this.ShanKuang.getChildByName("dingkuang1").height = 1920 * parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
         this.ShanKuang.getChildByName("dingkuang2").height = 1920 * parseFloat((this.nowPOWER / lib.defConfig.MAXPOWER).toString());
@@ -416,11 +429,10 @@ export default class UIcontrol extends cc.Component {
         {
             // this.ShanKuang.active = false;
             // this.ShanLayer.active = false;
-            this.ShanKuang.getChildByName("dingkuang1").stopAction(this.act1);
-            this.ShanKuang.getChildByName("dingkuang1").opacity = 255;
-            this.ShanKuang.getChildByName("dingkuang2").stopAction(this.act2);
-            this.ShanKuang.getChildByName("dingkuang2").opacity = 255;
+            // this.ShanKuang.getChildByName("dingkuang1").opacity = 255;
+            // this.ShanKuang.getChildByName("dingkuang2").opacity = 255;
             // touchInstance.getinstance().setCanMove(false);
+            this.ShanKuang.getChildByName("tips").active = false;
         }
     }
 

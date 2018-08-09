@@ -25,6 +25,10 @@ export default class HPBarControl extends cc.Component {
     //----- 按钮回调 -----//
     //----- 事件回调 -----//
     //----- 公有方法 -----//
+    blink(){
+        let act = cc.blink(2,3);
+        this.node.runAction(act);
+    }
     initHPBar(){
         for(let i = 0 ; i < this.node.childrenCount; i++)
         {

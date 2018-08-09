@@ -170,8 +170,14 @@ export default class ShapeControl extends cc.Component {
                 //     return this._circulargetIsClickShape(x,y);
                 // });
                 this.setClickJudgeFun(this._circulargetIsClickShape);
+                calNode.children[0].setPositionY(0);
+                calNode.children[1].setPositionY(0);
             }
-
+            else
+            {
+                calNode.children[0].setPositionY(0);
+                calNode.children[1].setPositionY(0);
+            }
         }
     }
 
@@ -296,18 +302,18 @@ export default class ShapeControl extends cc.Component {
         let nowx = dis * Math.cos(nowAngle);
         let nowy = dis * Math.sin(nowAngle);
         if(nowx < 0){
-            temp = (2 * calNode.height * Math.abs(calNode.scaleY) * this.node.scaleY / calNode.width * Math.abs(calNode.scaleX)) * this.node.scaleX * nowx
-                 + calNode.height * Math.abs(calNode.scaleY) / 2 * this.node.scaleY;
-            if(nowy < temp + 40 * Math.abs(calNode.scaleY) * this.node.scaleY)
+            temp = calNode.height * Math.abs(calNode.scaleY) * Math.abs(this.node.scaleY) / calNode.width * Math.abs(calNode.scaleX) * Math.abs(this.node.scaleX) * nowx
+                 + calNode.height * Math.abs(calNode.scaleY) * Math.abs(this.node.scaleY) / 2;
+            if(nowy < temp + 15 * Math.abs(calNode.scaleY) * Math.abs(this.node.scaleY))
             {
                 result = true;
             }
         }
         else
         {
-            temp = (-2 * calNode.height * Math.abs(calNode.scaleY) * this.node.scaleY / calNode.width * Math.abs(calNode.scaleX)) * nowx * this.node.scaleX
-                 + calNode.height * Math.abs(calNode.scaleY) * this.node.scaleY / 2;
-            if(nowy < temp + 40 * Math.abs(calNode.scaleY) * this.node.scaleY)
+            temp = -1 * calNode.height * Math.abs(calNode.scaleY) * Math.abs(this.node.scaleY) / calNode.width * Math.abs(calNode.scaleX) * Math.abs(this.node.scaleX) * nowx
+                 + calNode.height * Math.abs(calNode.scaleY) * Math.abs(this.node.scaleY) / 2;
+            if(nowy < temp + 15 * Math.abs(calNode.scaleY) * Math.abs(this.node.scaleY))
             {
                 result = true;
             }

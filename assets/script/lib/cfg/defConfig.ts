@@ -216,3 +216,23 @@ export const POWERLap = 5;
 export const MAXTIME = 7;
 //角度和弧度的转化系数
 export const coefficient = 2 * Math.PI / 360;
+/** 满能量正面效果枚举 */
+export const positiveBuff = cc.Enum({
+    // 全清
+    allClean: -1,
+    // 回满血
+    health: -1,
+    // 减速
+    frozen: -1,
+    // 双倍
+    doubleScore: -1,
+    // 同化
+    assimilation: -1,
+    // 枚举的长度
+    length: -1,
+});
+/** 满能量负面效果枚举 */
+export const negitiveBuff = cc.Enum({
+    // 枚举的长度
+    length: -1,
+});

@@ -2,6 +2,8 @@
 import * as lib from '../lib/lib'
 import Dissipation from './Disspation'
 import shapeControl from './ShapeControl'
+import ShapeManager from './ShapeManager';
+import { _kits } from '../../../libdts/kits';
 
 const {ccclass, property} = cc._decorator;
 
@@ -84,6 +86,10 @@ export default class FlyingShape extends cc.Component {
         if(this.stopFlag)
         {
             return;
+        }
+        if(ShapeManager.getinstance().getFrozen())
+        {
+            dt *= 0.5;
         }
         //如果已经触发离开屏幕方法
         if(this.dissControl.getLeave()
